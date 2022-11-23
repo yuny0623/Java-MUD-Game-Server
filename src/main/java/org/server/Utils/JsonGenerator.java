@@ -6,6 +6,6 @@ public class JsonGenerator {
     }
 
     public static void parseJson(){
-        
+
     }
 }

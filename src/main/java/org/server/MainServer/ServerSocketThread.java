@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 
 public class ServerSocketThread extends Thread{
-
     Socket socket;
     MainServer server;
     BufferedReader in;
