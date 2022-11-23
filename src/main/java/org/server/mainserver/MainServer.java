@@ -1,6 +1,6 @@
-package org.server.MainServer;
+package org.server.mainserver;
 
-import org.server.Utils.ServerConfig;
+import org.server.utils.ServerConfig;
 
 import java.io.IOException;
 import java.net.ServerSocket;

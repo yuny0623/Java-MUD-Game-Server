@@ -1,4 +1,4 @@
-package org.server.MainServer;
+package org.server.mainserver;
 
 import java.io.*;
 import java.net.Socket;
@@ -31,7 +31,7 @@ public class ServerSocketThread extends Thread{
             server.broadCasting("[New Member]" + threadName + " has entered.\n");
             while(true){
                 strIn = in.readLine();
-                System.out.println(strIn);
+                out.println("received!");
             }
         }catch(IOException e){
             System.out.println(threadName + ": removed.");

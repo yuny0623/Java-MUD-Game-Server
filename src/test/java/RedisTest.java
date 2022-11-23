@@ -4,9 +4,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
 public class RedisTest {
-
     @Test
-    public void redis연동테스트(){
+    public void Jedis_connection_test(){
         // given
         var pool = new JedisPool("127.0.0.1", Protocol.DEFAULT_PORT);
         var jedis = pool.getResource();

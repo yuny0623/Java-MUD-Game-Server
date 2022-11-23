@@ -1,6 +1,6 @@
-package org.server.Utils;
+package org.server.utils;
 
-public class JsonGenerator {
+public class JsonUtil {
     public static String generateJson(){
         return "";
     }
