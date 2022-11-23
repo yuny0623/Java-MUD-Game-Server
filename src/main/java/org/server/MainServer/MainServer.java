@@ -29,10 +29,6 @@ public class MainServer {
                 ServerSocketThread thread = new ServerSocketThread(this, socket);
                 addClient(thread);
                 thread.start();
-                if(list.size() == 30){
-                    while(true){
-                    }
-                }
             }
         }catch(IOException e){
             e.printStackTrace();

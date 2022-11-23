@@ -30,10 +30,10 @@ public class ServerSocketThread extends Thread{
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 
             server.broadCasting("[New Member]" + threadName + " has entered.\n");
-
             while(true){
                 String strIn = in.readLine();
-                server.broadCasting(strIn);
+                System.out.println(strIn);
+//                server.broadCasting(strIn);
             }
         }catch(IOException e){
             System.out.println(threadName + ": removed.");
@@ -41,6 +41,8 @@ public class ServerSocketThread extends Thread{
         }finally{
             try{
                 socket.close();
+                out.close();
+                in.close();
             }catch(IOException e){
                 e.printStackTrace();
             }
