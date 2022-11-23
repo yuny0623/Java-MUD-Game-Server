@@ -9,7 +9,7 @@ public class ServerSocketThread extends Thread{
     MainServer server;
     BufferedReader in;
     PrintWriter out;
-
+    String strIn;
     String threadName;
     public ServerSocketThread(MainServer server, Socket socket){
         this.server = server ;
@@ -27,13 +27,12 @@ public class ServerSocketThread extends Thread{
     public void run(){
         try{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
             server.broadCasting("[New Member]" + threadName + " has entered.\n");
             while(true){
-                String strIn = in.readLine();
+                strIn = in.readLine();
                 System.out.println(strIn);
-//                server.broadCasting(strIn);
             }
         }catch(IOException e){
             System.out.println(threadName + ": removed.");
