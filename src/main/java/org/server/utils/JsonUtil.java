@@ -6,6 +6,8 @@ public class JsonUtil {
     }
 
     public static void parseJson(){
-
+        /*
+            call redis template here.
+         */
     }
 }

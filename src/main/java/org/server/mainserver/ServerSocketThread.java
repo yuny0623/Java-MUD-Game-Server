@@ -19,7 +19,9 @@ public class ServerSocketThread extends Thread{
     }
 
     public void sendMessage(String str){
+        System.out.println("seneMessage:" + str);
         out.println(str);
+        System.out.println("sendMessage finish.");
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ServerSocketThread extends Thread{
             server.broadCasting("[New Member]" + threadName + " has entered.\n");
             while(true){
                 strIn = in.readLine();
-                out.println("received!");
+                server.broadCasting(strIn);
             }
         }catch(IOException e){
             System.out.println(threadName + ": removed.");
