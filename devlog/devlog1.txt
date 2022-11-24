@@ -1,0 +1,5 @@
+2022-11-24
+
+server 에서 전달하는 데이터가 없으면 클라이언트에서 readLine에서
+blocking 되어서 계속 기다리는데 이걸 server 측에서 지속적으로
+healthcheck signal을 보내는 방식으로 운영하면 어떨지?
