@@ -1,4 +1,4 @@
-package org.server.Dto;
+package org.server.dto;
 
 public class CommandDto {
     String command;

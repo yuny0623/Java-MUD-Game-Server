@@ -1,12 +1,11 @@
 package org.server.mainserver;
 
-import org.server.Dto.CommandDto;
+import org.server.dto.CommandDto;
 import org.server.redistemplate.RedisTemplate;
 import org.server.utils.JsonUtil;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ServerSocketThread extends Thread{
     Socket socket;

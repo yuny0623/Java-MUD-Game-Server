@@ -15,6 +15,7 @@ public class MainServer {
 
     public MainServer(){
         list = new ArrayList<>();
+
         System.out.println("Main Server Created.");
     }
 
