@@ -17,6 +17,7 @@ public class ServerSocketThread extends Thread{
     String threadName;
     String nickname;
     JsonUtil jsonUtil;
+    String command;
 
     public ServerSocketThread(MainServer server, Socket socket){
         this.server = server ;
@@ -39,23 +40,23 @@ public class ServerSocketThread extends Thread{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-             // 닉네임 입력받기.
             strIn = in.readLine();
             System.out.println(strIn);
-            CommandDto commandDto = jsonUtil.parseJson(strIn);
-            nickname = commandDto.getNickname();
-
-            // 유저 생성 - jedis
+            command = jsonUtil.parseJson(strIn);
+            nickname = command.split(" ")[1];
+            /*
+                logic
+                1. 참여하고 있는 thread 중에 중복 nickname 있으면 이전 접속 deprecate
+             */
             server.broadCasting(jsonUtil.generateJson(nickname + " has entered."));
-
             while(true){
                 strIn = in.readLine();
-                CommandDto commandDto1 = jsonUtil.parseJson(strIn);
-                /*
-                    game play by command
-                 */
-                jsonUtil.parseJson(strIn);
-                server.broadCasting(jsonUtil.generateJson(strIn));
+                command = jsonUtil.parseJson(strIn);
+                CommandDto commandDto = new CommandDto(command, nickname);
+                server.playGame(commandDto);
+
+                String json = jsonUtil.generateJson(nickname + ":" + command);
+                server.broadCasting(json);
             }
         }catch(IOException e){
             System.out.println(nickname + ": removed.");

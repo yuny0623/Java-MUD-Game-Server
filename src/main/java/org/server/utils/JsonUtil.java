@@ -24,13 +24,14 @@ public class JsonUtil {
         return jsonObject.toJSONString();
     }
 
-    public void parseJson(String json){
+    public String parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");
         }
         String command = null;
         JSONObject obj = null;
         JSONParser parser;
+        String result = "";
         try {
             parser = new JSONParser();
             obj = (JSONObject) parser.parse(json);
@@ -38,43 +39,36 @@ public class JsonUtil {
         }catch(ParseException e){
             e.printStackTrace();
         }
-
         switch(command){
             case "move":
-                String xVal = (String) obj.get("x");
-                String yVal = (String) obj.get("y");
+                String x = (String) obj.get("x");
+                String y = (String) obj.get("y");
+                result = "move " + x + " " + y;
                 break;
             case "attack":
-                /*
-                    attack
-                 */
+                result = "attack";
                 break;
             case "monsters":
-                /*
-                    show monsters
-                 */
+                result = "monsters";
                 break;
             case "users":
-                /*
-                    show user list
-                 */
+                result = "users";
                 break;
             case "chat":
                 String opponent = (String) obj.get("opponent");
                 String content = (String) obj.get("content");
+                result = "chat " + opponent + " " + content;
                 break;
             case "bot":
-                /*
-                    run bot mode
-                 */
+                result = "bot";
                 break;
             case "nickname":
-                /*
-                    nickname!
-                 */
+                String nickname = (String) obj.get("nickname");
+                result = "nickname " + nickname;
                 break;
             default:
-                System.out.println("Invalid json Input!");
+                return "";
         }
+        return result;
     }
 }

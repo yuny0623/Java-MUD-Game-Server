@@ -1,5 +1,7 @@
 package org.server.mainserver;
 
+import org.server.dto.CommandDto;
+import org.server.game.Game;
 import org.server.utils.ServerConfig;
 
 import java.io.IOException;
@@ -11,11 +13,12 @@ import java.util.List;
 public class MainServer {
     ServerSocket serverSocket;
     Socket socket;
+     Game game;
     List<Thread> list;
 
     public MainServer(){
         list = new ArrayList<>();
-
+        game = Game.getInstance();
         System.out.println("Main Server Created.");
     }
 
@@ -23,7 +26,6 @@ public class MainServer {
         try{
             serverSocket = new ServerSocket(ServerConfig.TCP_CONNECTION_DEFAULT_PORT);
             serverSocket.setReuseAddress(true);
-
             while(true){
                 socket = serverSocket.accept();
                 System.out.println("New Socket accepted.");
@@ -52,5 +54,9 @@ public class MainServer {
             ServerSocketThread thread = (ServerSocketThread) list.get(i);
             thread.sendMessage(str);
         }
+    }
+
+    public synchronized void playGame(CommandDto commandDto){
+        game.play(commandDto);
     }
 }
