@@ -17,35 +17,35 @@ public final class RedisTemplate {
         return instance;
     }
 
-    public void createUser(){
+    public synchronized void createUser(){
 
     }
 
-    public void move(){
+    public synchronized void move(){
 
     }
 
-    public void attack(){
+    public synchronized void attack(){
 
     }
 
-    public void showMonsters(){
+    public synchronized void showMonsters(){
 
     }
 
-    public ArrayList<String> showUsers(){
+    public synchronized ArrayList<String> showUsers(){
         return new ArrayList<>();
     }
 
-    public void chat(){
+    public synchronized void chat(){
 
     }
 
-    public void activateBot(){
+    public synchronized void activateBot(){
 
     }
 
-    public void deactivateBot(){
+    public synchronized void deactivateBot(){
 
     }
 }

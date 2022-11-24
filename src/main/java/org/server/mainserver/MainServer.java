@@ -9,15 +9,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainServer {
     ServerSocket serverSocket;
     Socket socket;
      Game game;
     List<Thread> list;
-
+//    List<Map<String, Thread>> nicknameList;
     public MainServer(){
         list = new ArrayList<>();
+        // nicknameList = new ArrayList<>();
         game = Game.getInstance();
         System.out.println("Main Server Created.");
     }

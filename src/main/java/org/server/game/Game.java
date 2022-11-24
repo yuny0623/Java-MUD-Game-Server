@@ -16,7 +16,7 @@ public final class Game {
         return instance;
     }
 
-    public void play(CommandDto commandDto){
+    public synchronized void play(CommandDto commandDto){
         /*
             actual play logic
          */

@@ -18,13 +18,13 @@ public class JsonUtil {
         return instance;
     }
 
-    public String generateJson(String str){
+    public synchronized String generateJson(String str){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Notice", str);
         return jsonObject.toJSONString();
     }
 
-    public String parseJson(String json){
+    public synchronized String parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");
         }
