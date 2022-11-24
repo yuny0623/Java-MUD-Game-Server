@@ -1,8 +1,21 @@
 package org.server.redistemplate;
 
-public class RedisTemplate {
+public final class RedisTemplate {
 
-    public RedisTemplate(){
+    private static RedisTemplate instance;
+
+    private RedisTemplate(){
+
+    }
+
+    public static RedisTemplate getInstance(){
+        if(instance == null){
+            instance = new RedisTemplate();
+        }
+        return instance;
+    }
+
+    public void createUser(){
 
     }
 
