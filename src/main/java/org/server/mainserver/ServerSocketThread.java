@@ -5,6 +5,7 @@ import org.server.utils.JsonUtil;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ServerSocketThread extends Thread{
     Socket socket;
@@ -14,6 +15,9 @@ public class ServerSocketThread extends Thread{
     RedisTemplate redisTemplate;
     String strIn;
     String threadName;
+    String nickname;
+    JsonUtil jsonUtil;
+
     public ServerSocketThread(MainServer server, Socket socket){
         this.server = server ;
         this.socket = socket;
@@ -34,21 +38,18 @@ public class ServerSocketThread extends Thread{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-            // 닉네임 입력받기.
-            String nickname = in.readLine();
-            /*
-                닉네임 중복 확인 logic
-             */
+             // 닉네임 입력받기.
+            strIn = in.readLine();
 
-            server.broadCasting("[New Member]" + threadName + " has entered.\n");
-
+            server.broadCasting("[New Member]" + nickname + " has entered.\n");
             while(true){
                 strIn = in.readLine();
                 JsonUtil.parseJson(strIn);
                 server.broadCasting(strIn);
             }
+
         }catch(IOException e){
-            System.out.println(threadName + ": removed.");
+            System.out.println(nickname + ": removed.");
             server.removeClient(this);
         }finally{
             try{

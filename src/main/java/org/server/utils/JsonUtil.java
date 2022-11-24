@@ -5,6 +5,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JsonUtil {
+    private static JsonUtil instance;
+
+    private JsonUtil(){
+
+    }
+
+    public static JsonUtil getInstance(){
+        if(instance == null){
+            instance = new JsonUtil();
+        }
+        return instance;
+    }
+
     public static String generateJson(){
         return "";
     }
@@ -26,8 +39,8 @@ public class JsonUtil {
 
         switch(command){
             case "move":
-                String x_val = (String) obj.get("x");
-                String y_val = (String) obj.get("y");
+                String xVal = (String) obj.get("x");
+                String yVal = (String) obj.get("y");
                 break;
             case "attack":
                 /*

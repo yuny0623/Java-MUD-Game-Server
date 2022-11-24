@@ -1,5 +1,7 @@
 package org.server.redistemplate;
 
+import java.util.ArrayList;
+
 public final class RedisTemplate {
 
     private static RedisTemplate instance;
@@ -31,8 +33,8 @@ public final class RedisTemplate {
 
     }
 
-    public void showUsers(){
-
+    public ArrayList<String> showUsers(){
+        return new ArrayList<>();
     }
 
     public void chat(){
@@ -40,6 +42,10 @@ public final class RedisTemplate {
     }
 
     public void activateBot(){
+
+    }
+
+    public void deactivateBot(){
 
     }
 }
