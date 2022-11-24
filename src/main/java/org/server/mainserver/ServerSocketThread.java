@@ -1,5 +1,7 @@
 package org.server.mainserver;
 
+import org.server.utils.JsonUtil;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -18,10 +20,9 @@ public class ServerSocketThread extends Thread{
         System.out.println("Thread Name: " + threadName);
     }
 
-    public void sendMessage(String str){
-        System.out.println("seneMessage:" + str);
+    public void
+    sendMessage(String str){
         out.println(str);
-        System.out.println("sendMessage finish.");
     }
 
     @Override
@@ -33,6 +34,7 @@ public class ServerSocketThread extends Thread{
             server.broadCasting("[New Member]" + threadName + " has entered.\n");
             while(true){
                 strIn = in.readLine();
+                JsonUtil.parseJson(strIn);
                 server.broadCasting(strIn);
             }
         }catch(IOException e){
