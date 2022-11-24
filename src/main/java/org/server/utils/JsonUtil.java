@@ -18,11 +18,13 @@ public class JsonUtil {
         return instance;
     }
 
-    public static String generateJson(){
-        return "";
+    public String generateJson(String str){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Notice", str);
+        return jsonObject.toJSONString();
     }
 
-    public static void parseJson(String json){
+    public void parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");
         }
@@ -64,6 +66,11 @@ public class JsonUtil {
             case "bot":
                 /*
                     run bot mode
+                 */
+                break;
+            case "nickname":
+                /*
+                    nickname!
                  */
                 break;
             default:

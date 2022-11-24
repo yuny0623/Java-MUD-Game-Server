@@ -1,5 +1,6 @@
 package org.server.mainserver;
 
+import org.server.Dto.CommandDto;
 import org.server.redistemplate.RedisTemplate;
 import org.server.utils.JsonUtil;
 
@@ -35,19 +36,28 @@ public class ServerSocketThread extends Thread{
     @Override
     public void run(){
         try{
+            jsonUtil = JsonUtil.getInstance();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
              // 닉네임 입력받기.
             strIn = in.readLine();
+            System.out.println(strIn);
+            CommandDto commandDto = jsonUtil.parseJson(strIn);
+            nickname = commandDto.getNickname();
 
-            server.broadCasting("[New Member]" + nickname + " has entered.\n");
+            // 유저 생성 - jedis
+            server.broadCasting(jsonUtil.generateJson(nickname + " has entered."));
+
             while(true){
                 strIn = in.readLine();
-                JsonUtil.parseJson(strIn);
-                server.broadCasting(strIn);
+                CommandDto commandDto1 = jsonUtil.parseJson(strIn);
+                /*
+                    game play by command
+                 */
+                jsonUtil.parseJson(strIn);
+                server.broadCasting(jsonUtil.generateJson(strIn));
             }
-
         }catch(IOException e){
             System.out.println(nickname + ": removed.");
             server.removeClient(this);
