@@ -5,6 +5,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
+import java.util.Map;
 import java.util.Set;
 
 public class RedisTest {
@@ -13,13 +14,13 @@ public class RedisTest {
     Jedis jedis;
 
     @Before
-    public void setup(){
+    public void jedis_setup(){
         pool = new JedisPool("127.0.0.1", Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
     }
 
     @Test
-    public void Jedis_connection_test(){
+    public void jedis_connection_test(){
         // given
         jedis.set("test", "hello world");
         jedis.setex("test1", 60, "hello world expire");
@@ -34,7 +35,7 @@ public class RedisTest {
     }
 
     @Test
-    public void redis_lists_test(){
+    public void jedis_lists_test(){
         // given
         jedis.lpush("queue#tasks", "firstTask");
         jedis.lpush("queue#tasks", "secondTask");
@@ -47,7 +48,7 @@ public class RedisTest {
     }
 
     @Test
-    public void redis_sets_test(){
+    public void jedis_sets_test(){
         // given
         jedis.sadd("nicknames", "nickname#1");
         jedis.sadd("nicknames", "nickname#2");
@@ -59,5 +60,21 @@ public class RedisTest {
 
         // then
         Assert.assertTrue(exists);
+    }
+
+    @Test
+    public void jedis_hashes_test(){
+        // given
+        jedis.hset("user#1", "name", "Peter");
+        jedis.hset("user#1", "job", "politician");
+
+        // when
+        String name = jedis.hget("user#1", "name");
+        Map<String, String> fields = jedis.hgetAll("user#1");
+        String job = fields.get("job");
+
+        // then
+        Assert.assertEquals(name, "Peter");
+        Assert.assertEquals(job, "politician");
     }
 }
