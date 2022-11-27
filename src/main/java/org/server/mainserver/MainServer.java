@@ -16,10 +16,9 @@ public class MainServer {
     Socket socket;
      Game game;
     List<Thread> list;
-//    List<Map<String, Thread>> nicknameList;
+    // List<Map<String, Map<String, Thread>>> userList;
     public MainServer(){
         list = new ArrayList<>();
-        // nicknameList = new ArrayList<>();
         game = Game.getInstance();
         System.out.println("Main Server Created.");
     }
