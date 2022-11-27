@@ -13,7 +13,7 @@ public class MainServer {
     ServerSocket serverSocket;
     Socket socket;
      Game game;
-    Map<String, Thread> userList;    // ThreadName, Thread -> nickname, Thread
+    Map<String, Thread> userList;
     public MainServer(){
         userList = new HashMap<>();
         game = Game.getInstance();
@@ -63,16 +63,23 @@ public class MainServer {
     }
 
     public synchronized boolean login(String nickname, Thread thread){
-        ServerSocketThread foundThread = (ServerSocketThread) userList.get(thread.getName());
+        ServerSocketThread foundThread = (ServerSocketThread) userList.get(nickname);
+        if(foundThread != null){
+            userList.put(nickname, thread);
+            userList.remove(nickname);
+            return true;
+        }
+        foundThread = (ServerSocketThread) userList.get(thread.getName());
         if(foundThread == null){
             return false;
         }
-
         userList.put(nickname, thread);
         userList.remove(thread.getName());
         Set<String> keys = userList.keySet();
+        int i = 0;
         for(String key: keys){
-            System.out.println("[LoginedUser] " + key +":" + userList.get(key));
+            System.out.println("[" + i +".LoginUser] " + key +":" + userList.get(key));
+            i++;
         }
         return true;
     }

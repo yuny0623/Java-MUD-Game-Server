@@ -41,7 +41,6 @@ public class ServerSocketThread extends Thread{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-            // 닉네임 받기
             strIn = in.readLine();
             command = jsonUtil.parseJson(strIn);
             nickname = command.split(" ")[1];
@@ -63,7 +62,6 @@ public class ServerSocketThread extends Thread{
                 String json = jsonUtil.generateJson(nickname + ":" + command);
                 server.broadCasting(json);
             }
-
         }catch(IOException e){
             System.out.println(nickname + ": removed.");
             server.removeClient(nickname, this);
