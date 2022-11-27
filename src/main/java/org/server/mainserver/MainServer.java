@@ -65,8 +65,8 @@ public class MainServer {
     public synchronized boolean login(String nickname, Thread thread){
         ServerSocketThread foundThread = (ServerSocketThread) userList.get(nickname);
         if(foundThread != null){
-            userList.put(nickname, thread);
             userList.remove(nickname);
+            userList.put(nickname, thread);
             return true;
         }
         foundThread = (ServerSocketThread) userList.get(thread.getName());
