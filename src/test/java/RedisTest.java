@@ -5,6 +5,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
+import java.util.Set;
+
 public class RedisTest {
 
     JedisPool pool;
@@ -32,7 +34,7 @@ public class RedisTest {
     }
 
     @Test
-    public void redis_set_test(){
+    public void redis_lists_test(){
         // given
         jedis.lpush("queue#tasks", "firstTask");
         jedis.lpush("queue#tasks", "secondTask");
@@ -42,5 +44,20 @@ public class RedisTest {
 
         // then
         Assert.assertEquals(task, "firstTask");
+    }
+
+    @Test
+    public void redis_sets_test(){
+        // given
+        jedis.sadd("nicknames", "nickname#1");
+        jedis.sadd("nicknames", "nickname#2");
+        jedis.sadd("nicknames", "nickname#3");
+
+        // when
+        Set<String> nicknames = jedis.smembers("nicknames");
+        boolean exists = jedis.sismember("nicknames", "nickname#1");
+
+        // then
+        Assert.assertTrue(exists);
     }
 }
