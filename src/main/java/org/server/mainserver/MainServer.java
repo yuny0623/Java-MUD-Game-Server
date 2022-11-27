@@ -7,18 +7,15 @@ import org.server.utils.ServerConfig;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainServer {
     ServerSocket serverSocket;
     Socket socket;
      Game game;
-    List<Thread> list;
-    // List<Map<String, Map<String, Thread>>> userList;
+    Map<String, Thread> userList;    // ThreadName, Thread -> nickname, Thread
     public MainServer(){
-        list = new ArrayList<>();
+        userList = new HashMap<>();
         game = Game.getInstance();
         System.out.println("Main Server Created.");
     }
@@ -40,24 +37,43 @@ public class MainServer {
     }
 
     public synchronized void addClient(ServerSocketThread thread){
-        list.add(thread);
-        System.out.println("Client: 1 user added. Total: " + list.size());
+        userList.put(thread.getName(), thread);
+        System.out.println("Client: 1 user added. Total: " + userList.size());
     }
 
-    public synchronized void removeClient(Thread thread){
-        list.remove(thread);
-        System.out.println("Client: 1 user removed. Total: " + list.size());
+    public synchronized void removeClient(String nickname, Thread thread){
+        ServerSocketThread foundThread = (ServerSocketThread) userList.remove(nickname);
+        if(foundThread == null){
+            userList.remove(thread.getName());
+        }
+        System.out.println("Client: 1 user removed. Total: " + userList.size());
     }
 
     public synchronized void broadCasting(String str){
-        for(int i = 0; i < list.size(); ++i){
+        Set<String> keys = userList.keySet();
+        for(String key: keys){
             System.out.println("Broadcasting to client from Server: " + str);
-            ServerSocketThread thread = (ServerSocketThread) list.get(i);
+            ServerSocketThread thread = (ServerSocketThread) userList.get(key);
             thread.sendMessage(str);
         }
     }
 
     public synchronized void playGame(CommandDto commandDto){
         game.play(commandDto);
+    }
+
+    public synchronized boolean login(String nickname, Thread thread){
+        ServerSocketThread foundThread = (ServerSocketThread) userList.get(thread.getName());
+        if(foundThread == null){
+            return false;
+        }
+
+        userList.put(nickname, thread);
+        userList.remove(thread.getName());
+        Set<String> keys = userList.keySet();
+        for(String key: keys){
+            System.out.println("[LoginedUser] " + key +":" + userList.get(key));
+        }
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import org.server.utils.JsonUtil;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
 
 public class ServerSocketThread extends Thread{
     Socket socket;
@@ -40,15 +41,19 @@ public class ServerSocketThread extends Thread{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
+            // 닉네임 받기
             strIn = in.readLine();
-            System.out.println(strIn);
             command = jsonUtil.parseJson(strIn);
             nickname = command.split(" ")[1];
-            /*
-                logic
-                1. 참여하고 있는 thread 중에 중복 nickname 있으면 이전 접속 deprecate
-             */
+
+            boolean isLogin = server.login(nickname, this);
+            if(isLogin){
+                System.out.println("Login Success!");
+            }else{
+                nickname = threadName;
+            }
             server.broadCasting(jsonUtil.generateJson(nickname + " has entered."));
+
             while(true){
                 strIn = in.readLine();
                 command = jsonUtil.parseJson(strIn);
@@ -58,9 +63,10 @@ public class ServerSocketThread extends Thread{
                 String json = jsonUtil.generateJson(nickname + ":" + command);
                 server.broadCasting(json);
             }
+
         }catch(IOException e){
             System.out.println(nickname + ": removed.");
-            server.removeClient(this);
+            server.removeClient(nickname, this);
         }finally{
             try{
                 socket.close();
