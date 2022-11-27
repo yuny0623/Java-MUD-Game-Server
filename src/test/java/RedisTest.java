@@ -44,7 +44,7 @@ public class RedisTest {
         String task = jedis.rpop("queue#tasks");
 
         // then
-        Assert.assertEquals(task, "firstTask");
+        Assert.assertEquals(task, "secondTask");
     }
 
     @Test
@@ -76,5 +76,15 @@ public class RedisTest {
         // then
         Assert.assertEquals(name, "Peter");
         Assert.assertEquals(job, "politician");
+    }
+
+    @Test
+    public void jedis_sorted_sets_test(){
+        // given
+
+        // when
+
+        // then
+
     }
 }

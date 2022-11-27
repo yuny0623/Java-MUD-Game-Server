@@ -25,15 +25,18 @@ public final class RedisTemplate {
     }
 
     public synchronized void createUser(String nickname, String info){
-//        jedis.setex(nickname, 300, );
-//        jedis.setex(nickname +"#" + "hp", 300, );
-//        jedis.setex(nickname + "#" + "row" + "#" + "col", 300, );
-//        jedis.setex(nickname, 300, );
-//        jedis.setex(nickname, 300, );
-//        jedis.setex(nickname, 300, );
+        jedis.sadd("nickname", nickname);                  // user nickname
+        jedis.sadd(nickname+":hp", String.valueOf(0));  // user hp
+        jedis.sadd(nickname+":pos", "0,0");     // first position
     }
 
-    public synchronized void move(){
+    public synchronized void move(String nickname, int x, int y){
+        String foundPos = jedis.get(nickname + ":pos");
+
+        String foundX = String.valueOf(foundPos.charAt(0));
+        String foundY = String.valueOf(foundPos.charAt(2));
+
+        jedis.set("nickname:pos", Integer.parseInt(foundX) + x + "," + Integer.parseInt(foundY) + y);
 
     }
 
