@@ -77,14 +77,4 @@ public class RedisTest {
         Assert.assertEquals(name, "Peter");
         Assert.assertEquals(job, "politician");
     }
-
-    @Test
-    public void jedis_sorted_sets_test(){
-        // given
-
-        // when
-
-        // then
-
-    }
 }

@@ -5,6 +5,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public final class RedisTemplate {
     JedisPool pool;
@@ -37,10 +38,9 @@ public final class RedisTemplate {
         String foundY = String.valueOf(foundPos.charAt(2));
 
         jedis.set("nickname:pos", Integer.parseInt(foundX) + x + "," + Integer.parseInt(foundY) + y);
-
     }
 
-    public synchronized void attack(){
+    public synchronized void attack(S){
 
     }
 
@@ -48,8 +48,9 @@ public final class RedisTemplate {
 
     }
 
-    public synchronized ArrayList<String> showUsers(){
-        return new ArrayList<>();
+    public synchronized Set<String> showUsers(){
+        Set<String> members = jedis.smembers("nicknames");
+        return members;
     }
 
     public synchronized void chat(){
