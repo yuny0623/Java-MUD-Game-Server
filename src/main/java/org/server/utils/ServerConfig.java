@@ -14,4 +14,6 @@ public final class ServerConfig {
     }
 
     public static final int TCP_CONNECTION_DEFAULT_PORT = 8080;
+    public static final String JEDIS_DEFAULT_IP = "127.0.0.1";
+
 }

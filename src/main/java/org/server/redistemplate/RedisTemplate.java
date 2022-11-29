@@ -1,5 +1,6 @@
 package org.server.redistemplate;
 
+import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
@@ -14,7 +15,7 @@ public final class RedisTemplate {
     private static RedisTemplate instance;
 
     private RedisTemplate(){
-        pool = new JedisPool("127.0.0.1", Protocol.DEFAULT_PORT);
+        pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
     }
 
@@ -25,22 +26,22 @@ public final class RedisTemplate {
         return instance;
     }
 
-    public synchronized void createUser(String nickname, String info){
-        jedis.sadd("nickname", nickname);                  // user nickname
-        jedis.sadd(nickname+":hp", String.valueOf(0));  // user hp
-        jedis.sadd(nickname+":pos", "0,0");     // first position
+    public synchronized void createUser(String nickname){
+        jedis.sadd("nickname", nickname);                   // user nickname
+        jedis.sadd(nickname+":hp", "");         // user hp
+        jedis.sadd(nickname + ":str", "0");
+        jedis.sadd(nickname+":x_pos", "0");     // first position
+        jedis.sadd(nickname+":y_pos", "0");     // first position
     }
 
     public synchronized void move(String nickname, int x, int y){
-        String foundPos = jedis.get(nickname + ":pos");
-
-        String foundX = String.valueOf(foundPos.charAt(0));
-        String foundY = String.valueOf(foundPos.charAt(2));
-
-        jedis.set("nickname:pos", Integer.parseInt(foundX) + x + "," + Integer.parseInt(foundY) + y);
+        String foundXPos = jedis.get(nickname + ":x_pos");
+        String foundYPos = jedis.get(nickname + ":y_pos");
+        jedis.set(nickname + ":x_pos", String.valueOf(x + Integer.parseInt(foundXPos)));
+        jedis.set(nickname + ":y_pos", String.valueOf(y + Integer.parseInt(foundYPos)));
     }
 
-    public synchronized void attack(S){
+    public synchronized void attack(){
 
     }
 
@@ -49,11 +50,11 @@ public final class RedisTemplate {
     }
 
     public synchronized Set<String> showUsers(){
-        Set<String> members = jedis.smembers("nicknames");
+        Set<String> members = jedis.smembers("nickname");
         return members;
     }
 
-    public synchronized void chat(){
+    public synchronized void chat(String from, String to, String content){
 
     }
 
