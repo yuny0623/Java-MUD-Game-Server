@@ -58,6 +58,8 @@ public class MainServer {
         }
     }
 
+
+
     public synchronized void playGame(CommandDto commandDto){
         game.play(commandDto);
     }

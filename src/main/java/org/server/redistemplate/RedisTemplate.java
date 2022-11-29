@@ -29,12 +29,11 @@ public final class RedisTemplate {
 
     public synchronized String createUser(String nickname){
         jedis.sadd("nickname", nickname);                   // user nickname
-        jedis.sadd(nickname+":hp", "");         // user hp
-        jedis.sadd(nickname + ":str", "0");
+        jedis.sadd(nickname+":hp", "100");         // user hp
+        jedis.sadd(nickname + ":str", "5");
         jedis.sadd(nickname+":x_pos", "0");     // first position
         jedis.sadd(nickname+":y_pos", "0");     // first position
-
-        return "[Create User] " + nickname
+        return "[Create User] " + "[nickname: " + nickname + ", hp:100, str:5, x_pos: 0, y_pos: 0]";
     }
 
     public synchronized String move(String nickname, int x, int y){
