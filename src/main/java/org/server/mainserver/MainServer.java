@@ -69,8 +69,8 @@ public class MainServer {
         thread.sendMessage("[from:" + sender + "] " + message);
     }
 
-    public synchronized void playGame(CommandDto commandDto){
-        game.play(commandDto);
+    public synchronized String playGame(CommandDto commandDto){
+        return game.play(commandDto);
     }
 
     public synchronized boolean login(String nickname, Thread thread){

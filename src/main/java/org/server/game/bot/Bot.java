@@ -6,6 +6,7 @@ public class Bot extends Thread{
 
     public String nickname;
 
+
     public Bot(String nickname){
         this.nickname = nickname;
     }

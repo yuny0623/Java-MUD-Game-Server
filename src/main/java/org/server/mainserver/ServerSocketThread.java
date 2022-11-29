@@ -57,10 +57,12 @@ public class ServerSocketThread extends Thread{
                 strIn = in.readLine();
                 command = jsonUtil.parseJson(strIn);
                 CommandDto commandDto = new CommandDto(command, nickname);
-                server.playGame(commandDto);
 
                 String json = jsonUtil.generateJson(nickname + ":" + command);
+                String result = server.playGame(commandDto);
+
                 server.broadCasting(json);
+                server.broadCasting(result);
             }
         }catch(IOException e){
             System.out.println(nickname + ": removed.");
