@@ -61,11 +61,16 @@ public final class RedisTemplate {
         return nickname + " attack.";
     }
 
+    public synchronized void attacked(String nickname, int monsterStr){
+        int hp = Integer.parseInt(jedis.get(nickname +":hp"));
+        jedis.sadd(String.valueOf(hp - monsterStr));
+    }
+
     public synchronized String showMonsters(){
         StringBuffer sb = new StringBuffer();
         for(int i = 0; i < game.monsterList.size(); i++){
             Monster monster = game.monsterList.get(i);
-            sb.append("[Monster-" + i + "] " + "x: "+monster.getX() + ", y: " + monster.getY() + "\n");
+            sb.append("monster " + monster.getX() + " " + monster.getY() + "\n");
         }
         return sb.toString();
     }
@@ -74,10 +79,11 @@ public final class RedisTemplate {
         Set<String> members = jedis.smembers("nickname");
         List<String> list = new ArrayList<>(members);
         StringBuffer sb = new StringBuffer();
-        int i = 0;
+
         for(String member : list){
-            sb.append("[User-"+ i +"]" + member + "\n");
-            i++;
+            String xPos = jedis.get(member + ":x_pos");
+            String yPos = jedis.get(member + ":y_pos");
+            sb.append(member + " " + xPos + " " + yPos + "\n");
         }
         return sb.toString();
     }
