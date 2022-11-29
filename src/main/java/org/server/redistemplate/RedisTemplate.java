@@ -1,5 +1,6 @@
 package org.server.redistemplate;
 
+import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -14,6 +15,7 @@ public final class RedisTemplate {
     Jedis jedis;
 
     private static RedisTemplate instance;
+    private static MainServer mainServer;
 
     private RedisTemplate(){
         pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
@@ -68,7 +70,7 @@ public final class RedisTemplate {
     }
 
     public synchronized void chat(String from, String to, String content){
-
+        mainServer.sendMessage(from, to, content);
     }
 
     public synchronized void activateBot(){
@@ -77,5 +79,9 @@ public final class RedisTemplate {
 
     public synchronized void deactivateBot(){
 
+    }
+
+    public void setMainServer(MainServer mainServer) {
+        this.mainServer = mainServer;
     }
 }

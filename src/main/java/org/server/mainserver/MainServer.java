@@ -2,6 +2,7 @@ package org.server.mainserver;
 
 import org.server.dto.CommandDto;
 import org.server.game.Game;
+import org.server.redistemplate.RedisTemplate;
 import org.server.utils.ServerConfig;
 
 import java.io.IOException;
@@ -14,9 +15,14 @@ public class MainServer {
     Socket socket;
      Game game;
     Map<String, Thread> userList;
+    RedisTemplate redisTemplate;
+
     public MainServer(){
         userList = new HashMap<>();
         game = Game.getInstance();
+        redisTemplate = RedisTemplate.getInstance();
+        redisTemplate.setMainServer(this);
+
         System.out.println("Main Server Created.");
     }
 
@@ -58,7 +64,10 @@ public class MainServer {
         }
     }
 
-
+    public synchronized void sendMessage(String sender, String receiver, String message){
+        ServerSocketThread thread = (ServerSocketThread) userList.get(receiver);
+        thread.sendMessage("[from:" + sender + "] " + message);
+    }
 
     public synchronized void playGame(CommandDto commandDto){
         game.play(commandDto);
