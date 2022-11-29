@@ -1,14 +1,13 @@
 package org.server.redistemplate;
 
+import org.server.game.bot.Bot;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class RedisTemplate {
     JedisPool pool;
@@ -16,10 +15,12 @@ public final class RedisTemplate {
 
     private static RedisTemplate instance;
     private static MainServer mainServer;
+    private static Map<String, Thread> botList;
 
     private RedisTemplate(){
         pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
+        botList = new HashMap<>();
     }
 
     public static RedisTemplate getInstance(){
@@ -73,15 +74,27 @@ public final class RedisTemplate {
         mainServer.sendMessage(from, to, content);
     }
 
-    public synchronized void activateBot(){
-
+    public synchronized String activateBot(String nickname){
+        Bot bot = new Bot(nickname);
+        addBot(nickname, bot);
+        bot.start();
+        return nickname + " activate Bot mode.";
     }
 
-    public synchronized void deactivateBot(){
-
+    public synchronized String deactivateBot(String nickname){
+        removeBot(nickname);
+        return nickname + " deactivate Bot mode.";
     }
 
-    public void setMainServer(MainServer mainServer) {
+    public synchronized void setMainServer(MainServer mainServer) {
         this.mainServer = mainServer;
+    }
+
+    public synchronized void addBot(String nickname, Bot bot){
+        botList.put(nickname, bot);
+    }
+
+    public synchronized void removeBot(String nickname){
+        botList.remove(nickname);
     }
 }
