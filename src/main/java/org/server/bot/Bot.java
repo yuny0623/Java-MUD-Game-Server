@@ -1,11 +1,10 @@
-package org.server.game.bot;
+package org.server.bot;
 
 import java.util.Random;
 
 public class Bot extends Thread{
 
     public String nickname;
-
 
     public Bot(String nickname){
         this.nickname = nickname;

@@ -1,6 +1,6 @@
 package org.server.redistemplate;
 
-import org.server.game.bot.Bot;
+import org.server.bot.Bot;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;

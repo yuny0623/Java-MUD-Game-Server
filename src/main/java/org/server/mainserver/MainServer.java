@@ -22,7 +22,6 @@ public class MainServer {
         game = Game.getInstance();
         redisTemplate = RedisTemplate.getInstance();
         redisTemplate.setMainServer(this);
-
         System.out.println("Main Server Created.");
     }
 
@@ -66,7 +65,9 @@ public class MainServer {
 
     public synchronized void sendMessage(String sender, String receiver, String message){
         ServerSocketThread thread = (ServerSocketThread) userList.get(receiver);
-        thread.sendMessage("[from:" + sender + "] " + message);
+        if(thread != null) {
+            thread.sendMessage("[from:" + sender + "] " + message);
+        }
     }
 
     public synchronized String playGame(CommandDto commandDto){
