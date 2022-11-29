@@ -19,9 +19,13 @@ public class MainServer {
 
     public MainServer(){
         userList = new HashMap<>();
+
+        // game start
         game = Game.getInstance();
+
         redisTemplate = RedisTemplate.getInstance();
         redisTemplate.setMainServer(this);
+
         System.out.println("Main Server Created.");
     }
 

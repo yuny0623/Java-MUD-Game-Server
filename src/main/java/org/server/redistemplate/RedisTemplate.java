@@ -1,6 +1,7 @@
 package org.server.redistemplate;
 
 import org.server.bot.Bot;
+import org.server.game.Game;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
@@ -17,9 +18,12 @@ public final class RedisTemplate {
     private static MainServer mainServer;
     private static Map<String, Thread> botList;
 
+    private static Game game;
+
     private RedisTemplate(){
         pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
+        game = Game.getInstance();
         botList = new HashMap<>();
     }
 

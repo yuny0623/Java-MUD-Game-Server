@@ -3,12 +3,32 @@ package org.server.game;
 import org.server.dto.CommandDto;
 import org.server.redistemplate.RedisTemplate;
 
-public final class Game extends Thread{
+import java.util.List;
+
+public final class Game{
     private static Game instance;
     public static RedisTemplate redisTemplate;
 
+    public List<Monster> monsterList;
+
+    public MonsterGenerator monsterGenerator;
+    public MonsterManager monsterManager;
+    public MonsterAttacker monsterAttacker;
+
     private Game(){
         redisTemplate = RedisTemplate.getInstance();
+        for(int i = 0; i < 10; i++){
+            monsterList.add(new Monster());
+        }
+
+        monsterGenerator = new MonsterGenerator();
+        monsterManager = new MonsterManager();
+        monsterAttacker = new MonsterAttacker();
+
+        monsterGenerator.start();
+        monsterManager.start();
+        monsterAttacker.start();
+
         System.out.println("Game created.");
     }
 
