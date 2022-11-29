@@ -64,8 +64,10 @@ public final class RedisTemplate {
         Set<String> members = jedis.smembers("nickname");
         List<String> list = new ArrayList<>(members);
         StringBuffer sb = new StringBuffer();
+        int i = 0;
         for(String member : list){
-            sb.append(member + "\n");
+            sb.append("[User-"+ i +"]" + member + "\n");
+            i++;
         }
         return sb.toString();
     }
