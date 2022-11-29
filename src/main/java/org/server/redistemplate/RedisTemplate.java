@@ -6,6 +6,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public final class RedisTemplate {
@@ -26,32 +27,45 @@ public final class RedisTemplate {
         return instance;
     }
 
-    public synchronized void createUser(String nickname){
+    public synchronized String createUser(String nickname){
         jedis.sadd("nickname", nickname);                   // user nickname
         jedis.sadd(nickname+":hp", "");         // user hp
         jedis.sadd(nickname + ":str", "0");
         jedis.sadd(nickname+":x_pos", "0");     // first position
         jedis.sadd(nickname+":y_pos", "0");     // first position
+
+        return "[Create User] " + nickname
     }
 
-    public synchronized void move(String nickname, int x, int y){
+    public synchronized String move(String nickname, int x, int y){
         String foundXPos = jedis.get(nickname + ":x_pos");
         String foundYPos = jedis.get(nickname + ":y_pos");
-        jedis.set(nickname + ":x_pos", String.valueOf(x + Integer.parseInt(foundXPos)));
-        jedis.set(nickname + ":y_pos", String.valueOf(y + Integer.parseInt(foundYPos)));
+        String toX = String.valueOf(x + Integer.parseInt(foundXPos));
+        String toY = String.valueOf(y + Integer.parseInt(foundYPos));
+        jedis.set(nickname + ":x_pos", toX);
+        jedis.set(nickname + ":y_pos", toY);
+        return nickname + " move from [" + foundXPos + ", " + foundYPos + "] to " + "[" + toX + ", " + toY + "]";
     }
 
-    public synchronized void attack(){
-
+    public synchronized String attack(String nickname){
+        /*
+            attack logic
+         */
+        return nickname + " attacked.";
     }
 
     public synchronized void showMonsters(){
 
     }
 
-    public synchronized Set<String> showUsers(){
+    public synchronized String showUsers(){
         Set<String> members = jedis.smembers("nickname");
-        return members;
+        List<String> list = new ArrayList<>(members);
+        StringBuffer sb = new StringBuffer();
+        for(String member : list){
+            sb.append(member + "\n");
+        }
+        return sb.toString();
     }
 
     public synchronized void chat(String from, String to, String content){
