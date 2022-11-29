@@ -53,11 +53,11 @@ public final class RedisTemplate {
         /*
             attack logic
          */
-        return nickname + " attacked.";
+        return nickname + " attack.";
     }
 
-    public synchronized void showMonsters(){
-
+    public synchronized String showMonsters(){
+        return "";
     }
 
     public synchronized String showUsers(){
@@ -72,8 +72,9 @@ public final class RedisTemplate {
         return sb.toString();
     }
 
-    public synchronized void chat(String from, String to, String content){
+    public synchronized String chat(String from, String to, String content){
         mainServer.sendMessage(from, to, content);
+        return from + " send message.";
     }
 
     public synchronized String activateBot(String nickname){

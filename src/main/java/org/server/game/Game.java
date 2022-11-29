@@ -21,25 +21,45 @@ public final class Game extends Thread{
 
     public synchronized String play(CommandDto commandDto){
         String nickname = commandDto.getNickname();
-        String firstCommand = commandDto.getCommand().split(" ")[0];
-
+        String[] commands = commandDto.getCommand().split(" ");
         String result = null;
-        switch (firstCommand){
+
+        switch (commands[0]){
             case "move":
+                 int x = Integer.parseInt(commands[1]);
+                 int y = Integer.parseInt(commands[2]);
+                 result = redisTemplate.move(nickname, x, y);
                  break;
             case "attack":
+                result = redisTemplate.attack(nickname);
+                break;
+            case "monsters":
+                result = redisTemplate.showMonsters();
+                break;
+            case "users":
+                result = redisTemplate.showUsers();
+                break;
+            case "chat":
+                String to = commands[1];
+                String content = commands[2];
+                result = redisTemplate.chat(nickname, to, content);
+                break;
+            case "bot":
+                result = startBot(nickname);
+                break;
+            case "exit":
+                result = exitBot(nickname);
                 break;
         }
-
         return result;
     }
 
-    public synchronized void startBot(String nickname){
-        redisTemplate.activateBot(nickname);
+    public synchronized String startBot(String nickname){
+        return redisTemplate.activateBot(nickname);
     }
 
-    public synchronized void exitBot(String nickname){
-        redisTemplate.deactivateBot(nickname);
+    public synchronized String exitBot(String nickname){
+        return redisTemplate.deactivateBot(nickname);
     }
 }
 
