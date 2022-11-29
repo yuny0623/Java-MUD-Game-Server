@@ -45,21 +45,13 @@ public final class Game extends Thread{
                 result = redisTemplate.chat(nickname, to, content);
                 break;
             case "bot":
-                result = startBot(nickname);
+                result = redisTemplate.activateBot(nickname);
                 break;
             case "exit":
-                result = exitBot(nickname);
+                result = redisTemplate.deactivateBot(nickname);
                 break;
         }
         return result;
-    }
-
-    public synchronized String startBot(String nickname){
-        return redisTemplate.activateBot(nickname);
-    }
-
-    public synchronized String exitBot(String nickname){
-        return redisTemplate.deactivateBot(nickname);
     }
 }
 
