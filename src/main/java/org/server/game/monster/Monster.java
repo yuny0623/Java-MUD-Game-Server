@@ -1,4 +1,4 @@
-package org.server.game;
+package org.server.game.monster;
 
 import java.util.Random;
 

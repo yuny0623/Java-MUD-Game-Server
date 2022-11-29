@@ -1,4 +1,6 @@
-package org.server.game;
+package org.server.game.monster;
+
+import org.server.game.Game;
 
 public class MonsterAttacker extends Thread{
 
@@ -18,7 +20,7 @@ public class MonsterAttacker extends Thread{
             }
 
             // 5초에 한번씩 주변을 공격함.
-            
+
         }
     }
 }

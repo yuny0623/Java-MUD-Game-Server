@@ -1,4 +1,6 @@
-package org.server.game;
+package org.server.game.monster;
+
+import org.server.game.Game;
 
 public class MonsterGenerator extends Thread{
     public Game game;

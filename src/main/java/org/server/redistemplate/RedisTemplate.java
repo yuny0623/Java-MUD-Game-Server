@@ -2,6 +2,7 @@ package org.server.redistemplate;
 
 import org.server.bot.Bot;
 import org.server.game.Game;
+import org.server.game.monster.Monster;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
@@ -61,7 +62,12 @@ public final class RedisTemplate {
     }
 
     public synchronized String showMonsters(){
-        return "";
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < game.monsterList.size(); i++){
+            Monster monster = game.monsterList.get(i);
+            sb.append("[Monster-" + i + "] " + "x: "+monster.getX() + ", y: " + monster.getY() + "\n");
+        }
+        return sb.toString();
     }
 
     public synchronized String showUsers(){
