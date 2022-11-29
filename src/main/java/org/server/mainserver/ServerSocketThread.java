@@ -60,9 +60,10 @@ public class ServerSocketThread extends Thread{
 
                 String json = jsonUtil.generateJson(nickname + ":" + command);
                 String result = server.playGame(commandDto);
+                String resultJson = jsonUtil.generateJson(nickname + ":" + result);
 
                 server.broadCasting(json);
-                server.broadCasting(result);
+                server.broadCasting(resultJson);
             }
         }catch(IOException e){
             System.out.println(nickname + ": removed.");

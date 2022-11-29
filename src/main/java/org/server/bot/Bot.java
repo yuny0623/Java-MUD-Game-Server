@@ -1,12 +1,17 @@
 package org.server.bot;
 
+import org.server.dto.CommandDto;
+import org.server.game.Game;
+
 import java.util.Random;
 
 public class Bot extends Thread{
 
     public String nickname;
+    public Game game;
 
     public Bot(String nickname){
+        this.game = Game.getInstance();
         this.nickname = nickname;
     }
 
@@ -15,10 +20,9 @@ public class Bot extends Thread{
         while(true) {
             try {
                 Thread.sleep(1000);
-                String action = randomAction();
-                /*
-                    actual game play
-                 */
+                String command = randomAction();
+                CommandDto commandDto = new CommandDto(nickname, command);
+                game.play(commandDto);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
