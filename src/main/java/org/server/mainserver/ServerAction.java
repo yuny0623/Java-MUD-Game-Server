@@ -7,7 +7,6 @@ public class ServerAction implements Runnable{
 
     @Override
     public void run(){
-        System.out.println("hi2");
         MainServer server = new MainServer();
         server.giveAndTake();
     }

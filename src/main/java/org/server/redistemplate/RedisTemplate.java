@@ -92,7 +92,7 @@ public final class RedisTemplate {
         mainServer.sendMessage(from, to, content);
         return from + " send message.";
     }
-    
+
     public synchronized void setMainServer(MainServer mainServer) {
         this.mainServer = mainServer;
     }
