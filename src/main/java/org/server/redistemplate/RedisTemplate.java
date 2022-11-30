@@ -1,6 +1,5 @@
 package org.server.redistemplate;
 
-import org.server.bot.Bot;
 import org.server.game.Game;
 import org.server.game.monster.Monster;
 import org.server.mainserver.MainServer;
@@ -85,26 +84,7 @@ public final class RedisTemplate {
         return from + " send message.";
     }
 
-    public static synchronized String activateBot(String nickname){
-        Bot bot = new Bot(nickname);
-        addBot(nickname, bot);
-        bot.start();
-        return nickname + " activate Bot mode.";
-    }
-
-    public static synchronized String deactivateBot(String nickname){
-        removeBot(nickname);
-        return nickname + " deactivate Bot mode.";
-    }
 
     public static synchronized void setMainServer(MainServer mainServer) {
-    }
-
-    public static synchronized void addBot(String nickname, Bot bot){
-        botList.put(nickname, bot);
-    }
-
-    public static synchronized void removeBot(String nickname){
-        botList.remove(nickname);
     }
 }

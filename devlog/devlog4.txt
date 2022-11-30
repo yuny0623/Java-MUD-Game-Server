@@ -11,3 +11,12 @@ RedisTemplate과 Game을 둘 다 singleton 으로 작성했는데
 RedisTemplate 을 아예 Utility 클래스로 바꿔줄 수 도 있다.
 
 특정 범위의 난수 생성: (int) (Math.random() * (최댓값-최소값 + 1)) + 최소값
+
+고려할 사항:
+친구의 의견에 따르면 Monster 를 Thread로 만드는게 낫다는 얘기를 했는데
+이전에도 Monster를 Thread로 만들지에 대해 고민했었는데 바꿔야할까...?
+exit bot을 하려면 readLine으로 입력을 읽어야하는데 readLine이 blocking 동작이라서
+아무래도 bot동작과 exit bot 을 입력받는 동작 사이에서 분리가 필요함.
+왜냐? readLine으로 exit bot 기다리면 블로킹되서 애초에 bot 이 동작할 수가 없거든요.
+
+thread로 만들까 말까.

@@ -65,12 +65,6 @@ public final class Game{
                 String content = commands[2];
                 result = RedisTemplate.chat(nickname, to, content);
                 break;
-            case "bot":
-                result = RedisTemplate.activateBot(nickname);
-                break;
-            case "exit":
-                result = RedisTemplate.deactivateBot(nickname);
-                break;
         }
         return result;
     }
