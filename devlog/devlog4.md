@@ -24,3 +24,8 @@ thread로 만들까 말까. -> 나중에 처리합시다. 분명 Thread 안만�
 Hot Fix:
 RedisTemplate 에서 get 을 진행할때 TypeError 가 발생하는데 아마 Jedis 를 잘못 사용한 것 같다.
 RedisTemplate은 Test코드로 직접 검증하고 짜자.
+
+코드리뷰:
+RedisTemplate 이 너무 추상화되어있음. 
+redis 의 기능을 간단하게 쓰기 위함인데 너무 구체적인 비즈니스 로직이 들어간듯. 
+monsters 를 Thread 로 만들고 MonsterAttacker 랑 MonsterManager 를 없애자. 
