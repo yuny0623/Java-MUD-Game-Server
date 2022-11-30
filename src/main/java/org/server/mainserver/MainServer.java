@@ -15,17 +15,19 @@ public class MainServer {
     Socket socket;
      Game game;
     Map<String, Thread> userList;
-    RedisTemplate redisTemplate;
 
     public MainServer(){
+        System.out.println("hi3");
+        System.out.println("1");
         userList = new HashMap<>();
-
         // game start
+        System.out.println("2");
         game = Game.getInstance();
-
-        redisTemplate = RedisTemplate.getInstance();
-        redisTemplate.setMainServer(this);
-
+        System.out.println(game);
+        System.out.println("3");
+        System.out.println("4");
+        RedisTemplate.setMainServer(this);
+        System.out.println("5");
         System.out.println("Main Server Created.");
     }
 

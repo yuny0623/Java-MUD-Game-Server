@@ -7,27 +7,27 @@ import org.server.game.monster.MonsterGenerator;
 import org.server.game.monster.MonsterManager;
 import org.server.redistemplate.RedisTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Game{
     private static Game instance;
-    public static RedisTemplate redisTemplate;
-
     public List<Monster> monsterList;
-
     public MonsterGenerator monsterGenerator;
     public MonsterManager monsterManager;
     public MonsterAttacker monsterAttacker;
 
     private Game(){
-        redisTemplate = RedisTemplate.getInstance();
+        monsterList = new ArrayList<>();
+
         for(int i = 0; i < 10; i++){
+            System.out.println("creating monster");
             monsterList.add(new Monster());
         }
 
-        monsterGenerator = new MonsterGenerator();
-        monsterManager = new MonsterManager();
-        monsterAttacker = new MonsterAttacker();
+        monsterGenerator = new MonsterGenerator(this);
+        monsterManager = new MonsterManager(this);
+        monsterAttacker = new MonsterAttacker(this);
 
         monsterGenerator.start();
         monsterManager.start();
@@ -52,27 +52,27 @@ public final class Game{
             case "move":
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
-                 result = redisTemplate.move(nickname, x, y);
+                 result = RedisTemplate.move(nickname, x, y);
                  break;
             case "attack":
-                result = redisTemplate.attack(nickname);
+                result = RedisTemplate.userAttack(nickname);
                 break;
             case "monsters":
-                result = redisTemplate.showMonsters();
+                result = RedisTemplate.showMonsters();
                 break;
             case "users":
-                result = redisTemplate.showUsers();
+                result = RedisTemplate.showUsers();
                 break;
             case "chat":
                 String to = commands[1];
                 String content = commands[2];
-                result = redisTemplate.chat(nickname, to, content);
+                result = RedisTemplate.chat(nickname, to, content);
                 break;
             case "bot":
-                result = redisTemplate.activateBot(nickname);
+                result = RedisTemplate.activateBot(nickname);
                 break;
             case "exit":
-                result = redisTemplate.deactivateBot(nickname);
+                result = RedisTemplate.deactivateBot(nickname);
                 break;
         }
         return result;

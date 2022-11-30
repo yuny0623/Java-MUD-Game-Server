@@ -5,8 +5,8 @@ import org.server.game.Game;
 public class MonsterGenerator extends Thread{
     public Game game;
 
-    public MonsterGenerator(){
-        this.game = Game.getInstance();
+    public MonsterGenerator(Game game){
+        this.game = game;
     }
 
     @Override
@@ -15,7 +15,7 @@ public class MonsterGenerator extends Thread{
             try {
                 Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+               e.printStackTrace();
             }
             if(game.monsterList.size() < 10){
                 int diff = 10 - game.monsterList.size();

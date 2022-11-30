@@ -7,8 +7,8 @@ public class MonsterManager extends Thread{
     public Game game;
 
 
-    public MonsterManager(){
-        game = Game.getInstance();
+    public MonsterManager(Game game){
+        this.game = game;
     }
 
     @Override
@@ -17,7 +17,7 @@ public class MonsterManager extends Thread{
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
             // 1초에 한번씩 monster 들이 움직임
             for(int i = 0; i < game.monsterList.size(); i++){

@@ -13,7 +13,6 @@ public class ServerSocketThread extends Thread{
     MainServer server;
     BufferedReader in;
     PrintWriter out;
-    RedisTemplate redisTemplate;
     String strIn;
     String threadName;
     String nickname;
@@ -23,7 +22,6 @@ public class ServerSocketThread extends Thread{
     public ServerSocketThread(MainServer server, Socket socket){
         this.server = server ;
         this.socket = socket;
-        redisTemplate = RedisTemplate.getInstance();
         threadName = super.getName();
         System.out.println(socket.getInetAddress() + ": entered.");
         System.out.println("Thread Name: " + threadName);

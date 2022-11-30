@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class RedisTest {
-
     JedisPool pool;
     Jedis jedis;
 
