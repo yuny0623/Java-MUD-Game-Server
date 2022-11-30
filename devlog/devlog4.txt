@@ -10,3 +10,4 @@ RedisTemplate과 Game을 둘 다 singleton 으로 작성했는데
 자 그렇다면 이걸 어떻게 수정할 수 있을까?
 RedisTemplate 을 아예 Utility 클래스로 바꿔줄 수 도 있다.
 
+특정 범위의 난수 생성: (int) (Math.random() * (최댓값-최소값 + 1)) + 최소값

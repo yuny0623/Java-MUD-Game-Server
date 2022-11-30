@@ -22,10 +22,15 @@ public class MonsterManager extends Thread{
             }
             // 1초에 한번씩 monster 들이 움직임
             for(int i = 0; i < game.monsterList.size(); i++){
-                System.out.println("monsters moving...");
                 Monster monster = game.monsterList.get(i);
+                int originX = monster.getX();
+                int originY = monster.getY();
                 monster.move();
+                int movedX = monster.getX();
+                int movedY = monster.getY();
+                System.out.println("[monster-" + i + "] moving... from [" + originX + "," + originY + "]  to [" + movedX + "," + movedY + "]");
             }
+            System.out.println();
         }
     }
 }

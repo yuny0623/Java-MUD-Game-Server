@@ -8,8 +8,8 @@ public class MonsterAttacker extends Thread{
     public Game game;
     public RedisTemplate redisTemplate;
 
-    int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1};
-    int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0};
+    int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
+    int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
     public MonsterAttacker(Game game){
         System.out.println("start MonsterAttacker.");
@@ -43,7 +43,7 @@ public class MonsterAttacker extends Thread{
                     int userX = Integer.parseInt(row[1]);
                     int userY = Integer.parseInt(row[2]);
 
-                    for(int k = 0 ; k < 8; k ++){
+                    for(int k = 0 ; k < 9; k ++){
                         int movedX = monsterX + dx[i];
                         int movedY = monsterY + dy[i];
                         if(0 <= movedX && movedY < 30 && 0 <= movedY && movedY < 30){
