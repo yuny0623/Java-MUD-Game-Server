@@ -19,12 +19,17 @@ public final class RedisTemplate {
 
 
     public static synchronized String createUser(String nickname){
+        // random 한 위치에 생성
+        int x = (int) (Math.random() * (29 - 0) + 0) + 0;
+        int y = (int) (Math.random() * (29 - 0) + 0) + 0;
+
         jedis.sadd("nickname", nickname);                   // user nickname
-        jedis.sadd(nickname + ":hp", "100");         // user hp
-        jedis.sadd(nickname + ":str", "5");
-        jedis.sadd(nickname + ":x_pos", "0");     // first position
-        jedis.sadd(nickname + ":y_pos", "0");     // first position
-        return "[Create User] " + "[nickname: " + nickname + ", hp:100, str:5, x_pos: 0, y_pos: 0]";
+        jedis.sadd(nickname + ":hp", "30");         // user hp
+        jedis.sadd(nickname + ":str", "3");
+        jedis.sadd(nickname + ":x_pos", String.valueOf(x));     // first position
+        jedis.sadd(nickname + ":y_pos", String.valueOf(y));     // first position
+
+        return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 
     public static synchronized String move(String nickname, int x, int y){

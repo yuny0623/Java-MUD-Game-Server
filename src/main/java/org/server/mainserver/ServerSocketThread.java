@@ -39,18 +39,21 @@ public class ServerSocketThread extends Thread{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
+            // 로그인 진행
             strIn = in.readLine();
             command = jsonUtil.parseJson(strIn);
             nickname = command.split(" ")[1];
-
             boolean isLogin = server.login(nickname, this);
             if(isLogin){
                 System.out.println("Login Success!");
             }else{
                 nickname = threadName;
             }
+            // Redis에 유저 저장
+            RedisTemplate.createUser(nickname);
             server.broadCasting(jsonUtil.generateJson(nickname + " has entered."));
 
+            // 게임 진행
             while(true){
                 strIn = in.readLine();
                 command = jsonUtil.parseJson(strIn);
