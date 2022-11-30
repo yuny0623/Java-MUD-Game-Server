@@ -17,17 +17,9 @@ public class MainServer {
     Map<String, Thread> userList;
 
     public MainServer(){
-        System.out.println("hi3");
-        System.out.println("1");
         userList = new HashMap<>();
-        // game start
-        System.out.println("2");
         game = Game.getInstance();
-        System.out.println(game);
-        System.out.println("3");
-        System.out.println("4");
         RedisTemplate.setMainServer(this);
-        System.out.println("5");
         System.out.println("Main Server Created.");
     }
 

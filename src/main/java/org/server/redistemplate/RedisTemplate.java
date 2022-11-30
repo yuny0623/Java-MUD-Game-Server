@@ -72,6 +72,14 @@ public final class RedisTemplate {
         return sb.toString();
     }
 
+    public static synchronized boolean isUsers(){
+        Set<String> members = jedis.smembers("nickname");
+        if(members.size() == 0){
+            return false;
+        }
+        return true;
+    }
+
     public static synchronized String chat(String from, String to, String content){
         mainServer.sendMessage(from, to, content);
         return from + " send message.";

@@ -20,8 +20,6 @@ public class Monster {
 
         this.x = (int) (Math.random() * (29 - 0 + 1) + 0);
         this.y = (int) (Math.random() * (29 - 0 + 1) + 0);
-
-        System.out.println("New Monster created.");
     }
 
     public void attacked(int str){

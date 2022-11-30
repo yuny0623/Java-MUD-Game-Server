@@ -8,6 +8,7 @@ public class MonsterManager extends Thread{
 
 
     public MonsterManager(Game game){
+        System.out.println("start MonsterManager.");
         this.game = game;
     }
 
@@ -21,6 +22,7 @@ public class MonsterManager extends Thread{
             }
             // 1초에 한번씩 monster 들이 움직임
             for(int i = 0; i < game.monsterList.size(); i++){
+                System.out.println("monsters moving...");
                 Monster monster = game.monsterList.get(i);
                 monster.move();
             }

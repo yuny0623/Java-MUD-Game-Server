@@ -19,12 +19,10 @@ public final class Game{
 
     private Game(){
         monsterList = new ArrayList<>();
-
         for(int i = 0; i < 10; i++){
-            System.out.println("creating monster");
+            System.out.println("New Monsters Created.");
             monsterList.add(new Monster());
         }
-
         monsterGenerator = new MonsterGenerator(this);
         monsterManager = new MonsterManager(this);
         monsterAttacker = new MonsterAttacker(this);
@@ -32,7 +30,6 @@ public final class Game{
         monsterGenerator.start();
         monsterManager.start();
         monsterAttacker.start();
-
         System.out.println("Game created.");
     }
 

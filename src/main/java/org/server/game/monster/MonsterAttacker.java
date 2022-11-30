@@ -12,6 +12,7 @@ public class MonsterAttacker extends Thread{
     int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0};
 
     public MonsterAttacker(Game game){
+        System.out.println("start MonsterAttacker.");
         this.game = game;
     }
 
@@ -23,7 +24,10 @@ public class MonsterAttacker extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // 5초에 한번씩 주변을 공격함.
+            // user 가 없으면 시작하지 않음.
+            if(!RedisTemplate.isUsers()){
+                continue;
+            }
             String users = RedisTemplate.showUsers();
             String[] userLocations = users.split("\n");
             System.out.printf("users: %s", users);
@@ -44,6 +48,7 @@ public class MonsterAttacker extends Thread{
                         int movedY = monsterY + dy[i];
                         if(0 <= movedX && movedY < 30 && 0 <= movedY && movedY < 30){
                             if(userX == movedX && userY == movedY){
+                                System.out.println("monsters attacking...");
                                 RedisTemplate.userAttacked(nickname, monsterStr);
                             }
                         }
