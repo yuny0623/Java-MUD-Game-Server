@@ -19,7 +19,7 @@ exit bot을 하려면 readLine으로 입력을 읽어야하는데 readLine이 bl
 아무래도 bot동작과 exit bot 을 입력받는 동작 사이에서 분리가 필요함.
 왜냐? readLine으로 exit bot 기다리면 블로킹되서 애초에 bot 이 동작할 수가 없거든요.
 
-thread로 만들까 말까. -> 나중에 처리합시다. 분명 Thread 안만들고 할 수 있는 방법이 있을텐데 그 방법이 훨씬 더 좋을거임.
+thread로 만들까 말까. -> 나중에 처리합시다. 분명 Thread 안 만들고 할 수 있는 방법이 있을텐데 그 방법이 훨씬 더 좋을거임.
 
 Hot Fix:
 RedisTemplate 에서 get 을 진행할때 TypeError 가 발생하는데 아마 Jedis 를 잘못 사용한 것 같다.
@@ -29,3 +29,6 @@ RedisTemplate은 Test코드로 직접 검증하고 짜자.
 RedisTemplate 이 너무 추상화되어있음. 
 redis 의 기능을 간단하게 쓰기 위함인데 너무 구체적인 비즈니스 로직이 들어간듯. 
 monsters 를 Thread 로 만들고 MonsterAttacker 랑 MonsterManager 를 없애자. 
+
+수정사항: 
+

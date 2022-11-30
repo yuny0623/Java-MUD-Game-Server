@@ -26,10 +26,10 @@ public final class Game{
         monsterGenerator = new MonsterGenerator(this);
         monsterManager = new MonsterManager(this);
         monsterAttacker = new MonsterAttacker(this);
-
         monsterGenerator.start();
         monsterManager.start();
         monsterAttacker.start();
+
         System.out.println("Game created.");
     }
 

@@ -6,7 +6,6 @@ public class MonsterManager extends Thread{
 
     public Game game;
 
-
     public MonsterManager(Game game){
         System.out.println("start MonsterManager.");
         this.game = game;
