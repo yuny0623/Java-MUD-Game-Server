@@ -19,7 +19,11 @@ public class MainServer {
     public MainServer(){
         userList = new HashMap<>();
         game = Game.getInstance();
-        RedisTemplate.setMainServer(this);
+
+        // redisTemplate 에 MainServer 참조 전달
+        RedisTemplate redisTemplate = new RedisTemplate();
+        redisTemplate.setMainServer(this);
+
         System.out.println("Main Server Created.");
     }
 

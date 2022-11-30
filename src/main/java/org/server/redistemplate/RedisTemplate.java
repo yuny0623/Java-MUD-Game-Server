@@ -17,6 +17,9 @@ public final class RedisTemplate {
     private static Map<String, Thread> botList = new HashMap<>();
     private static Game game = Game.getInstance();;
 
+    public RedisTemplate(){
+
+    }
 
     public static synchronized String createUser(String nickname){
         // random 한 위치에 생성
@@ -69,6 +72,7 @@ public final class RedisTemplate {
         StringBuffer sb = new StringBuffer();
 
         for(String member : list){
+            System.out.println("member: " + member);
             String xPos = jedis.get(member + ":x_pos");
             String yPos = jedis.get(member + ":y_pos");
             sb.append(member + " " + xPos + " " + yPos + "\n");
@@ -88,8 +92,8 @@ public final class RedisTemplate {
         mainServer.sendMessage(from, to, content);
         return from + " send message.";
     }
-
-
-    public static synchronized void setMainServer(MainServer mainServer) {
+    
+    public synchronized void setMainServer(MainServer mainServer) {
+        this.mainServer = mainServer;
     }
 }
