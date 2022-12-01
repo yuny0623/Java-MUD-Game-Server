@@ -33,7 +33,7 @@ public class RedisTemplateTest {
     public void redisTemplateGetTest(){
         // given
         String nickname = "monad";
-        jedis.set("nickname", nickname);
+        jedis.sadd("nicknames",  nickname);
         jedis.set(nickname + ":hp", "30");
         jedis.set(nickname + ":str", "3");
 
@@ -44,5 +44,34 @@ public class RedisTemplateTest {
         // then
         Assert.assertEquals(hp, "30");
         Assert.assertEquals(str, "3");
+    }
+
+    @Test
+    public void userCreationTest(){
+        // given
+        String nickname = "jenifer";
+        int x = (int) (Math.random() * (29 - 0) + 0) + 0;
+        int y = (int) (Math.random() * (29 - 0) + 0) + 0;
+
+        jedis.sadd("nicknames", nickname);
+
+        jedis.set(nickname + ":hp", "30");
+        jedis.set(nickname + ":str", "3");
+        jedis.set(nickname + ":x", String.valueOf(x));
+        jedis.set(nickname + ":y", String.valueOf(y));
+
+        // when
+        boolean isIn = jedis.sismember("nicknames", nickname);
+        String hp = jedis.get(nickname + ":hp");
+        String str = jedis.get(nickname + ":str");
+        String foundX = jedis.get(nickname + ":x");
+        String foundY = jedis.get(nickname + ":y");
+
+        // then
+        Assert.assertTrue(isIn);
+        Assert.assertEquals("30", hp);
+        Assert.assertEquals("3", str);
+        Assert.assertEquals(String.valueOf(x), foundX);
+        Assert.assertEquals(String.valueOf(y), foundY);
     }
 }

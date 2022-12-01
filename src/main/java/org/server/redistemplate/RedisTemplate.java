@@ -26,11 +26,11 @@ public final class RedisTemplate {
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
 
-        jedis.sadd("nickname", nickname);                   // user nickname
-        jedis.sadd(nickname + ":hp", "30");         // user hp
-        jedis.sadd(nickname + ":str", "3");
-        jedis.sadd(nickname + ":x_pos", String.valueOf(x));     // first position
-        jedis.sadd(nickname + ":y_pos", String.valueOf(y));     // first position
+        jedis.sadd("nicknames", nickname);                   // user nickname
+        jedis.set(nickname + ":hp", "30");         // user hp
+        jedis.set(nickname + ":str", "3");
+        jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
+        jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
 
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
@@ -54,7 +54,7 @@ public final class RedisTemplate {
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
         int hp = Integer.parseInt(jedis.get(nickname +":hp"));
-        jedis.sadd(String.valueOf(hp - monsterStr));
+        jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
     }
 
     public static synchronized String showMonsters(){
@@ -67,7 +67,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized String showUsers(){
-        Set<String> members = jedis.smembers("nickname");
+        Set<String> members = jedis.smembers("nicknames");
         List<String> list = new ArrayList<>(members);
         StringBuffer sb = new StringBuffer();
 
@@ -81,7 +81,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean isUsers(){
-        Set<String> members = jedis.smembers("nickname");
+        Set<String> members = jedis.smembers("nicknames");
         if(members.size() == 0){
             return false;
         }
