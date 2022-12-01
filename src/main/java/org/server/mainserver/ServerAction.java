@@ -1,4 +1,4 @@
-package org.server.MainServer;
+package org.server.mainserver;
 
 public class ServerAction implements Runnable{
     public ServerAction(){

@@ -1,6 +1,6 @@
 package org.server;
 
-import org.server.MainServer.ServerAction;
+import org.server.mainserver.ServerAction;
 
 public class Main {
     public static void main(String[] args) {
