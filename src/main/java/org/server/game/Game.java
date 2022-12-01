@@ -14,8 +14,6 @@ public final class Game{
     private static Game instance;
     public List<Monster> monsterList;
     public MonsterGenerator monsterGenerator;
-    public MonsterManager monsterManager;
-    public MonsterAttacker monsterAttacker;
 
     private Game(){
         monsterList = new ArrayList<>();
@@ -23,14 +21,8 @@ public final class Game{
             System.out.println("New Monsters Created.");
             monsterList.add(new Monster());
         }
-
-        // 아래 부분에서 monsterGenertor 빼고 전부 없애주자. monster 하나로 통일합시다.
         monsterGenerator = new MonsterGenerator(this);
-//        monsterManager = new MonsterManager(this);
-//        monsterAttacker = new MonsterAttacker(this);
         monsterGenerator.start();
-//        monsterManager.start();
-//        monsterAttacker.start();
 
         System.out.println("Game created.");
     }
