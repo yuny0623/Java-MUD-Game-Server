@@ -54,7 +54,14 @@ public final class RedisTemplate {
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
         int hp = Integer.parseInt(jedis.get(nickname +":hp"));
-        jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
+        if(hp - monsterStr <= 0){
+            jedis.set(nickname+":hp", String.valueOf(0));
+            /*
+                사망 처리
+             */
+        }else {
+            jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
+        }
     }
 
     public static synchronized String showMonsters(){
@@ -72,7 +79,6 @@ public final class RedisTemplate {
         StringBuffer sb = new StringBuffer();
 
         for(String member : list){
-            System.out.println("member: " + member);
             String xPos = jedis.get(member + ":x_pos");
             String yPos = jedis.get(member + ":y_pos");
             sb.append(member + " " + xPos + " " + yPos + "\n");

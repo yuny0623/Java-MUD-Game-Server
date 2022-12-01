@@ -1,5 +1,7 @@
 package org.server.game.monster;
 
+import org.server.redistemplate.RedisTemplate;
+
 import java.util.Random;
 
 public class Monster extends Thread{
@@ -72,7 +74,7 @@ public class Monster extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if((int) (attack / 5) == 1){
+            if((int) (attack / 5) == 1){ // 5초에 한번 몬스터가 주변을 공격
                 attack = 0;
                 for(int i = 0; i < 9; i++){
                     int x = dx[i];
@@ -80,9 +82,17 @@ public class Monster extends Thread{
                     int xx = getX() + x;
                     int yy = getY() + y;
                     if(0<= xx && xx < 30 && 0<= yy && yy < 30){
-                        /*
-                            check some user is in this range
-                         */
+                        String users = RedisTemplate.showUsers();
+                        String[] userRow = users.split("\n");
+                        for(String row: userRow){
+                            String[] vals = row.split(" ");
+                            String nickname = vals[0];
+                            int receivedX = Integer.parseInt(vals[1]);
+                            int receivedY = Integer.parseInt(vals[2]);
+                            if(receivedX == xx && receivedY == yy){
+                                RedisTemplate.userAttacked(nickname, getStr());
+                            }
+                        }
                     }
                 }
                 continue;

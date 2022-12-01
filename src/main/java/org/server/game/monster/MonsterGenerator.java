@@ -18,7 +18,6 @@ public class MonsterGenerator extends Thread{
             } catch (InterruptedException e) {
                e.printStackTrace();
             }
-            // 부족한 개수만큼 몬스터를 채워 넣음.
             if(game.monsterList.size() < 10){
                 int diff = 10 - game.monsterList.size();
                 for(int i = 0; i < diff; i++){
