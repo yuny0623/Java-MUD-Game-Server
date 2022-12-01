@@ -2,8 +2,6 @@ package org.server.game;
 
 import org.server.dto.CommandDto;
 import org.server.game.monster.Monster;
-import org.server.game.monster.MonsterAttacker;
-import org.server.game.monster.MonsterGenerator;
 import org.server.game.monster.MonsterManager;
 import org.server.redistemplate.RedisTemplate;
 
@@ -13,16 +11,18 @@ import java.util.List;
 public final class Game{
     private static Game instance;
     public List<Monster> monsterList;
-    public MonsterGenerator monsterGenerator;
+    public MonsterManager monsterManager;
 
     private Game(){
         monsterList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            System.out.println("New Monsters Created.");
-            monsterList.add(new Monster());
+            System.out.println("New Monster created.");
+            Monster monster = new Monster();
+            monsterList.add(monster);
+            monster.start();
         }
-        monsterGenerator = new MonsterGenerator(this);
-        monsterGenerator.start();
+        monsterManager = new MonsterManager(this);
+        monsterManager.start();
 
         System.out.println("Game created.");
     }

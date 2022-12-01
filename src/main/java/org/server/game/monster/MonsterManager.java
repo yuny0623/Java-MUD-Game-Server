@@ -15,21 +15,19 @@ public class MonsterManager extends Thread{
     public void run(){
         while(true){
             try {
-                Thread.sleep(3 * 1000);
+                Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // 3초에 한번씩 monster 들이 움직임
-            for(int i = 0; i < game.monsterList.size(); i++){
-                Monster monster = game.monsterList.get(i);
-                int originX = monster.getX();
-                int originY = monster.getY();
-                monster.move();
-                int movedX = monster.getX();
-                int movedY = monster.getY();
-                System.out.println("[monster-" + i + "] moving... from [" + originX + "," + originY + "]  to [" + movedX + "," + movedY + "]");
+            if(game.monsterList.size() < 10){
+                int diff = 10 - game.monsterList.size();
+                for(int i = 0; i < diff; i++){
+                    System.out.println("New Monster Generated.");
+                    Monster monster = new Monster();
+                    game.monsterList.add(new Monster());
+                    monster.start();
+                }
             }
-            System.out.println();
         }
     }
 }
