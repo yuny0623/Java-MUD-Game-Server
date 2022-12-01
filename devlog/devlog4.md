@@ -30,5 +30,4 @@ RedisTemplate 이 너무 추상화되어있음.
 redis 의 기능을 간단하게 쓰기 위함인데 너무 구체적인 비즈니스 로직이 들어간듯. 
 monsters 를 Thread 로 만들고 MonsterAttacker 랑 MonsterManager 를 없애자. 
 
-수정사항: 
 
