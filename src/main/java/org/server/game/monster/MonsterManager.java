@@ -2,12 +2,24 @@ package org.server.game.monster;
 
 import org.server.game.Game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MonsterManager extends Thread{
 
     public Game game;
-
+    public List<Monster> monsterList;
     public MonsterManager(Game game){
         System.out.println("start MonsterManager.");
+        monsterList = new ArrayList<>();
+
+        // 초기 Monster 10마리 생성
+        for(int i = 0; i < 10; i++){
+            System.out.println("New Monster created.");
+            Monster monster = new Monster();
+            monsterList.add(monster);
+            monster.start();
+        }
         this.game = game;
     }
 
@@ -19,12 +31,12 @@ public class MonsterManager extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(game.monsterList.size() < 10){
-                int diff = 10 - game.monsterList.size();
+            if(monsterList.size() < 10){
+                int diff = 10 - monsterList.size();
                 for(int i = 0; i < diff; i++){
-                    System.out.println("New Monster Generated.");
+                    System.out.println("New Monster Created.");
                     Monster monster = new Monster();
-                    game.monsterList.add(new Monster());
+                    monsterList.add(new Monster());
                     monster.start();
                 }
             }

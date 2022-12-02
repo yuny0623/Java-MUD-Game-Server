@@ -14,17 +14,10 @@ public final class Game{
     public MonsterManager monsterManager;
 
     private Game(){
-        monsterList = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            System.out.println("New Monster created.");
-            Monster monster = new Monster();
-            monsterList.add(monster);
-            monster.start();
-        }
+        System.out.println("Game Start.");
+
         monsterManager = new MonsterManager(this);
         monsterManager.start();
-
-        System.out.println("Game created.");
     }
 
     public static Game getInstance(){
