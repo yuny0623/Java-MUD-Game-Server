@@ -36,14 +36,13 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
 ```
 
 ## Reference
-```
  - Jedis: https://github.com/redis/jedis 
  - Jedis: https://www.baeldung.com/jedis-java-redis-client-library 
  - Redis: https://redis.io/docs/ 
  - Redis: https://architecturenotes.co/redis/
  - json-simple: https://tychejin.tistory.com/139
  - json-simple: https://mkil.tistory.com/323 
-```
+
 
 ## Game Client Repository
 > [클라이언트 리포지토리](https://github.com/yuny0623/Java-MUD-Game-Client)
