@@ -47,13 +47,20 @@ public class ServerSocketThread extends Thread{
             }else{
                 nickname = threadName;
             }
-            // Redis에 유저 저장
+
+            // Redis에 User 저장
             RedisTemplate.createUser(nickname);
             server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
 
             // 게임 진행
             while(true){
                 strIn = in.readLine();
+
+                // 사망했을 경우 게임 진행 불가
+                if(RedisTemplate.isDead(nickname)){
+                    sendMessage(JsonUtil.generateJson("You are Dead."));
+                    continue;
+                }
                 command = JsonUtil.parseJson(strIn);
                 CommandDto commandDto = new CommandDto(command, nickname);
 
