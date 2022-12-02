@@ -14,3 +14,5 @@ redis.clients.jedis.exceptions.JedisDataException: WRONGTYPE Operation against a
 
 그러니 nickname 대신에 nicknames 를 쓰자. 
 
+ServerAction이 굳이 필요하지 않을듯. -> ServerAction 을 start 시켜주는게 아니라
+MainServer를 Thread 로 만들고 MainServer 를 run 하는 방식으로 바꾸자. 

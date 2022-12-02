@@ -17,19 +17,6 @@ public class RedisTemplateTest {
     }
 
     @Test
-    public void redisTemplateGenerateTest(){
-        // given
-        String nickname = "tony";
-        RedisTemplate.createUser(nickname);
-
-        // when
-        boolean isUser = RedisTemplate.isUsers();
-
-        // then
-        Assert.assertTrue(isUser);
-    }
-
-    @Test
     public void redisTemplateGetTest(){
         // given
         String nickname = "monad";

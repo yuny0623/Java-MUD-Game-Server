@@ -2,8 +2,6 @@ package org.server.game.monster;
 
 import org.server.redistemplate.RedisTemplate;
 
-import java.util.Random;
-
 public class Monster extends Thread{
     private int hp;
     private int str;
