@@ -56,12 +56,15 @@ public final class RedisTemplate {
         int hp = Integer.parseInt(jedis.get(nickname +":hp"));
         if(hp - monsterStr <= 0){
             jedis.set(nickname+":hp", String.valueOf(0));
-            /*
-                사망 처리
-             */
+            // 사망처리
+            jedis.sadd("dead_user", nickname);
         }else {
             jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
         }
+    }
+
+    public static synchronized boolean isDead(String nickname){
+        return jedis.sismember("dead_user", nickname);
     }
 
     public static synchronized String showMonsters(){

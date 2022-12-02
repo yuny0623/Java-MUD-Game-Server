@@ -89,6 +89,9 @@ public class Monster extends Thread{
                         for (String row : userRow) {
                             String[] vals = row.split(" ");
                             String nickname = vals[0];
+                            if(RedisTemplate.isDead(nickname)){
+                                continue;
+                            }
                             int userX = Integer.parseInt(vals[1]);
                             int userY = Integer.parseInt(vals[2]);
                             if (userX == attackX && userY == attackY) {
