@@ -16,7 +16,6 @@ public class ServerSocketThread extends Thread{
     String strIn;
     String threadName;
     String nickname;
-    JsonUtil jsonUtil;
     String command;
 
     public ServerSocketThread(MainServer server, Socket socket){
@@ -35,13 +34,12 @@ public class ServerSocketThread extends Thread{
     @Override
     public void run(){
         try{
-            jsonUtil = JsonUtil.getInstance();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
             // 로그인 진행
             strIn = in.readLine();
-            command = jsonUtil.parseJson(strIn);
+            command = JsonUtil.parseJson(strIn);
             nickname = command.split(" ")[1];
             boolean isLogin = server.login(nickname, this);
             if(isLogin){
@@ -51,17 +49,17 @@ public class ServerSocketThread extends Thread{
             }
             // Redis에 유저 저장
             RedisTemplate.createUser(nickname);
-            server.broadCasting(jsonUtil.generateJson(nickname + " has entered."));
+            server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
 
             // 게임 진행
             while(true){
                 strIn = in.readLine();
-                command = jsonUtil.parseJson(strIn);
+                command = JsonUtil.parseJson(strIn);
                 CommandDto commandDto = new CommandDto(command, nickname);
 
-                String json = jsonUtil.generateJson(nickname + ":" + command);
+                String json = JsonUtil.generateJson(nickname + ":" + command);
                 String result = server.playGame(commandDto);
-                String resultJson = jsonUtil.generateJson(nickname + ":" + result);
+                String resultJson = JsonUtil.generateJson(nickname + ":" + result);
 
                 server.broadCasting(json);
                 server.broadCasting(resultJson);

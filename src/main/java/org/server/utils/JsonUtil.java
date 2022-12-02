@@ -4,27 +4,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class JsonUtil {
-    private static JsonUtil instance;
+public final class JsonUtil {
 
-    private JsonUtil(){
+    public JsonUtil(){
 
     }
 
-    public static JsonUtil getInstance(){
-        if(instance == null){
-            instance = new JsonUtil();
-        }
-        return instance;
-    }
-
-    public synchronized String generateJson(String str){
+    public static synchronized String generateJson(String str){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Notice", str);
         return jsonObject.toJSONString();
     }
 
-    public synchronized String parseJson(String json){
+    public static synchronized String parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");
         }

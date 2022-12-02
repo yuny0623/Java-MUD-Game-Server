@@ -32,7 +32,7 @@ public class Monster extends Thread{
         int xx = (int) (Math.random() * (1 - (-1) + 1)) + (-1);
         int yy = (int) (Math.random() * (1 - (-1) + 1)) + (-1);
 
-        if(0 <= this.x + xx && this.x + xx < 30 && 0 <= this.y + yy && this.y + yy < 30){
+        if((0 <= this.x + xx) && (this.x + xx < 30) && (0 <= this.y + yy) && (this.y + yy < 30)){
             this.x += xx;
             this.y += yy;
         }

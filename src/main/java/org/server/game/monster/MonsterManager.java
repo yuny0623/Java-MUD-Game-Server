@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MonsterManager extends Thread{
-
     public Game game;
     public List<Monster> monsterList;
     public MonsterManager(Game game){
         System.out.println("start MonsterManager.");
         monsterList = new ArrayList<>();
-
         // 초기 Monster 10마리 생성
         for(int i = 0; i < 10; i++){
             System.out.println("New Monster created.");
