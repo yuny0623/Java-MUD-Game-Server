@@ -1,10 +1,10 @@
 package org.server;
 
-import org.server.mainserver.ServerAction;
+import org.server.mainserver.MainServer;
 
 public class Main {
     public static void main(String[] args) {
-        Thread thread = new Thread(new ServerAction());
-        thread.start();
+        MainServer mainServer = new MainServer();
+        mainServer.start();
     }
 }

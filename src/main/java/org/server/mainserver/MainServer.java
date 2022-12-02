@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
-public class MainServer {
+public class MainServer extends Thread{
     ServerSocket serverSocket;
     Socket socket;
      Game game;
@@ -20,14 +20,14 @@ public class MainServer {
         userList = new HashMap<>();
         game = Game.getInstance();
 
-        // redisTemplate 에 MainServer 참조 전달
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setMainServer(this);
 
         System.out.println("Main Server Created.");
     }
 
-    public void giveAndTake(){
+    @Override
+    public void run(){
         try{
             serverSocket = new ServerSocket(ServerConfig.TCP_CONNECTION_DEFAULT_PORT);
             serverSocket.setReuseAddress(true);
