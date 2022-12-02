@@ -79,8 +79,9 @@ public class Monster extends Thread{
                     int y = dy[i];
                     int xx = getX() + x;
                     int yy = getY() + y;
+                    String users = RedisTemplate.showUsers();
                     if(0<= xx && xx < 30 && 0<= yy && yy < 30){
-                        String users = RedisTemplate.showUsers();
+                        System.out.println("users: " + users);
                         String[] userRow = users.split("\n");
                         for(String row: userRow){
                             String[] vals = row.split(" ");
