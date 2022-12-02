@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MonsterManager extends Thread{
-    public Game game;
     public static List<Monster> monsterList = new ArrayList<>();
-    public MonsterManager(Game game){
+    public MonsterManager(){
         System.out.println("Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
             System.out.println("New Monster created.");
@@ -16,8 +15,6 @@ public class MonsterManager extends Thread{
             monsterList.add(monster);
             monster.start();
         }
-        System.out.println();
-        this.game = game;
     }
 
     public static List<Monster> getMonsterList(){

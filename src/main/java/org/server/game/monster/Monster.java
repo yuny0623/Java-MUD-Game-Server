@@ -73,7 +73,6 @@ public class Monster extends Thread{
                 e.printStackTrace();
             }
             if((attack / 5) == 1){
-                System.out.println("Monster Attacks.");
                 attack = 0;
                 if(!RedisTemplate.checkUserExist()){
                     System.out.println("No Users Exist.");
@@ -96,19 +95,13 @@ public class Monster extends Thread{
                             int userX = Integer.parseInt(vals[1]);
                             int userY = Integer.parseInt(vals[2]);
                             if (userX == attackX && userY == attackY) {
-                                System.out.println("[" + nickname + "] " + "User Attacked " + " -" + this.getStr());
+                                System.out.println("[" + nickname + "] " + "User Attacked by Monster.");
                                 RedisTemplate.userAttacked(nickname, this.getStr());
                             }
                         }
                     }
                 }
             }
-//            int originX = getX();
-//            int originY = getY();
-//            this.move();
-//            int movedX = getX();
-//            int movedY = getY();
-//            System.out.println("[monster] moving... from [" + originX + "," + originY + "]  to [" + movedX + "," + movedY + "]");
         }
     }
 }
