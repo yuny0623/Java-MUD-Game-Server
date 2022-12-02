@@ -66,35 +66,38 @@ public class Monster extends Thread{
     public void run(){
         int attack = 0;
         while(true){
-            attack ++;
+            ++attack;
             try {
                 Thread.sleep( 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if((int) (attack / 5) == 1){ // 5초에 한번 몬스터가 주변을 공격
+            if((attack / 5) == 1){
                 attack = 0;
-                for(int i = 0; i < 9; i++){
+                if(!RedisTemplate.checkUserExist()){
+                    System.out.println("No Users Exist.");
+                    continue;
+                }
+                for(int i = 0; i < 9; i++) {
                     int x = dx[i];
                     int y = dy[i];
-                    int xx = getX() + x;
-                    int yy = getY() + y;
+                    int attackX = this.getX() + x;
+                    int attackY = this.getY() + y;
                     String users = RedisTemplate.showUsers();
-                    if(0<= xx && xx < 30 && 0<= yy && yy < 30){
-                        System.out.println("users: " + users);
+                    if ((0 <= attackX) && (attackX < 30) && (0 <= attackY) && (attackY < 30)) {
                         String[] userRow = users.split("\n");
-                        for(String row: userRow){
+                        for (String row : userRow) {
                             String[] vals = row.split(" ");
                             String nickname = vals[0];
-                            int receivedX = Integer.parseInt(vals[1]);
-                            int receivedY = Integer.parseInt(vals[2]);
-                            if(receivedX == xx && receivedY == yy){
-                                RedisTemplate.userAttacked(nickname, getStr());
+                            int userX = Integer.parseInt(vals[1]);
+                            int userY = Integer.parseInt(vals[2]);
+                            if (userX == attackX && userY == attackY) {
+                                System.out.println("[" + nickname + "] " + "User Attacked " + " -" + this.getStr());
+                                RedisTemplate.userAttacked(nickname, this.getStr());
                             }
                         }
                     }
                 }
-                continue;
             }
             int originX = getX();
             int originY = getY();

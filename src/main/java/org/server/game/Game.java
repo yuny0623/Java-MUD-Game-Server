@@ -14,8 +14,7 @@ public final class Game{
     public MonsterManager monsterManager;
 
     private Game(){
-        System.out.println("Game Start.");
-
+        System.out.println("Game Start.\n");
         monsterManager = new MonsterManager(this);
         monsterManager.start();
     }

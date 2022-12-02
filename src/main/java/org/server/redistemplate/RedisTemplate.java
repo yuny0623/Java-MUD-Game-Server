@@ -86,7 +86,7 @@ public final class RedisTemplate {
         return sb.toString();
     }
 
-    public static synchronized boolean isUsers(){
+    public static synchronized boolean checkUserExist(){
         Set<String> members = jedis.smembers("nicknames");
         if(members.size() == 0){
             return false;
