@@ -35,10 +35,8 @@ public class MonsterMoveTest {
         // when
         for(int i = 0; i < 100; i++){
             ++val;
-            System.out.println(val);
             if((val / 5) == 1){
                 val = 0;
-                System.out.println("reset");
                 count ++;
             }
         }

@@ -12,7 +12,7 @@ public class MonsterManager extends Thread{
         for(int i = 0; i < 10; i++){
             System.out.println("New Monster created.");
             Monster monster = new Monster();
-            monsterList.add(monster);
+            this.monsterList.add(monster);
             monster.start();
         }
     }
@@ -29,12 +29,12 @@ public class MonsterManager extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(monsterList.size() < 10){
-                int diff = 10 - monsterList.size();
+            if(this.monsterList.size() < 10){
+                int diff = 10 - this.monsterList.size();
                 for(int i = 0; i < diff; i++){
                     System.out.println("New Monster Created.");
                     Monster monster = new Monster();
-                    monsterList.add(new Monster());
+                    this.monsterList.add(new Monster());
                     monster.start();
                 }
             }

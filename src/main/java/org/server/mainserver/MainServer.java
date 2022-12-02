@@ -13,7 +13,7 @@ import java.util.*;
 public class MainServer extends Thread{
     ServerSocket serverSocket;
     Socket socket;
-     Game game;
+    Game game;
     Map<String, Thread> userList;
 
     public MainServer(){

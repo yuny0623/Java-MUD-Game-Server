@@ -13,6 +13,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# development log
+/.devLog
+/devlog
+
 # AWS User-specific
 .idea/**/aws.xml
 

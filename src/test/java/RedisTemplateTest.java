@@ -76,7 +76,6 @@ public class RedisTemplateTest {
         // when
         for(int i = 0; i < monsterRows.length; i++){
             vals = monsterRows[i].split(" ");
-            System.out.printf("%s %s %s\n", vals[0], vals[1], vals[2]);
             posList.add(Integer.valueOf(vals[1]));
             posList.add(Integer.valueOf(vals[2]));
         }
