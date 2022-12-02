@@ -10,7 +10,6 @@ import java.util.List;
 
 public final class Game{
     private static Game instance;
-    public List<Monster> monsterList;
     public MonsterManager monsterManager;
 
     private Game(){
@@ -35,7 +34,20 @@ public final class Game{
             case "move":
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
-                 result = RedisTemplate.move(nickname, x, y);
+                 int[] pos = RedisTemplate.getPosition(nickname);
+                 int fixedX = 0;
+                 int fixedY = 0;
+                 if(x + pos[0] < 0){
+                     fixedX = 0;
+                 }else if(x + pos[0] > 29){
+                     fixedX = 29;
+                 }
+                 if(y + pos[1] < 0){
+                     fixedY = 0;
+                 }else if(y + pos[1] > 29){
+                     fixedY = 29;
+                 }
+                 result = RedisTemplate.move(nickname, fixedX, fixedY);
                  break;
             case "attack":
                 result = RedisTemplate.userAttack(nickname);

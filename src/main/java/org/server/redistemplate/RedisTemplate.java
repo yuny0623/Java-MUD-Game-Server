@@ -2,6 +2,7 @@ package org.server.redistemplate;
 
 import org.server.game.Game;
 import org.server.game.monster.Monster;
+import org.server.game.monster.MonsterManager;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
@@ -36,13 +37,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized String move(String nickname, int x, int y){
-        String foundXPos = jedis.get(nickname + ":x_pos");
-        String foundYPos = jedis.get(nickname + ":y_pos");
-        String toX = String.valueOf(x + Integer.parseInt(foundXPos));
-        String toY = String.valueOf(y + Integer.parseInt(foundYPos));
-        jedis.set(nickname + ":x_pos", toX);
-        jedis.set(nickname + ":y_pos", toY);
-        return nickname + " move from [" + foundXPos + ", " + foundYPos + "] to " + "[" + toX + ", " + toY + "]";
+        jedis.set(nickname + ":x_pos", String.valueOf(x));
+        jedis.set(nickname + ":y_pos", String.valueOf(y));
+        return nickname + " move to " + "[" + x + ", " + y + "]";
     }
 
     public static synchronized String userAttack(String nickname){
@@ -56,7 +53,7 @@ public final class RedisTemplate {
         int hp = Integer.parseInt(jedis.get(nickname +":hp"));
         if(hp - monsterStr <= 0){
             jedis.set(nickname+":hp", String.valueOf(0));
-            // 사망처리
+            System.out.println(nickname + " was killed by a monster!");
             jedis.sadd("dead_user", nickname);
         }else {
             jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
@@ -69,8 +66,8 @@ public final class RedisTemplate {
 
     public static synchronized String showMonsters(){
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < game.monsterList.size(); i++){
-            Monster monster = game.monsterList.get(i);
+        for(int i = 0; i < MonsterManager.monsterList.size(); i++){
+            Monster monster = MonsterManager.monsterList.get(i);
             sb.append("monster " + monster.getX() + " " + monster.getY() + "\n");
         }
         return sb.toString();
@@ -104,5 +101,11 @@ public final class RedisTemplate {
 
     public synchronized void setMainServer(MainServer mainServer) {
         this.mainServer = mainServer;
+    }
+
+    public static synchronized int[] getPosition(String nickname){
+        int x = Integer.parseInt(jedis.get(nickname+":x_pos"));
+        int y = Integer.parseInt(jedis.get(nickname+":y_pos"));
+        return new int[] {x, y};
     }
 }

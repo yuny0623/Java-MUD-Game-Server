@@ -7,10 +7,9 @@ import java.util.List;
 
 public class MonsterManager extends Thread{
     public Game game;
-    public List<Monster> monsterList;
+    public static List<Monster> monsterList = new ArrayList<>();
     public MonsterManager(Game game){
         System.out.println("Start MonsterManager.\n");
-        monsterList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             System.out.println("New Monster created.");
             Monster monster = new Monster();
@@ -19,6 +18,10 @@ public class MonsterManager extends Thread{
         }
         System.out.println();
         this.game = game;
+    }
+
+    public static List<Monster> getMonsterList(){
+        return monsterList;
     }
 
     @Override

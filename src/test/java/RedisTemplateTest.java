@@ -7,6 +7,9 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RedisTemplateTest {
     Jedis jedis;
     JedisPool pool;
@@ -60,5 +63,33 @@ public class RedisTemplateTest {
         Assert.assertEquals("3", str);
         Assert.assertEquals(String.valueOf(x), foundX);
         Assert.assertEquals(String.valueOf(y), foundY);
+    }
+
+    @Test
+    public void showMonstersTest(){
+        // given
+        String monsters = RedisTemplate.showMonsters();
+        String[] monsterRows = monsters.split("\n");
+        String[] vals=  null;
+        List<Integer> posList = new ArrayList<>();
+
+        // when
+        for(int i = 0; i < monsterRows.length; i++){
+            vals = monsterRows[i].split(" ");
+            System.out.printf("%s %s %s\n", vals[0], vals[1], vals[2]);
+            posList.add(Integer.valueOf(vals[1]));
+            posList.add(Integer.valueOf(vals[2]));
+        }
+
+        boolean isInRange = true;
+        for(int i = 0; i < posList.size(); i++){
+            if(posList.get(i) < 0 || posList.get(i) > 29){
+                isInRange = false;
+            }
+        }
+
+        // then
+        Assert.assertNotNull(vals);
+        Assert.assertTrue(isInRange);
     }
 }
