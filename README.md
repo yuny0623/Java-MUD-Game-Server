@@ -1,6 +1,6 @@
 # Java MUD Game project - Server
-- - - 
-## Project Intro 
+
+## Project Intro
 ```
 🌊 프로젝트 소개
 MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다. 
