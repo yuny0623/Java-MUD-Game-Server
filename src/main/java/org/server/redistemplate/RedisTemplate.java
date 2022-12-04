@@ -31,7 +31,7 @@ public final class RedisTemplate {
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
 
         jedis.sadd("nicknames", nickname);                   // user nickname
-        jedis.set(nickname + ":hp", "30");         // user hp
+        jedis.set(nickname + ":hp", "30");                          // user hp
         jedis.set(nickname + ":str", "3");
         jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
         jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
@@ -50,7 +50,7 @@ public final class RedisTemplate {
         int curr_x = Integer.parseInt(jedis.get(nickname + ":x_pos"));
         int curr_y = Integer.parseInt(jedis.get(nickname + ":y_pos"));
         if(!checkMonsterExist()){
-            return nickname + "attack miss.";
+            return nickname + "attack miss. No Monster exist.";
         }
         String monsters = RedisTemplate.showMonsters();
         for(int i = 0; i < 9; i++){
@@ -70,7 +70,7 @@ public final class RedisTemplate {
             }
         }
 
-        return nickname + " attack hit.";
+        return nickname + " attack success.";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){

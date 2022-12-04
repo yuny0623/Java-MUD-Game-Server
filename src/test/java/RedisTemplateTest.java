@@ -42,9 +42,7 @@ public class RedisTemplateTest {
         String nickname = "jenifer";
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
-
         jedis.sadd("nicknames", nickname);
-
         jedis.set(nickname + ":hp", "30");
         jedis.set(nickname + ":str", "3");
         jedis.set(nickname + ":x", String.valueOf(x));

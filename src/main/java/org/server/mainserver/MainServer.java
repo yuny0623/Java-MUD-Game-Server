@@ -67,7 +67,9 @@ public class MainServer extends Thread{
     public synchronized void sendMessage(String sender, String receiver, String message){
         ServerSocketThread thread = (ServerSocketThread) userList.get(receiver);
         if(thread != null) {
-            thread.sendMessage("[from:" + sender + "] " + message);
+            thread.sendMessage("["+sender+" > "+receiver+"] " + message);
+        }else{
+            System.out.println("[Chat] No User Exist.");
         }
     }
 

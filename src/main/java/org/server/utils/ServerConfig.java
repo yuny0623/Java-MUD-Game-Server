@@ -6,6 +6,7 @@ public final class ServerConfig {
     private ServerConfig(){
 
     }
+
     public static ServerConfig getInstance(){
         if(instance == null){
             instance = new ServerConfig();

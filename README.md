@@ -8,7 +8,7 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
 당시 GUI가 없었기 때문에 텍스트로 입력을 주고 텍스트 출력을 얻는 형태이다.
 해당 MUD 게임용 Server와 Client를 만들어보도록 한다. 
  
-💾 기능 소개 
+🔎 기능 소개 
    - 사용자 로그인 처리 
    - 사용자 데이터 저장 
    - 몬스터 생성 
@@ -17,7 +17,7 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
    - 유저 접속 종료 및 로그아웃 처리 
    - 다중 접속 처리 
    
-📑 플레이 방법 
+🔎 플레이 방법 
    - move x y
    - attack
    - monsters
@@ -28,11 +28,11 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
 
 ## Tech
 ```
-- Java 17
-- Gradle 
-- TCP/IP Socket Programming
-- Jedis
-- json-simple
+💾 Java 17
+📷 Gradle 
+📹 TCP/IP Socket Programming
+💻 Jedis
+📺 json-simple
 ```
 
 ## Reference

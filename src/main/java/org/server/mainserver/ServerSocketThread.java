@@ -63,8 +63,7 @@ public class ServerSocketThread extends Thread{
                 }
                 command = JsonUtil.parseJson(strIn);
                 CommandDto commandDto = new CommandDto(command, nickname);
-
-                String json = JsonUtil.generateJson(nickname + ":" + command);
+                
                 String result = server.playGame(commandDto);
                 String resultJson = JsonUtil.generateJson(nickname + ":" + result);
 
