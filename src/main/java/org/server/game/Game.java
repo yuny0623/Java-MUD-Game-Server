@@ -35,8 +35,8 @@ public final class Game{
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
                  int[] pos = RedisTemplate.getPosition(nickname);
-                 int fixedX = 0;
-                 int fixedY = 0;
+                 int fixedX = x;
+                 int fixedY = y;
                  if(x + pos[0] < 0){
                      fixedX = 0;
                  }else if(x + pos[0] > 29){

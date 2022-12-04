@@ -79,6 +79,9 @@ public final class RedisTemplate {
         StringBuffer sb = new StringBuffer();
 
         for(String member : list){
+            if (isDead(member)) {
+                continue;
+            }
             String xPos = jedis.get(member + ":x_pos");
             String yPos = jedis.get(member + ":y_pos");
             sb.append(member + " " + xPos + " " + yPos + "\n");
@@ -106,6 +109,9 @@ public final class RedisTemplate {
     public static synchronized int[] getPosition(String nickname){
         int x = Integer.parseInt(jedis.get(nickname+":x_pos"));
         int y = Integer.parseInt(jedis.get(nickname+":y_pos"));
-        return new int[] {x, y};
+        int[] pos = new int[2];
+        pos[0] = x;
+        pos[1] = y;
+        return pos;
     }
 }

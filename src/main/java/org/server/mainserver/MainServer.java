@@ -59,7 +59,6 @@ public class MainServer extends Thread{
     public synchronized void broadCasting(String str){
         Set<String> keys = userList.keySet();
         for(String key: keys){
-            System.out.println("Broadcasting to client from Server: " + str);
             ServerSocketThread thread = (ServerSocketThread) userList.get(key);
             thread.sendMessage(str);
         }
