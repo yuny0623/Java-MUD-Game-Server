@@ -78,12 +78,12 @@ public class Monster extends Thread{
                     System.out.println("No Users Exist.");
                     continue;
                 }
+                String users = RedisTemplate.showUsers();
                 for(int i = 0; i < 9; i++) {
                     int x = dx[i];
                     int y = dy[i];
                     int attackX = this.getX() + x;
                     int attackY = this.getY() + y;
-                    String users = RedisTemplate.showUsers();
                     if ((0 <= attackX) && (attackX < 30) && (0 <= attackY) && (attackY < 30)) {
                         String[] userRow = users.split("\n");
                         for (String row : userRow) {

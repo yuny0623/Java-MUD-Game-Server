@@ -16,7 +16,10 @@ public final class RedisTemplate {
     private static Jedis jedis = pool.getResource();;
     private static MainServer mainServer;
     private static Map<String, Thread> botList = new HashMap<>();
-    private static Game game = Game.getInstance();;
+    private static Game game = Game.getInstance();
+
+    private static int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
+    private static int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
     public RedisTemplate(){
 
@@ -43,10 +46,32 @@ public final class RedisTemplate {
     }
 
     public static synchronized String userAttack(String nickname){
-        /*
-            attack logic
-         */
-        return nickname + " attack.";
+        int str = Integer.parseInt(jedis.get(nickname+":str"));
+        int curr_x = Integer.parseInt(jedis.get(nickname + ":x_pos"));
+        int curr_y = Integer.parseInt(jedis.get(nickname + ":y_pos"));
+        if(!checkMonsterExist()){
+            return nickname + "attack miss.";
+        }
+        String monsters = RedisTemplate.showMonsters();
+        for(int i = 0; i < 9; i++){
+            int attackX = dx[i] + curr_x;
+            int attackY = dy[i] + curr_y;
+            if(0 <= attackX && attackX < 30 && 0 <= attackY && attackY < 30){
+                String[] monsterRow = monsters.split("\n");
+                for(String row: monsterRow){
+                    String[] val = row.split(" ");
+                    int monsterX = Integer.parseInt(val[1]);
+                    int monsterY = Integer.parseInt(val[2]);
+                    if(monsterX == attackX && monsterY == attackY){
+                        /*
+                            해당 몬스터 체력 감소
+                         */
+                    }
+                }
+            }
+        }
+
+        return nickname + " attack hit.";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
@@ -92,6 +117,13 @@ public final class RedisTemplate {
     public static synchronized boolean checkUserExist(){
         Set<String> members = jedis.smembers("nicknames");
         if(members.size() == 0){
+            return false;
+        }
+        return true;
+    }
+
+    public static synchronized boolean checkMonsterExist(){
+        if(MonsterManager.monsterList.size() == 0){
             return false;
         }
         return true;
