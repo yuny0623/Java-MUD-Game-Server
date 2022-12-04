@@ -2,23 +2,23 @@ package org.server.game.monster;
 
 import org.server.game.Game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MonsterManager extends Thread{
-    public static List<Monster> monsterList = new ArrayList<>();
+    public static Map<String, Monster> monsterMap = new HashMap<>();
+
     public MonsterManager(){
         System.out.println("Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
             System.out.println("New Monster created.");
             Monster monster = new Monster();
-            this.monsterList.add(monster);
+            this.monsterMap.put(UUID.randomUUID().toString(), monster);
             monster.start();
         }
     }
 
-    public static List<Monster> getMonsterList(){
-        return monsterList;
+    public Map<String, Monster> getMonsterMap(){
+        return this.monsterMap;
     }
 
     @Override
@@ -29,12 +29,12 @@ public class MonsterManager extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(this.monsterList.size() < 10){
-                int diff = 10 - this.monsterList.size();
+            if(this.monsterMap.size() < 10){
+                int diff = 10 - this.monsterMap.size();
                 for(int i = 0; i < diff; i++){
                     System.out.println("New Monster Created.");
                     Monster monster = new Monster();
-                    this.monsterList.add(new Monster());
+                    this.monsterMap.put(UUID.randomUUID().toString(), new Monster());
                     monster.start();
                 }
             }

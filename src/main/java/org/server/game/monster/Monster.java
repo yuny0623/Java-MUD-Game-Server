@@ -24,8 +24,12 @@ public class Monster extends Thread{
         this.y = (int) (Math.random() * (29 - 0 + 1) + 0);
     }
 
-    public void attacked(int str){
+    public boolean attacked(int str){
         this.hp -= str;
+        if(this.hp <= 0){
+            return true;
+        }
+        return false;
     }
 
     public void move(){

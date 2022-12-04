@@ -60,12 +60,11 @@ public final class RedisTemplate {
                 String[] monsterRow = monsters.split("\n");
                 for(String row: monsterRow){
                     String[] val = row.split(" ");
+                    String monsterId = val[0];
                     int monsterX = Integer.parseInt(val[1]);
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
-                        /*
-                            해당 몬스터 체력 감소
-                         */
+                        MonsterManager.monsterMap.get(monsterId).attacked(str);
                     }
                 }
             }
@@ -91,9 +90,9 @@ public final class RedisTemplate {
 
     public static synchronized String showMonsters(){
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < MonsterManager.monsterList.size(); i++){
-            Monster monster = MonsterManager.monsterList.get(i);
-            sb.append("monster " + monster.getX() + " " + monster.getY() + "\n");
+        for(String monsterId:  MonsterManager.monsterMap.keySet()){
+            Monster monster = MonsterManager.monsterMap.get(monsterId);
+            sb.append(monsterId + " " + monster.getX() + " " + monster.getY() + "\n");
         }
         return sb.toString();
     }
@@ -123,7 +122,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean checkMonsterExist(){
-        if(MonsterManager.monsterList.size() == 0){
+        if(MonsterManager.monsterMap.size() == 0){
             return false;
         }
         return true;
