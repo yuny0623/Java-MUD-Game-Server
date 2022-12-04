@@ -28,7 +28,8 @@ public class ServerSocketThread extends Thread{
 
     public void
     sendMessage(String str){
-        out.println(str);
+        String message = JsonUtil.generateJson(str);
+        out.println(message);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ServerSocketThread extends Thread{
                 }
                 command = JsonUtil.parseJson(strIn);
                 CommandDto commandDto = new CommandDto(command, nickname);
-                
+
                 String result = server.playGame(commandDto);
                 String resultJson = JsonUtil.generateJson(nickname + ":" + result);
 
