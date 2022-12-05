@@ -55,6 +55,10 @@ public class ServerSocketThread extends Thread{
             // 게임 진행
             while(true){
                 strIn = in.readLine();
+                if(strIn == null){
+                    continue;
+                }
+                System.out.println("ServerSocketThread - strIn: " + strIn);
                 // 사망했을 경우 게임 진행 불가
                 if(RedisTemplate.isDead(nickname)){
                     sendMessage(JsonUtil.generateJson("You are Dead."));
@@ -62,11 +66,13 @@ public class ServerSocketThread extends Thread{
                 }
                 command = JsonUtil.parseJson(strIn);
                 if(command.equals("bot")){
+                    System.out.println(nickname + " activate bot mode.");
                     server.broadCasting(JsonUtil.generateJson(nickname + " activate bot mode."));
                     continue;
                 }
                 if(command.equals("exit bot")){
-                    server.broadCasting(JsonUtil.generateJson(nickname + "disabled bot mode."));
+                    System.out.println(nickname + " disabled bot mode.");
+                    server.broadCasting(JsonUtil.generateJson(nickname + " disabled bot mode."));
                     continue;
                 }
                 CommandDto commandDto = new CommandDto(command, nickname);

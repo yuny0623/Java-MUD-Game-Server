@@ -58,6 +58,9 @@ public final class JsonUtil {
             case "bot":
                 result = "bot";
                 break;
+            case "exit bot":
+                result = "exit bot";
+                break;
             default:
                 return "";
         }

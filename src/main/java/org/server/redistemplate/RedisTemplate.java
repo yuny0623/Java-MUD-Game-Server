@@ -67,7 +67,7 @@ public final class RedisTemplate {
                     int monsterX = Integer.parseInt(val[1]);
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
-                        Monster monster = MonsterManager.monsterMap.get(monsterId) ;
+                        Monster monster = MonsterManager.monsterMap.get(monsterId);
                         boolean isDead = monster.attacked(str);
                         if(isDead) {
                             getReward(nickname, monsterId);
@@ -77,7 +77,6 @@ public final class RedisTemplate {
                 }
             }
         }
-
         return nickname + " attack success.";
     }
 
