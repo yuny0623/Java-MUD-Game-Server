@@ -61,6 +61,10 @@ public final class JsonUtil {
             case "exit bot":
                 result = "exit bot";
                 break;
+            case "potion":
+                String item = (String) obj.get("item");
+                result = "potion " + item;
+                break;
             default:
                 return "";
         }

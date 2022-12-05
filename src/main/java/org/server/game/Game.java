@@ -63,6 +63,22 @@ public final class Game{
                 String content = commands[2];
                 result = RedisTemplate.chat(nickname, to, content);
                 break;
+            case "potion":
+                String item = commands[1];
+                if(item.equals("hp")){
+                    boolean isUse = RedisTemplate.useHpPotion(nickname);
+                    if(isUse){
+                        result = nickname + " recover 10 hp";
+                    }else{
+                        result = nickname + " No hp potion left.";
+                    }
+                    break;
+                }
+                if(item.equals("str")){
+                    /*
+                        user str potion.
+                     */
+                }
         }
         return result;
     }
