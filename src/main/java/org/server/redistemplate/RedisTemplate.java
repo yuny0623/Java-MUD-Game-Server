@@ -146,6 +146,9 @@ public final class RedisTemplate {
 
     public static synchronized void getReward(String monsterId, String nickname){
         Monster monster = MonsterManager.monsterMap.get(monsterId);
+        if(monster == null) {
+            return;
+        }
         int hpPotion = monster.getHpPotion();
         int strPotion = monster.getStrPotion();
         int userHpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));

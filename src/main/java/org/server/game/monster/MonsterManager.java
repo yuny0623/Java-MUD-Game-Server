@@ -6,7 +6,6 @@ import java.util.*;
 
 public class MonsterManager extends Thread{
     public static Map<String, Monster> monsterMap = new HashMap<>();
-
     public MonsterManager(){
         System.out.println("Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
