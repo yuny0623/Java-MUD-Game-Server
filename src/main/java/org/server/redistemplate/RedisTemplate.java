@@ -187,7 +187,7 @@ public final class RedisTemplate {
         if(extraStr == null){
             jedis.setex(nickname+":extra_str", 60, "3");
         }else{
-            int foundExtraStr = Integer.parseInt(jedis.get(nickname+":extra_str"));
+            int foundExtraStr = Integer.parseInt(extraStr);
             foundExtraStr += 3;
             jedis.setex(nickname+":extra_str",60, String.valueOf(foundExtraStr));
         }

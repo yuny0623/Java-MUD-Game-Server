@@ -7,6 +7,7 @@ import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
+import redis.clients.jedis.Response;
 
 public class UserTest {
 
@@ -36,5 +37,25 @@ public class UserTest {
         Assert.assertTrue(isMember);
         Assert.assertTrue(isUse);
         Assert.assertEquals(userHp, originUserHp + 10);
+    }
+
+    @Test
+    @DisplayName("유저 str 포션 사용 시 공격력 증가 테스트")
+    public void user_str_potion_test(){
+        // given
+        String nickname = "maven";
+        RedisTemplate.createUser(nickname);
+        int originStr = Integer.parseInt(jedis.get(nickname+":str"));
+
+        // when
+        boolean isMember = jedis.sismember("nicknames", nickname);
+        boolean isUse = RedisTemplate.useStrPotion(nickname);
+        int userStr = Integer.parseInt(jedis.get(nickname+":str"));
+        int userExtraStr = Integer.parseInt(jedis.get(nickname+":extra_str"));
+
+        // then
+        Assert.assertTrue(isMember);
+        Assert.assertTrue(isUse);
+        Assert.assertEquals(originStr + 3, userStr + userExtraStr);
     }
 }
