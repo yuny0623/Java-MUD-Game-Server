@@ -118,4 +118,16 @@ public class JedisTest {
         Assert.assertEquals(result, "OK");
         Assert.assertTrue(keyList.size() == 0);
     }
+
+    @Test
+    public void get_non_exist_key_test(){
+        // given
+        jedis.set("test_key", "test_value");
+
+        // when
+        String result = jedis.get("invalid_test_key");
+
+        // then
+        Assert.assertTrue(result == null);
+    }
 }
