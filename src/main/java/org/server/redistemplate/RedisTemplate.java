@@ -34,8 +34,6 @@ public final class RedisTemplate {
         jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
         jedis.set(nickname + ":hp_potion", "1");
         jedis.set(nickname + ":str_potion", "1");
-
-        jedis.set(nickname + ":extra_str", "0");               // extra str
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 

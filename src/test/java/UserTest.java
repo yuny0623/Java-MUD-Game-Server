@@ -57,4 +57,27 @@ public class UserTest {
         Assert.assertTrue(isUse);
         Assert.assertEquals(originStr + 3, userStr + userExtraStr);
     }
+
+    @Test
+    @DisplayName("extraStr의 expire Time 테스트")
+    public void extraStr_expire_time_test(){
+        // given
+        String nickname = "gradle";
+        RedisTemplate.createUser(nickname);
+        int originStr = Integer.parseInt(jedis.get(nickname+":str"));
+
+        // when
+        jedis.setex(nickname+":extra_str", 1, "3");
+        int increasedExtraStr = RedisTemplate.getExtraStr(nickname);
+        try {
+            Thread.sleep(2 * 1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        int timedOutExtraStr = RedisTemplate.getExtraStr(nickname);
+
+        // then
+        Assert.assertEquals(originStr + 3, originStr + increasedExtraStr);
+        Assert.assertEquals(0, timedOutExtraStr);
+    }
 }
