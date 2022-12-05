@@ -10,15 +10,11 @@ public class MonsterManager extends Thread{
     public MonsterManager(){
         System.out.println("Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
-            System.out.println("New Monster created.");
             Monster monster = new Monster();
             this.monsterMap.put(UUID.randomUUID().toString(), monster);
             monster.start();
         }
-    }
-
-    public Map<String, Monster> getMonsterMap(){
-        return this.monsterMap;
+        System.out.println("Create 10 Monsters.");
     }
 
     @Override
@@ -29,15 +25,16 @@ public class MonsterManager extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            int diff = 0;
             if(this.monsterMap.size() < 10){
-                int diff = 10 - this.monsterMap.size();
+                diff = 10 - this.monsterMap.size();
                 for(int i = 0; i < diff; i++){
-                    System.out.println("New Monster Created.");
                     Monster monster = new Monster();
                     this.monsterMap.put(UUID.randomUUID().toString(), new Monster());
                     monster.start();
                 }
             }
+            System.out.println("Add " + diff + " Monsters");
         }
     }
 }
