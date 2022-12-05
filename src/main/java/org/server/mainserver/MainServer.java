@@ -30,7 +30,11 @@ public class MainServer extends Thread{
             serverSocket = new ServerSocket(ServerConfig.TCP_CONNECTION_DEFAULT_PORT);
             serverSocket.setReuseAddress(true);
             while(true){
-                socket = serverSocket.accept();
+                if(userMap.size() < 30) {
+                    socket = serverSocket.accept();
+                }else{
+                    continue;
+                }
                 System.out.println("New Socket accepted.");
                 ServerSocketThread thread = new ServerSocketThread(this, socket);
                 addClient(thread);
