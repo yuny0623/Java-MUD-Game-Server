@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,11 @@ public class RedisTemplateTest {
     public void setUp(){
         pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
+    }
+
+    @After
+    public void tearDown(){
+        jedis.flushAll();
     }
 
     @Test

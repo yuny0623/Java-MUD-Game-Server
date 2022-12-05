@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,11 @@ public class JedisTest {
     public void jedis_setup(){
         pool = new JedisPool("127.0.0.1", Protocol.DEFAULT_PORT);
         jedis = pool.getResource();
+    }
+
+    @After
+    public void tearDown(){
+        jedis.flushAll();
     }
 
     @Test

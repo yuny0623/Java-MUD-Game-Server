@@ -6,6 +6,7 @@ import org.server.game.monster.Monster;
 import java.util.*;
 
 public class MonsterTest {
+
     @Test
     @DisplayName("랜덤 난수를 생성하는지 테스트")
     public void randomNumberGenerateTest(){
