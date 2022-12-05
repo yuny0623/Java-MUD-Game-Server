@@ -12,12 +12,12 @@ import redis.clients.jedis.Protocol;
 import java.util.*;
 
 public final class RedisTemplate {
-    private static JedisPool pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
-    private static Jedis jedis = pool.getResource();
+    private static final JedisPool pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
+    private static final Jedis jedis = pool.getResource();
     private static MainServer mainServer;
 
-    private static int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
-    private static int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
+    private static final int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
+    private static final int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
     public RedisTemplate(){
 
@@ -171,15 +171,20 @@ public final class RedisTemplate {
     }
 
     public static synchronized void useStrPotion(String nickname){
-        /*
-            add str to user.
-         */
-
-
-
-
-        // check str.
-
+        int strPotion = Integer.parseInt(jedis.get(nickname + ":str_potion"));
+        if(strPotion <= 0){
+            return;
+        }
+        String extraStr = jedis.get(nickname+":extra_str");
+        if(extraStr == null){
+            jedis.setex(nickname+":extra_str", 60, "3");
+        }else{
+            int foundExtraStr = Integer.parseInt(jedis.get(nickname+":extra_str"));
+            foundExtraStr += 3;
+            jedis.setex(nickname+":extra_str",60, String.valueOf(foundExtraStr));
+        }
+        strPotion--;
+        jedis.set(nickname+":str_potion", String.valueOf(strPotion));
     }
 
     public static synchronized int getUserHpPotion(String nickname){
