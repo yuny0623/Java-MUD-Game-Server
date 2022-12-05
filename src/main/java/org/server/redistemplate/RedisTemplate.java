@@ -13,10 +13,8 @@ import java.util.*;
 
 public final class RedisTemplate {
     private static JedisPool pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
-    private static Jedis jedis = pool.getResource();;
+    private static Jedis jedis = pool.getResource();
     private static MainServer mainServer;
-    private static Map<String, Thread> botList = new HashMap<>();
-    private static Game game = Game.getInstance();
 
     private static int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
     private static int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
@@ -30,13 +28,15 @@ public final class RedisTemplate {
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
 
-        jedis.sadd("nicknames", nickname);                   // user nickname
-        jedis.set(nickname + ":hp", "30");                          // user hp
+        jedis.sadd("nicknames", nickname);                // user nickname
+        jedis.set(nickname + ":hp", "30");                     // user hp
         jedis.set(nickname + ":str", "3");
         jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
         jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
         jedis.set(nickname + ":hp_potion", "1");
         jedis.set(nickname + ":str_potion", "1");
+
+        jedis.set(nickname + ":extra_str", "0");               // extra str
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 
@@ -121,17 +121,11 @@ public final class RedisTemplate {
 
     public static synchronized boolean checkUserExist(){
         Set<String> members = jedis.smembers("nicknames");
-        if(members.size() == 0){
-            return false;
-        }
-        return true;
+        return members.size() != 0;
     }
 
     public static synchronized boolean checkMonsterExist(){
-        if(MonsterManager.monsterMap.size() == 0){
-            return false;
-        }
-        return true;
+        return MonsterManager.monsterMap.size() != 0;
     }
 
     public static synchronized String chat(String from, String to, String content){
@@ -176,13 +170,23 @@ public final class RedisTemplate {
         }
     }
 
+    public static synchronized void useStrPotion(String nickname){
+        /*
+            add str to user.
+         */
+
+
+
+
+        // check str.
+
+    }
+
     public static synchronized int getUserHpPotion(String nickname){
-        int hpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));
-        return hpPotion;
+        return Integer.parseInt(jedis.get(nickname+":hp_potion"));
     }
 
     public static synchronized int getUserStrPotion(String nickname){
-        int strPotion = Integer.parseInt(jedis.get(nickname + ":str_potion"));
-        return  strPotion;
+        return  Integer.parseInt(jedis.get(nickname + ":str_potion"));
     }
 }
