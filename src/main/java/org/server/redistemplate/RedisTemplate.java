@@ -49,6 +49,7 @@ public final class RedisTemplate {
 
     public static synchronized String userAttack(String nickname){
         int str = Integer.parseInt(jedis.get(nickname+":str"));
+        int extraStr = RedisTemplate.getExtraStr(nickname);
         int curr_x = Integer.parseInt(jedis.get(nickname + ":x_pos"));
         int curr_y = Integer.parseInt(jedis.get(nickname + ":y_pos"));
         if(!checkMonsterExist()){
@@ -67,7 +68,7 @@ public final class RedisTemplate {
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
                         Monster monster = MonsterManager.monsterMap.get(monsterId);
-                        boolean isDead = monster.attacked(str);
+                        boolean isDead = monster.attacked(str + extraStr);
                         if(isDead) {
                             getReward(nickname, monsterId);
                             monster.interrupt();

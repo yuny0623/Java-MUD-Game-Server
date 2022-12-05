@@ -7,7 +7,6 @@ import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
-import redis.clients.jedis.Response;
 
 public class UserTest {
 
