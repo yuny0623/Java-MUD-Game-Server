@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.server.game.monster.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +44,31 @@ public class MonsterTest {
 
         // then
         Assert.assertEquals(count, 20);
+    }
+
+
+    @Test
+    public void monster_thread_interrupt_test(){
+        // given
+        Monster monster = new Monster();
+        monster.start();
+
+        // when
+        while(true) {
+            boolean isDead = monster.attacked(3);
+            if(isDead){
+                monster.interrupt();
+                break;
+            }
+        }
+
+        // then
+        Assert.assertTrue(monster.isInterrupted());
+        try {
+            Thread.sleep(100);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        Assert.assertFalse(monster.isAlive());
     }
 }
