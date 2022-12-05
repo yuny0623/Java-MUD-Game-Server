@@ -23,7 +23,6 @@ public final class RedisTemplate {
     }
 
     public static synchronized String createUser(String nickname){
-        // random 한 위치에 생성
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
 
