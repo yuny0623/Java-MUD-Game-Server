@@ -1,6 +1,6 @@
-# Java MUD Game project - Server
+# ⭐️Java MUD Game project - Server
 
-## Project Intro
+## 🍀 Project Intro
 ```
 🌊 프로젝트 소개
 MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다. 
@@ -29,7 +29,7 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
    9️⃣ exit bot 
 ```
 
-## Tech
+## 📲 Tech
 ```
 💾 Java 17
 📷 Gradle 
@@ -38,7 +38,7 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
 📺 json-simple
 ```
 
-## Reference
+## 📚 Reference
  - Jedis: https://github.com/redis/jedis 
  - Jedis: https://www.baeldung.com/jedis-java-redis-client-library 
  - Redis: https://redis.io/docs/ 
@@ -47,5 +47,5 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
  - json-simple: https://mkil.tistory.com/323 
 
 
-## Game Client Repository
+## 🔗 Game Client Repository
 > [클라이언트 리포지토리](https://github.com/yuny0623/Java-MUD-Game-Client)
