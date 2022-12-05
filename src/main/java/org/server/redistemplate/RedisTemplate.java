@@ -43,8 +43,8 @@ public final class RedisTemplate {
     public static synchronized String move(String nickname, int x, int y){
         jedis.set(nickname + ":x_pos", String.valueOf(x));
         jedis.set(nickname + ":y_pos", String.valueOf(y));
-        int movedToX = Integer.parseInt(jedis.get(nickname + "x_pos"));
-        int movedToY = Integer.parseInt(jedis.get(nickname + "y_pos"));
+        int movedToX = Integer.parseInt(jedis.get(nickname + ":x_pos"));
+        int movedToY = Integer.parseInt(jedis.get(nickname + ":y_pos"));
         return nickname + " move to " + "[" + movedToX + ", " + movedToY + "]";
     }
 
