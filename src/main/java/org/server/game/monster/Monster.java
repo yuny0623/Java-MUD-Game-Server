@@ -75,6 +75,7 @@ public class Monster extends Thread{
         int attack = 0;
         while(!this.interrupted()){
             ++attack;
+            System.out.println("[Monster:[" + x + "," + y + "]] attack around!");
             try {
                 Thread.sleep( 1000);
             } catch (InterruptedException e) {

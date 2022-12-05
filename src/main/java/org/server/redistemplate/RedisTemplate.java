@@ -35,8 +35,8 @@ public final class RedisTemplate {
         jedis.set(nickname + ":str", "3");
         jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
         jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
-        jedis.set(nickname + "hp_potion", "0");
-        jedis.set(nickname + "str_potion", "0");
+        jedis.set(nickname + "hp_potion", "1");
+        jedis.set(nickname + "str_potion", "1");
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 
@@ -69,7 +69,6 @@ public final class RedisTemplate {
                         boolean isDead = monster.attacked(str);
                         if(isDead) {
                             getReward(nickname, monsterId);
-                            // request monster thread to stop.
                             monster.interrupt();
                         }
                     }

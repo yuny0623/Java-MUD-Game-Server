@@ -6,6 +6,7 @@ import org.server.redistemplate.RedisTemplate;
 import org.server.utils.ServerConfig;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;

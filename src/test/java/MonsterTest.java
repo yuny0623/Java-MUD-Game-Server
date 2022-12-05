@@ -96,7 +96,6 @@ public class MonsterTest {
                 break;
             }
         }
-
         int diff = 10 - monsterMap.size();
         for(int i = 0; i <diff; i++){
             String monsterName = UUID.randomUUID().toString();
