@@ -55,6 +55,7 @@ public class ServerSocketThread extends Thread{
             // 게임 진행
             while(true){
                 strIn = in.readLine();
+                System.out.println("ServerSocketThread - strIn: " + strIn);
                 // 사망했을 경우 게임 진행 불가
                 if(RedisTemplate.isDead(nickname)){
                     sendMessage(JsonUtil.generateJson("You are Dead."));
@@ -66,7 +67,8 @@ public class ServerSocketThread extends Thread{
                 String result = server.playGame(commandDto);
                 String resultJson = JsonUtil.generateJson(result);
 
-                System.out.println(result);
+                System.out.println("result: " + result);
+                System.out.println("resultJson: " + resultJson);
                 server.broadCasting(resultJson);
             }
         }catch(IOException e){
