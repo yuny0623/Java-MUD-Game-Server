@@ -162,4 +162,28 @@ public final class RedisTemplate {
         jedis.set(nickname + ":hp_potion", String.valueOf(hpPotion + userHpPotion));
         jedis.set(nickname + ":str_potion", String.valueOf(strPotion + userStrPotion));
     }
+
+    public static synchronized boolean useHpPotion(String nickname){
+        int hpPotion = Integer.parseInt(jedis.get(nickname + ":hp_potion"));
+        if(hpPotion > 0){
+            int userHp = Integer.parseInt(jedis.get(nickname + ":hp"));
+            userHp += 10;
+            hpPotion--;
+            jedis.set(nickname + ":hp_potion", String.valueOf(hpPotion));
+            jedis.set(nickname + ":hp", String.valueOf(userHp));
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static synchronized int getUserHpPotion(String nickname){
+        int hpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));
+        return hpPotion;
+    }
+
+    public static synchronized int getUserStrPotion(String nickname){
+        int strPotion = Integer.parseInt(jedis.get(nickname + ":str_potion"));
+        return  strPotion;
+    }
 }
