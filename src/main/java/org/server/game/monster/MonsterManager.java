@@ -10,8 +10,9 @@ public class MonsterManager extends Thread{
     public MonsterManager(){
         System.out.println("Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
-            Monster monster = new Monster();
-            this.monsterMap.put(UUID.randomUUID().toString(), monster);
+            String monsterName = UUID.randomUUID().toString();
+            Monster monster = new Monster(monsterName);
+            this.monsterMap.put(monsterName, monster);
             monster.start();
         }
         System.out.println("Create 10 Monsters.");
@@ -29,8 +30,9 @@ public class MonsterManager extends Thread{
             if(this.monsterMap.size() < 10){
                 diff = 10 - this.monsterMap.size();
                 for(int i = 0; i < diff; i++){
-                    Monster monster = new Monster();
-                    this.monsterMap.put(UUID.randomUUID().toString(), new Monster());
+                    String monsterName = UUID.randomUUID().toString();
+                    Monster monster = new Monster(monsterName);
+                    this.monsterMap.put(monsterName, monster);
                     monster.start();
                 }
             }

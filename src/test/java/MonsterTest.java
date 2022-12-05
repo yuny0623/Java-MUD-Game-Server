@@ -3,8 +3,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.server.game.monster.Monster;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MonsterTest {
     @Test
@@ -51,10 +50,10 @@ public class MonsterTest {
 
 
     @Test
-    @DisplayName("몬스터가 죽었을 경우 interrupt메소드에 의해 몬스터 스레드가 중지되는지 테스트")
+    @DisplayName("몬스터가 죽었을 경우 interrupt 메소드에 의해 몬스터 스레드가 중지되는지 테스트")
     public void monster_thread_interrupt_test(){
         // given
-        Monster monster = new Monster();
+        Monster monster = new Monster(UUID.randomUUID().toString());
         monster.start();
 
         // when
@@ -80,9 +79,33 @@ public class MonsterTest {
     @DisplayName("몬스터가 죽었을 경우 새로운 몬스터가 생성되는지 테스트")
     public void new_monster_create_test_when_monster_die(){
         // given
+        Map<String, Monster> monsterMap = new HashMap<>();
 
         // when
+        for(int i = 0; i< 10; i++){
+            String monsterName = String.valueOf(i);
+            Monster monster = new Monster(monsterName);
+            monsterMap.put(monsterName, monster);
+            monster.start();
+        }
+        Monster monster = monsterMap.get("3");
+        while(true){
+            boolean isDead = monster.attacked(3);
+            if(isDead){
+                monsterMap.remove("3");
+                break;
+            }
+        }
+
+        int diff = 10 - monsterMap.size();
+        for(int i = 0; i <diff; i++){
+            String monsterName = UUID.randomUUID().toString();
+            Monster newMonster = new Monster(monsterName);
+            monsterMap.put(monsterName, newMonster);
+            newMonster.start();
+        }
 
         // then
+        Assert.assertEquals(10, monsterMap.size());
     }
 }

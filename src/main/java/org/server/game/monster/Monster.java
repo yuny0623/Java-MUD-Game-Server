@@ -9,11 +9,14 @@ public class Monster extends Thread{
     private int strPotion;
     private int x;
     private int y;
+    private String monsterName;
 
     private int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
     private int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
-    public Monster(){
+    public Monster(String monsterName){
+        this.monsterName = monsterName;
+
         this.hp = (int) (Math.random() * (10 - 5 + 1) + 5);
         this.str=  (int) (Math.random() * (5 - 3 + 1) + 3);
 
@@ -27,6 +30,7 @@ public class Monster extends Thread{
     public boolean attacked(int str){
         this.hp -= str;
         if(this.hp <= 0){
+            MonsterManager.monsterMap.remove(monsterName);
             return true;
         }
         return false;
