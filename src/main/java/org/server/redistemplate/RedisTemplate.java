@@ -35,7 +35,8 @@ public final class RedisTemplate {
         jedis.set(nickname + ":str", "3");
         jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
         jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
-
+        jedis.set(nickname + "hp_potion", "0");
+        jedis.set(nickname + "str_potion", "0");
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 
@@ -65,6 +66,9 @@ public final class RedisTemplate {
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
                         MonsterManager.monsterMap.get(monsterId).attacked(str);
+                        /*
+                            monster 처리했을 경우 logic 추가
+                         */
                     }
                 }
             }
@@ -144,5 +148,14 @@ public final class RedisTemplate {
         pos[0] = x;
         pos[1] = y;
         return pos;
+    }
+
+    public static synchronized void getReward(Monster monster, String nickname){
+        int hpPotion = monster.getHpPotion();
+        int strPotion = monster.getStrPotion();
+        int userHpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));
+        int userStrPotion = Integer.parseInt(jedis.get(nickname+":str_potion"));
+        jedis.set(nickname + ":hp_potion", String.valueOf(hpPotion + userHpPotion));
+        jedis.set(nickname + ":str_potion", String.valueOf(strPotion + userStrPotion));
     }
 }
