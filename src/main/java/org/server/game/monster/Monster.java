@@ -69,7 +69,7 @@ public class Monster extends Thread{
     @Override
     public void run(){
         int attack = 0;
-        while(true){
+        while(!this.interrupted()){
             ++attack;
             try {
                 Thread.sleep( 1000);

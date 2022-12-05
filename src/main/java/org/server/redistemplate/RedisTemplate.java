@@ -65,10 +65,13 @@ public final class RedisTemplate {
                     int monsterX = Integer.parseInt(val[1]);
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
-                        MonsterManager.monsterMap.get(monsterId).attacked(str);
-                        /*
-                            monster 처리했을 경우 logic 추가
-                         */
+                        Monster monster = MonsterManager.monsterMap.get(monsterId) ;
+                        boolean isDead = monster.attacked(str);
+                        if(isDead) {
+                            getReward(nickname, monsterId);
+                            // request monster thread to stop.
+                            monster.interrupt();
+                        }
                     }
                 }
             }
@@ -150,7 +153,8 @@ public final class RedisTemplate {
         return pos;
     }
 
-    public static synchronized void getReward(Monster monster, String nickname){
+    public static synchronized void getReward(String monsterId, String nickname){
+        Monster monster = MonsterManager.monsterMap.get(monsterId);
         int hpPotion = monster.getHpPotion();
         int strPotion = monster.getStrPotion();
         int userHpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));
