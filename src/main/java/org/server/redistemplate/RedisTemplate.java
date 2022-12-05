@@ -204,4 +204,8 @@ public final class RedisTemplate {
     public static synchronized int getUserStrPotion(String nickname){
         return  Integer.parseInt(jedis.get(nickname + ":str_potion"));
     }
+
+    public static synchronized  void serverReset(){
+        jedis.flushAll();
+    }
 }
