@@ -6,7 +6,6 @@ import org.server.redistemplate.RedisTemplate;
 import org.server.utils.ServerConfig;
 
 import java.io.IOException;
-import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -15,11 +14,11 @@ public class MainServer extends Thread{
     ServerSocket serverSocket;
     Socket socket;
     Game game;
-    Map<String, Thread> userList;
+    Map<String, Thread> userMap;
 
     public MainServer(){
         System.out.println("Start Main Server.\n");
-        userList = new HashMap<>();
+        userMap = new HashMap<>();
         game = Game.getInstance();
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setMainServer(this);
@@ -43,28 +42,28 @@ public class MainServer extends Thread{
     }
 
     public synchronized void addClient(ServerSocketThread thread){
-        userList.put(thread.getName(), thread);
-        System.out.println("Client: 1 user added. Total: " + userList.size());
+        userMap.put(thread.getName(), thread);
+        System.out.println("Client: 1 user added. Total: " + userMap.size());
     }
 
     public synchronized void removeClient(String nickname, Thread thread){
-        ServerSocketThread foundThread = (ServerSocketThread) userList.remove(nickname);
+        ServerSocketThread foundThread = (ServerSocketThread) userMap.remove(nickname);
         if(foundThread == null){
-            userList.remove(thread.getName());
+            userMap.remove(thread.getName());
         }
-        System.out.println("Client: 1 user removed. Total: " + userList.size());
+        System.out.println("Client: 1 user removed. Total: " + userMap.size());
     }
 
     public synchronized void broadCasting(String str){
-        Set<String> keys = userList.keySet();
+        Set<String> keys = userMap.keySet();
         for(String key: keys){
-            ServerSocketThread thread = (ServerSocketThread) userList.get(key);
+            ServerSocketThread thread = (ServerSocketThread) userMap.get(key);
             thread.sendMessage(str);
         }
     }
 
     public synchronized void sendMessage(String sender, String receiver, String message){
-        ServerSocketThread thread = (ServerSocketThread) userList.get(receiver);
+        ServerSocketThread thread = (ServerSocketThread) userMap.get(receiver);
         if(thread != null) {
             thread.sendMessage("["+sender+" -> "+receiver+"] " + message);
         }else{
@@ -77,22 +76,22 @@ public class MainServer extends Thread{
     }
 
     public synchronized boolean login(String nickname, Thread thread){
-        ServerSocketThread foundThread = (ServerSocketThread) userList.get(nickname);
+        ServerSocketThread foundThread = (ServerSocketThread) userMap.get(nickname);
         if(foundThread != null){
-            userList.remove(nickname);
-            userList.put(nickname, thread);
+            userMap.remove(nickname);
+            userMap.put(nickname, thread);
             return true;
         }
-        foundThread = (ServerSocketThread) userList.get(thread.getName());
+        foundThread = (ServerSocketThread) userMap.get(thread.getName());
         if(foundThread == null){
             return false;
         }
-        userList.put(nickname, thread);
-        userList.remove(thread.getName());
-        Set<String> keys = userList.keySet();
+        userMap.put(nickname, thread);
+        userMap.remove(thread.getName());
+        Set<String> keys = userMap.keySet();
         int i = 0;
         for(String key: keys){
-            System.out.println("[" + i +".LoginUser] " + key +":" + userList.get(key));
+            System.out.println("[" + i +".LoginUser] " + key +":" + userMap.get(key));
             i++;
         }
         return true;
