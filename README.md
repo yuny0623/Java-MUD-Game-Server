@@ -23,7 +23,10 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
    3️⃣ monsters
    4️⃣ users
    5️⃣ chat <유저이름> <대화내용>
-   6️⃣ bot 
+   6️⃣ potion hp
+   7️⃣ potion str 
+   8️⃣ bot 
+   9️⃣ exit bot 
 ```
 
 ## Tech
