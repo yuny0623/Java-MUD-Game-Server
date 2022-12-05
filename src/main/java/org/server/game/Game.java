@@ -68,18 +68,22 @@ public final class Game{
                 if(item.equals("hp")){
                     boolean isUse = RedisTemplate.useHpPotion(nickname);
                     if(isUse){
-                        result = nickname + " recover 10 hp";
+                        result = nickname + " recover 10 hp.";
                     }else{
                         result = nickname + " No hp potion left.";
                     }
                     break;
+                }else if(item.equals("str")){
+                    boolean isUse = RedisTemplate.useStrPotion(nickname);
+                    if(isUse){
+                        result = nickname + " increase 3 str.";
+                    }else{
+                        result = nickname + " No Str potion left";
+                    }
+                    break;
                 }
-                if(item.equals("str")){
-                    /*
-                        user str potion.
-                     */
-                }
-        }
+                break;
+            }
         return result;
     }
 }

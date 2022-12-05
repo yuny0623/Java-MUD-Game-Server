@@ -178,10 +178,10 @@ public final class RedisTemplate {
         }
     }
 
-    public static synchronized void useStrPotion(String nickname){
+    public static synchronized boolean useStrPotion(String nickname){
         int strPotion = Integer.parseInt(jedis.get(nickname + ":str_potion"));
         if(strPotion <= 0){
-            return;
+            return false;
         }
         String extraStr = jedis.get(nickname+":extra_str");
         if(extraStr == null){
@@ -193,6 +193,7 @@ public final class RedisTemplate {
         }
         strPotion--;
         jedis.set(nickname+":str_potion", String.valueOf(strPotion));
+        return true;
     }
 
     public static synchronized int getUserHpPotion(String nickname){
