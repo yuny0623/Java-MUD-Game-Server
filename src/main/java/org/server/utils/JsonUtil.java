@@ -51,12 +51,12 @@ public final class JsonUtil {
                 String content = (String) obj.get("content");
                 result = "chat " + opponent + " " + content;
                 break;
-            case "bot":
-                result = "bot";
-                break;
             case "nickname":
                 String nickname = (String) obj.get("nickname");
                 result = "nickname " + nickname;
+                break;
+            case "bot":
+                result = "bot";
                 break;
             default:
                 return "";
