@@ -1,14 +1,17 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.ls.LSException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RedisTest {
+public class JedisTest {
     JedisPool pool;
     Jedis jedis;
 
@@ -75,5 +78,37 @@ public class RedisTest {
         // then
         Assert.assertEquals(name, "Peter");
         Assert.assertEquals(job, "politician");
+    }
+
+    @Test
+    public void jedis_all_keys_test(){
+        // given
+        Set<String> keys = jedis.keys("*");
+        List<String> keyList = new ArrayList<>();
+
+        // when
+        for(String key: keys){
+            keyList.add(key);
+        }
+
+        // then
+        Assert.assertTrue(keyList.size()!=0);
+    }
+
+    @Test
+    public void jedis_flush_keys_test(){
+        // given
+        String result = jedis.flushAll();
+        Set<String> keys = jedis.keys("*");
+        List<String> keyList = new ArrayList<>();
+
+        // when
+        for(String key: keys){
+            keyList.add(key);
+        }
+
+        // then
+        Assert.assertEquals(result, "OK");
+        Assert.assertTrue(keyList.size() == 0);
     }
 }

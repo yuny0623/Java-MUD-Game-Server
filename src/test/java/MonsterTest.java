@@ -4,7 +4,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonsterMoveTest {
+public class MonsterTest {
     @Test
     public void randomNumberGenerateTest(){
         // given
