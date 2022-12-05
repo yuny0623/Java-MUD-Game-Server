@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.server.game.monster.Monster;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class MonsterTest {
     @Test
+    @DisplayName("랜덤 난수를 생성하는지 테스트")
     public void randomNumberGenerateTest(){
         // given
         int x = 0;
@@ -28,6 +30,7 @@ public class MonsterTest {
     }
 
     @Test
+    @DisplayName("5초에 한번 동작하는지 테스트")
     public void attackEveryFiveSecondsTest(){
         // given
         int val = 0;
@@ -48,6 +51,7 @@ public class MonsterTest {
 
 
     @Test
+    @DisplayName("몬스터가 죽었을 경우 interrupt메소드에 의해 몬스터 스레드가 중지되는지 테스트")
     public void monster_thread_interrupt_test(){
         // given
         Monster monster = new Monster();
@@ -70,5 +74,15 @@ public class MonsterTest {
             e.printStackTrace();
         }
         Assert.assertFalse(monster.isAlive());
+    }
+
+    @Test
+    @DisplayName("몬스터가 죽었을 경우 새로운 몬스터가 생성되는지 테스트")
+    public void new_monster_create_test_when_monster_die(){
+        // given
+
+        // when
+
+        // then
     }
 }

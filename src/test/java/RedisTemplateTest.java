@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.server.redistemplate.RedisTemplate;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
@@ -20,6 +21,7 @@ public class RedisTemplateTest {
     }
 
     @Test
+    @DisplayName("jedis get 테스트")
     public void redisTemplateGetTest(){
         // given
         String nickname = "monad";
@@ -37,6 +39,7 @@ public class RedisTemplateTest {
     }
 
     @Test
+    @DisplayName("유저 생성 테스트")
     public void userCreationTest(){
         // given
         String nickname = "jenifer";
@@ -64,6 +67,7 @@ public class RedisTemplateTest {
     }
 
     @Test
+    @DisplayName("showMonsters 메소드 테스트")
     public void showMonstersTest(){
         // given
         String monsters = RedisTemplate.showMonsters();

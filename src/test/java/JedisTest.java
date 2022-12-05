@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.w3c.dom.ls.LSException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -22,6 +23,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis 연결 테스트")
     public void jedis_connection_test(){
         // given
         jedis.set("test", "hello world");
@@ -37,6 +39,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis list 테스트")
     public void jedis_lists_test(){
         // given
         jedis.lpush("queue#tasks", "firstTask");
@@ -50,6 +53,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis set 테스트")
     public void jedis_sets_test(){
         // given
         jedis.sadd("nicknames", "nickname#1");
@@ -65,6 +69,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis hash 테스트")
     public void jedis_hashes_test(){
         // given
         jedis.hset("user#1", "name", "Peter");
@@ -81,6 +86,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis 모든 키 확인 테스트")
     public void jedis_all_keys_test(){
         // given
         Set<String> keys = jedis.keys("*");
@@ -96,6 +102,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("jedis 모든 키 지우기 테스트")
     public void jedis_flush_keys_test(){
         // given
         String result = jedis.flushAll();
