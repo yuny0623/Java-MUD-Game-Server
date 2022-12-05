@@ -65,12 +65,16 @@ public class ServerSocketThread extends Thread{
                     server.broadCasting(JsonUtil.generateJson(nickname + " activate bot mode."));
                     continue;
                 }
+                if(command.equals("exit bot")){
+                    server.broadCasting(JsonUtil.generateJson(nickname + "disabled bot mode."));
+                    continue;
+                }
                 CommandDto commandDto = new CommandDto(command, nickname);
 
                 String result = server.playGame(commandDto);
                 String resultJson = JsonUtil.generateJson(result);
 
-                System.out.println("result: " + result);
+                System.out.println(result);
                 server.broadCasting(resultJson);
             }
         }catch(IOException e){
