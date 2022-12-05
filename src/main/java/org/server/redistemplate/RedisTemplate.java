@@ -1,6 +1,5 @@
 package org.server.redistemplate;
 
-import org.server.game.Game;
 import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
 import org.server.mainserver.MainServer;
@@ -167,6 +166,15 @@ public final class RedisTemplate {
             return true;
         }else{
             return false;
+        }
+    }
+
+    public static synchronized int getExtraStr(String nickname){
+        String extraStr = jedis.get(nickname + ":extra_str");
+        if(extraStr == null){
+           return 0;
+        }else {
+            return Integer.parseInt(extraStr);
         }
     }
 
