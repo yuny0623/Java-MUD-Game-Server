@@ -98,7 +98,7 @@ public class Monster extends Thread{
                         }
                         int userX = Integer.parseInt(vals[1]);
                         int userY = Integer.parseInt(vals[2]);
-                        System.out.println("[Monster:[" + x + "," + y + "]] attack around!");
+                        System.out.println("[Monster:[" + this.getX() + "," + this.getY() + "]] attack around!");
                         if (userX == attackX && userY == attackY) {
                             System.out.println("[" + nickname + "] " + "User Attacked by Monster.");
                             RedisTemplate.userAttacked(nickname, this.getStr());

@@ -130,4 +130,15 @@ public class JedisTest {
         // then
         Assert.assertTrue(result == null);
     }
+
+    @Test
+    @DisplayName("Jedis Set에서 jedis expire 기능 테스트")
+    public void set_expire_test(){
+        // given
+
+        // when
+
+        // then
+
+    }
 }
