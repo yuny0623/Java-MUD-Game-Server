@@ -107,7 +107,6 @@ public final class RedisTemplate {
         Set<String> members = jedis.smembers("nicknames");
         List<String> list = new ArrayList<>(members);
         StringBuffer sb = new StringBuffer();
-
         for(String member : list){
             if (isDead(member)) {
                 continue;
