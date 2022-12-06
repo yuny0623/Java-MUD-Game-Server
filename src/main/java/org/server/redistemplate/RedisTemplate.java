@@ -25,14 +25,13 @@ public final class RedisTemplate {
     public static synchronized String createUser(String nickname){
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
-
-        jedis.sadd("nicknames", nickname);                // user nickname
-        jedis.set(nickname + ":hp", "30");                     // user hp
-        jedis.set(nickname + ":str", "3");
-        jedis.set(nickname + ":x_pos", String.valueOf(x));     // first position
-        jedis.set(nickname + ":y_pos", String.valueOf(y));     // first position
-        jedis.set(nickname + ":hp_potion", "1");
-        jedis.set(nickname + ":str_potion", "1");
+        jedis.setex("user:"+nickname, 300, nickname);
+        jedis.setex(nickname + ":hp", 300, "30");
+        jedis.setex(nickname + ":str", 300, "3");
+        jedis.setex(nickname + ":x_pos", 300, String.valueOf(x));
+        jedis.setex(nickname + ":y_pos", 300, String.valueOf(y));
+        jedis.setex(nickname + ":hp_potion", 300, "1");
+        jedis.setex(nickname + ":str_potion", 300, "1");
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
     }
 
