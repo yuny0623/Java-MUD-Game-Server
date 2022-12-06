@@ -48,8 +48,14 @@ public class ServerSocketThread extends Thread{
             }
 
             // Redis에 User 저장
-            RedisTemplate.createUser(nickname);
+            if(RedisTemplate.isValidUser(nickname)){ // 이미 접속 기록이 존재하는 유저인 경우
+                RedisTemplate.renewalLogin(nickname); // 접속 유효시간 갱신
+            }else { // 처음 접속하는 유저이거나 접속 정보가 만료된 유저인 경우
+                RedisTemplate.createUser(nickname);
+            }
             server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
+
+            // 해당 유저에게 생성된 캐릭터 정보 전달
             String myInfo = RedisTemplate.myInfo(nickname);
             if(!(myInfo.isBlank() || myInfo.isEmpty())){
                 sendMessage(JsonUtil.generateJson(myInfo));

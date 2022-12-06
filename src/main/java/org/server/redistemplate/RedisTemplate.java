@@ -60,6 +60,10 @@ public final class RedisTemplate {
         return sb.toString();
     }
 
+    public static synchronized void renewalLogin(String nickname){
+        jedis.expire(nickname, 5 * 60);
+    }
+
     public static synchronized String move(String nickname, int x, int y){
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";

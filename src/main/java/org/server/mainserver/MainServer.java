@@ -95,7 +95,7 @@ public class MainServer extends Thread{
         Set<String> keys = userMap.keySet();
         int i = 0;
         for(String key: keys){
-            System.out.println("[" + i +".LoginUser] " + key +":" + userMap.get(key));
+            System.out.println("[" + i +".LoginUser] " + key +" : " + userMap.get(key));
             i++;
         }
         return true;
