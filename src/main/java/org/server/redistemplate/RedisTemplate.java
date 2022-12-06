@@ -68,9 +68,40 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";
         }
-        jedis.hset(nickname, "x_pos", String.valueOf(x));
-        jedis.hset(nickname, "y_pos", String.valueOf(y));
-        return nickname + " move to " + "[" + x + ", " + y + "]";
+
+        if(x < -3){
+            x = -3;
+        }else if(x > 3){
+            x = 3;
+        }
+        if(y < -3){
+            y = -3;
+        }else if(y > 3){
+            y = 3;
+        }
+
+        int[] pos = getPosition(nickname);
+
+        int toX = 0;
+        int toY = 0;
+
+        toX = x + pos[0];
+        toY = y + pos[1];
+
+        if(toX < 0){
+            toX = 0;
+        }else if(toX > 29){
+            toY = 29;
+        }
+        if(toY < 0){
+            toX = 0;
+        }else if(toY > 29){
+            toY = 29;
+        }
+
+        jedis.hset(nickname, "x_pos", String.valueOf(toX));
+        jedis.hset(nickname, "y_pos", String.valueOf(toY));
+        return nickname + " move to " + "[" + toX + ", " + toY + "]";
     }
 
     public static synchronized String userAttack(String nickname){
