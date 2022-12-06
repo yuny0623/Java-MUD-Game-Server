@@ -40,9 +40,7 @@ public final class RedisTemplate {
     public static synchronized String move(String nickname, int x, int y){
         jedis.hset(nickname, "x_pos", String.valueOf(x));
         jedis.hset(nickname, "y_pos", String.valueOf(y));
-        int movedToX = Integer.parseInt(jedis.hget(nickname , "x_pos"));
-        int movedToY = Integer.parseInt(jedis.hget(nickname , "y_pos"));
-        return nickname + " move to " + "[" + movedToX + ", " + movedToY + "]";
+        return nickname + " move to " + "[" + x + ", " + y + "]";
     }
 
     public static synchronized String userAttack(String nickname){
@@ -109,7 +107,7 @@ public final class RedisTemplate {
             if (isDead(memberNickname)) {
                 continue;
             }
-            if(jedis.hget(memberNickname, "nickname") == null){
+            if(jedis.hget(memberNickname, "user_nickname") == null){
                 jedis.srem("nicknames", memberNickname);
                 continue;
             }
