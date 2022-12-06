@@ -25,14 +25,16 @@ public final class RedisTemplate {
     public static synchronized String createUser(String nickname){
         int x = (int) (Math.random() * (29 - 0) + 0) + 0;
         int y = (int) (Math.random() * (29 - 0) + 0) + 0;
-        jedis.setex("user:"+nickname, 300, nickname);
-        jedis.setex(nickname + ":hp", 300, "30");
-        jedis.setex(nickname + ":str", 300, "3");
-        jedis.setex(nickname + ":x_pos", 300, String.valueOf(x));
-        jedis.setex(nickname + ":y_pos", 300, String.valueOf(y));
-        jedis.setex(nickname + ":hp_potion", 300, "1");
-        jedis.setex(nickname + ":str_potion", 300, "1");
-        return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: "+x+", y_pos: "+y+"]";
+        jedis.sadd("nicknames", nickname);
+        jedis.hset(nickname, "user_nickname", nickname);
+        jedis.hset(nickname, "hp", "30");
+        jedis.hset(nickname, "str", "3");
+        jedis.hset(nickname, "x_pos", String.valueOf(x));
+        jedis.hset(nickname, "y_pos", String.valueOf(y));
+        jedis.hset(nickname, "hp_potion", "1");
+        jedis.hset(nickname, "str_potion", "1");
+        jedis.expire(nickname, 5 * 60); // 로그인 5분간 유지
+        return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: " + x + ", y_pos: " + y + "]";
     }
 
     public static synchronized String move(String nickname, int x, int y){
@@ -102,15 +104,18 @@ public final class RedisTemplate {
 
     public static synchronized String showUsers(){
         Set<String> members = jedis.smembers("nicknames");
-        List<String> list = new ArrayList<>(members);
         StringBuffer sb = new StringBuffer();
-        for(String member : list){
-            if (isDead(member)) {
+        for(String memberNickname : members){
+            if (isDead(memberNickname)) {
                 continue;
             }
-            String xPos = jedis.get(member + ":x_pos");
-            String yPos = jedis.get(member + ":y_pos");
-            sb.append(member + " " + xPos + " " + yPos + "\n");
+            if(jedis.hget(memberNickname, "nickname") == null){
+                jedis.srem("nicknames", memberNickname);
+                continue;
+            }
+            String xPos = jedis.get(memberNickname + ":x_pos");
+            String yPos = jedis.get(memberNickname + ":y_pos");
+            sb.append(memberNickname + " " + xPos + " " + yPos + "\n");
         }
         return sb.toString();
     }
