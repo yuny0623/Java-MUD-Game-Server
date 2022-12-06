@@ -182,4 +182,24 @@ public class JedisTest {
         Assert.assertNull(foundYPos);
         Assert.assertNull(foundNickname);
     }
-}
+
+    @Test
+    @DisplayName("hgetAll 테스트")
+    public void hgetAll_test(){
+        // given
+        String nickname = "Lee";
+        jedis.hset("user:" + nickname, "nickname", nickname);
+        jedis.hset("user:" + nickname, "x_pos","1");
+        jedis.hset("user:" + nickname, "y_pos","2");
+
+        // when
+        Map<String, String> result = jedis.hgetAll("user:"+nickname);
+        String[] arr = new String[] {nickname, "1", "2"};
+        int i = 0;
+
+        // then
+        for(String key: result.keySet()){
+            Assert.assertEquals(result.get(key), arr[i++]);
+        }
+    }
+}s
