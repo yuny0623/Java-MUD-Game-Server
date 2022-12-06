@@ -65,6 +65,34 @@ public class UserTest {
     }
 
     @Test
+    @DisplayName("유저 str 포션 사용 시 일정 시간 이후에 공격력 감소 테스트")
+    public void user_str_potion_decrease_in_specific_time_test(){
+        // given
+        String nickname = "eugine";
+        RedisTemplate.createUser(nickname);
+        int originStr = Integer.parseInt(jedis.get(nickname + ":str"));
+
+        // when
+        boolean isMember = jedis.sismember("nicknames", nickname);
+        boolean isUse = RedisTemplate.useStrPotion(nickname);
+        int userStr = Integer.parseInt(jedis.get(nickname + ":str"));
+        int userExtraStr = Integer.parseInt(jedis.get(nickname + ":extra_str"));
+        try {
+            Thread.sleep(61 * 1000);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        int timedOutUserExtraStr = RedisTemplate.getExtraStr(nickname);
+
+        // then
+        Assert.assertTrue(isMember);
+        Assert.assertTrue(isUse);
+        Assert.assertEquals(originStr, userStr);
+        Assert.assertEquals(3, userExtraStr);
+        Assert.assertEquals(0, timedOutUserExtraStr);
+    }
+
+    @Test
     @DisplayName("extraStr의 expire Time 테스트")
     public void extraStr_expire_time_test(){
         // given
