@@ -257,11 +257,8 @@ public final class RedisTemplate {
         }
         int hpPotion = Integer.parseInt(jedis.hget(nickname ,"hp_potion"));
         if(hpPotion > 0){
-            int userHp = Integer.parseInt(jedis.hget(nickname ,"hp"));
-            userHp += 10;
-            hpPotion--;
-            jedis.hset(nickname ,"hp_potion", String.valueOf(hpPotion));
-            jedis.hset(nickname ,"hp", String.valueOf(userHp));
+            jedis.hincrBy(nickname, "hp", 10);
+            jedis.hincrBy(nickname, "hp_potion", -1);
             return true;
         }else{
             return false;
@@ -284,8 +281,7 @@ public final class RedisTemplate {
             foundExtraStr += 3;
             jedis.setex(nickname+":extra_str",60, String.valueOf(foundExtraStr));
         }
-        strPotion--;
-        jedis.hset(nickname, "str_potion", String.valueOf(strPotion));
+        jedis.hincrBy(nickname, "str_potion", -1);
         return true;
     }
 
