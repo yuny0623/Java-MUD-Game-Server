@@ -37,6 +37,29 @@ public final class RedisTemplate {
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: " + x + ", y_pos: " + y + "]";
     }
 
+    public static synchronized String myInfo(String nickname){
+        String result = "";
+        if(!isValidUser(nickname)){
+            return result;
+        }
+        StringBuffer sb = new StringBuffer();
+        String userNickname = jedis.hget(nickname, "user_nickname");
+        String hp = jedis.hget(nickname, "hp");
+        String str = jedis.hget(nickname, "str");
+        String xPos = jedis.hget(nickname, "x_pos");
+        String yPos = jedis.hget(nickname, "y_pos");
+        String hpPotion = jedis.hget(nickname, "hp_potion");
+        String strPotion = jedis.hget(nickname, "str_potion");
+        sb.append("userNickname: " + userNickname +"\n");
+        sb.append("hp: " + hp +"\n");
+        sb.append("str: " + str +"\n");
+        sb.append("xPos: " + xPos +"\n");
+        sb.append("yPos: " + yPos +"\n");
+        sb.append("hpPotion: " + hpPotion +"\n");
+        sb.append("strPotion: " + strPotion +"\n");
+        return sb.toString();
+    }
+
     public static synchronized String move(String nickname, int x, int y){
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";
