@@ -239,6 +239,18 @@ public final class RedisTemplate {
         jedis.hset(nickname ,"str_potion", String.valueOf(strPotion + userStrPotion));
     }
 
+    public static synchronized int getExtraStr(String nickname){
+        if(!isValidUser(nickname)){
+            return 0;
+        }
+        String extraStr = jedis.get(nickname + ":extra_str");
+        if(extraStr == null){
+           return 0;
+        }else {
+            return Integer.parseInt(extraStr);
+        }
+    }
+
     public static synchronized boolean useHpPotion(String nickname){
         if(!isValidUser(nickname)){
             return false;
@@ -253,18 +265,6 @@ public final class RedisTemplate {
             return true;
         }else{
             return false;
-        }
-    }
-
-    public static synchronized int getExtraStr(String nickname){
-        if(!isValidUser(nickname)){
-            return 0;
-        }
-        String extraStr = jedis.get(nickname + ":extra_str");
-        if(extraStr == null){
-           return 0;
-        }else {
-            return Integer.parseInt(extraStr);
         }
     }
 

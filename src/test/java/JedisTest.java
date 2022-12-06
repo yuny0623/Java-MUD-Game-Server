@@ -202,4 +202,23 @@ public class JedisTest {
             Assert.assertEquals(result.get(key), arr[i++]);
         }
     }
+    
+    @Test
+    @DisplayName("hincrBy에 음수를 전달했을 경우 테스트")
+    public void give_negative_number_to_hincrBy_test(){
+        // given
+        String nickname = "tomson";
+        jedis.hset(nickname, "hp", "30");
+        int originHp = Integer.parseInt(jedis.hget(nickname, "hp"));
+
+        // when
+        jedis.hincrBy(nickname, "hp", 10);
+        int increasedHp = Integer.parseInt(jedis.hget(nickname, "hp"));
+        jedis.hincrBy(nickname, "hp", -10);
+        int decreasedHp = Integer.parseInt(jedis.hget(nickname, "hp"));
+
+        // then
+        Assert.assertEquals(originHp + 10, increasedHp);
+        Assert.assertEquals(increasedHp - 10, decreasedHp);
+    }
 }
