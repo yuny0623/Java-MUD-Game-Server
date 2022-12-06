@@ -38,18 +38,18 @@ public final class RedisTemplate {
     }
 
     public static synchronized String move(String nickname, int x, int y){
-        jedis.set(nickname + ":x_pos", String.valueOf(x));
-        jedis.set(nickname + ":y_pos", String.valueOf(y));
-        int movedToX = Integer.parseInt(jedis.get(nickname + ":x_pos"));
-        int movedToY = Integer.parseInt(jedis.get(nickname + ":y_pos"));
+        jedis.hset(nickname, "x_pos", String.valueOf(x));
+        jedis.hset(nickname, "y_pos", String.valueOf(y));
+        int movedToX = Integer.parseInt(jedis.hget(nickname , "x_pos"));
+        int movedToY = Integer.parseInt(jedis.hget(nickname , "y_pos"));
         return nickname + " move to " + "[" + movedToX + ", " + movedToY + "]";
     }
 
     public static synchronized String userAttack(String nickname){
-        int str = Integer.parseInt(jedis.get(nickname+":str"));
+        int str = Integer.parseInt(jedis.hget(nickname, "str"));
         int extraStr = RedisTemplate.getExtraStr(nickname);
-        int curr_x = Integer.parseInt(jedis.get(nickname + ":x_pos"));
-        int curr_y = Integer.parseInt(jedis.get(nickname + ":y_pos"));
+        int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
+        int curr_y = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
         if(!checkMonsterExist()){
             return nickname + "attack miss. No Monster exist.";
         }
@@ -79,13 +79,13 @@ public final class RedisTemplate {
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
-        int hp = Integer.parseInt(jedis.get(nickname +":hp"));
+        int hp = Integer.parseInt(jedis.hget(nickname ,"hp"));
         if(hp - monsterStr <= 0){
-            jedis.set(nickname+":hp", String.valueOf(0));
+            jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println(nickname + " was killed by a monster!");
             jedis.sadd("dead_user", nickname);
         }else {
-            jedis.set(nickname + ":hp", String.valueOf(hp - monsterStr));
+            jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
         }
     }
 
@@ -113,8 +113,8 @@ public final class RedisTemplate {
                 jedis.srem("nicknames", memberNickname);
                 continue;
             }
-            String xPos = jedis.get(memberNickname + ":x_pos");
-            String yPos = jedis.get(memberNickname + ":y_pos");
+            String xPos = jedis.hget(memberNickname ,"x_pos");
+            String yPos = jedis.hget(memberNickname ,"y_pos");
             sb.append(memberNickname + " " + xPos + " " + yPos + "\n");
         }
         return sb.toString();
@@ -139,8 +139,8 @@ public final class RedisTemplate {
     }
 
     public static synchronized int[] getPosition(String nickname){
-        int x = Integer.parseInt(jedis.get(nickname+":x_pos"));
-        int y = Integer.parseInt(jedis.get(nickname+":y_pos"));
+        int x = Integer.parseInt(jedis.hget(nickname, "x_pos"));
+        int y = Integer.parseInt(jedis.hget(nickname, "y_pos"));
         int[] pos = new int[2];
         pos[0] = x;
         pos[1] = y;
@@ -154,20 +154,20 @@ public final class RedisTemplate {
         }
         int hpPotion = monster.getHpPotion();
         int strPotion = monster.getStrPotion();
-        int userHpPotion = Integer.parseInt(jedis.get(nickname+":hp_potion"));
-        int userStrPotion = Integer.parseInt(jedis.get(nickname+":str_potion"));
-        jedis.set(nickname + ":hp_potion", String.valueOf(hpPotion + userHpPotion));
-        jedis.set(nickname + ":str_potion", String.valueOf(strPotion + userStrPotion));
+        int userHpPotion = Integer.parseInt(jedis.hget(nickname, "hp_potion"));
+        int userStrPotion = Integer.parseInt(jedis.hget(nickname, "str_potion"));
+        jedis.hset(nickname ,"hp_potion", String.valueOf(hpPotion + userHpPotion));
+        jedis.hset(nickname ,"str_potion", String.valueOf(strPotion + userStrPotion));
     }
 
     public static synchronized boolean useHpPotion(String nickname){
-        int hpPotion = Integer.parseInt(jedis.get(nickname + ":hp_potion"));
+        int hpPotion = Integer.parseInt(jedis.hget(nickname ,"hp_potion"));
         if(hpPotion > 0){
-            int userHp = Integer.parseInt(jedis.get(nickname + ":hp"));
+            int userHp = Integer.parseInt(jedis.hget(nickname ,"hp"));
             userHp += 10;
             hpPotion--;
-            jedis.set(nickname + ":hp_potion", String.valueOf(hpPotion));
-            jedis.set(nickname + ":hp", String.valueOf(userHp));
+            jedis.hset(nickname ,"hp_potion", String.valueOf(hpPotion));
+            jedis.hset(nickname ,"hp", String.valueOf(userHp));
             return true;
         }else{
             return false;
@@ -184,7 +184,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean useStrPotion(String nickname){
-        int strPotion = Integer.parseInt(jedis.get(nickname + ":str_potion"));
+        int strPotion = Integer.parseInt(jedis.hget(nickname ,"str_potion"));
         if(strPotion <= 0){
             return false;
         }
@@ -197,16 +197,16 @@ public final class RedisTemplate {
             jedis.setex(nickname+":extra_str",60, String.valueOf(foundExtraStr));
         }
         strPotion--;
-        jedis.set(nickname+":str_potion", String.valueOf(strPotion));
+        jedis.hset(nickname, "str_potion", String.valueOf(strPotion));
         return true;
     }
 
     public static synchronized int getUserHpPotion(String nickname){
-        return Integer.parseInt(jedis.get(nickname+":hp_potion"));
+        return Integer.parseInt(jedis.hget(nickname, "hp_potion"));
     }
 
     public static synchronized int getUserStrPotion(String nickname){
-        return  Integer.parseInt(jedis.get(nickname + ":str_potion"));
+        return  Integer.parseInt(jedis.hget(nickname, "str_potion"));
     }
 
     public static synchronized  void serverReset(){
