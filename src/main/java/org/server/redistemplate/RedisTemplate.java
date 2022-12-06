@@ -33,7 +33,7 @@ public final class RedisTemplate {
         jedis.hset(nickname, "y_pos", String.valueOf(y));
         jedis.hset(nickname, "hp_potion", "1");
         jedis.hset(nickname, "str_potion", "1");
-        jedis.expire(nickname, 5 * 60); // 로그인 5분간 유지
+        jedis.expire(nickname, 5 * 60);
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: " + x + ", y_pos: " + y + "]";
     }
 
@@ -90,14 +90,14 @@ public final class RedisTemplate {
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println(nickname + " was killed by a monster!");
-            jedis.sadd("dead_user", nickname);
+            jedis.setex("dead_user:"+nickname, 5 * 60, nickname);
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
         }
     }
 
     public static synchronized boolean isDead(String nickname){
-        return jedis.sismember("dead_user", nickname);
+        return (jedis.get("dead_user:" + nickname) == null);
     }
 
     public static synchronized String showMonsters(){
