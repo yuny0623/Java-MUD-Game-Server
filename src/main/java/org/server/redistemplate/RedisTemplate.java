@@ -82,7 +82,7 @@ public final class RedisTemplate {
         int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
         int curr_y = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
         if(!checkMonsterExist()){
-            return nickname + "attack miss. No Monster exist.";
+            return nickname + " attack miss. No Monster exist.";
         }
         String monsters = RedisTemplate.showMonsters();
         for(int i = 0; i < 9; i++){
@@ -106,7 +106,7 @@ public final class RedisTemplate {
                 }
             }
         }
-        return nickname + " attack success.";
+        return nickname + " attacked a Monster with power of " + str + extraStr +".";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
