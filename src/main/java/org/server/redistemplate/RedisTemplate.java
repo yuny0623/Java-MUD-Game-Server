@@ -38,12 +38,18 @@ public final class RedisTemplate {
     }
 
     public static synchronized String move(String nickname, int x, int y){
+        if(!isValidUser(nickname)){
+            return nickname + " is Invalid User.";
+        }
         jedis.hset(nickname, "x_pos", String.valueOf(x));
         jedis.hset(nickname, "y_pos", String.valueOf(y));
         return nickname + " move to " + "[" + x + ", " + y + "]";
     }
 
     public static synchronized String userAttack(String nickname){
+        if(!isValidUser(nickname)){
+            return nickname + " is Invalid User.";
+        }
         int str = Integer.parseInt(jedis.hget(nickname, "str"));
         int extraStr = RedisTemplate.getExtraStr(nickname);
         int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
@@ -77,6 +83,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
+        if(!isValidUser(nickname)){
+           return;
+        }
         int hp = Integer.parseInt(jedis.hget(nickname ,"hp"));
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
@@ -107,8 +116,7 @@ public final class RedisTemplate {
             if (isDead(memberNickname)) {
                 continue;
             }
-            if(jedis.hget(memberNickname, "user_nickname") == null){
-                jedis.srem("nicknames", memberNickname);
+            if(!isValidUser(memberNickname)){
                 continue;
             }
             String xPos = jedis.hget(memberNickname ,"x_pos");
@@ -128,6 +136,12 @@ public final class RedisTemplate {
     }
 
     public static synchronized String chat(String from, String to, String content){
+        if(!isValidUser(from)){
+            return to + " is Invalid User.";
+        }
+        if(!isValidUser(to)){
+            return to + " is Invalid User.";
+        }
         mainServer.sendMessage(from, to, content);
         return from + " send message.";
     }
@@ -137,6 +151,12 @@ public final class RedisTemplate {
     }
 
     public static synchronized int[] getPosition(String nickname){
+        if(!isValidUser(nickname)){
+            int[] pos = new int[2];
+            pos[0] = 0;
+            pos[1] = 1;
+            return pos;
+        }
         int x = Integer.parseInt(jedis.hget(nickname, "x_pos"));
         int y = Integer.parseInt(jedis.hget(nickname, "y_pos"));
         int[] pos = new int[2];
@@ -146,6 +166,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized void getReward(String monsterId, String nickname){
+        if(!isValidUser(nickname)){
+            return;
+        }
         Monster monster = MonsterManager.monsterMap.get(monsterId);
         if(monster == null) {
             return;
@@ -159,6 +182,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean useHpPotion(String nickname){
+        if(!isValidUser(nickname)){
+            return false;
+        }
         int hpPotion = Integer.parseInt(jedis.hget(nickname ,"hp_potion"));
         if(hpPotion > 0){
             int userHp = Integer.parseInt(jedis.hget(nickname ,"hp"));
@@ -173,6 +199,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized int getExtraStr(String nickname){
+        if(!isValidUser(nickname)){
+            return 0;
+        }
         String extraStr = jedis.get(nickname + ":extra_str");
         if(extraStr == null){
            return 0;
@@ -182,6 +211,9 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean useStrPotion(String nickname){
+        if(!isValidUser(nickname)){
+            return false;
+        }
         int strPotion = Integer.parseInt(jedis.hget(nickname ,"str_potion"));
         if(strPotion <= 0){
             return false;
@@ -200,10 +232,16 @@ public final class RedisTemplate {
     }
 
     public static synchronized int getUserHpPotion(String nickname){
+        if(!isValidUser(nickname)){
+            return 0;
+        }
         return Integer.parseInt(jedis.hget(nickname, "hp_potion"));
     }
 
     public static synchronized int getUserStrPotion(String nickname){
+        if(!isValidUser(nickname)){
+            return 0;
+        }
         return  Integer.parseInt(jedis.hget(nickname, "str_potion"));
     }
 
