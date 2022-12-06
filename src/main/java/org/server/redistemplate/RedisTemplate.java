@@ -124,7 +124,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean isDead(String nickname){
-        return (jedis.get("dead_user:" + nickname) == null);
+        return (jedis.get("dead_user:" + nickname) != null);
     }
 
     public static synchronized String showMonsters(){
@@ -285,7 +285,7 @@ public final class RedisTemplate {
                 return false;
             }
         }else {
-            return true;
+            return false;
         }
     }
 }

@@ -42,7 +42,7 @@ public class ServerSocketThread extends Thread{
             nickname = command.split(" ")[1];
             boolean isLogin = server.login(nickname, this);
             if(isLogin){
-                System.out.println("Login Success!");
+                System.out.println(nickname + " Login Success!");
             }else{
                 nickname = threadName;
             }
