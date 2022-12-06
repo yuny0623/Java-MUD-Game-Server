@@ -138,13 +138,48 @@ public class JedisTest {
     }
 
     @Test
-    @DisplayName("Jedis Set에서 jedis expire 기능 테스트")
-    public void set_expire_test(){
+    @DisplayName("hset 동작 테스트")
+    public void hset_test(){
         // given
+        String nickname = "Lee";
+        jedis.hset("user:" + nickname, "nickname", nickname);
+        jedis.hset("user:" + nickname, "x_pos","1");
+        jedis.hset("user:" + nickname, "y_pos","2");
 
         // when
+        String foundNickname = jedis.hget("user:Lee", "nickname");
+        String foundXPos = jedis.hget("user:Lee","x_pos");
+        String foundYPos = jedis.hget("user:Lee", "y_pos");
 
         // then
+        Assert.assertEquals(nickname, foundNickname);
+        Assert.assertEquals("1", foundXPos);
+        Assert.assertEquals("2", foundYPos);
+    }
 
+    @Test
+    @DisplayName("hset expire 동작 테스트")
+    public void hset_expire_test(){
+        // given
+        String nickname = "Lee";
+        jedis.hset("user:" + nickname, "nickname", nickname);
+        jedis.hset("user:" + nickname, "x_pos","1");
+        jedis.hset("user:" + nickname, "y_pos","2");
+        jedis.expire("user:Lee", 1);
+
+        // when
+        try {
+            Thread.sleep(2 * 1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        String foundNickname = jedis.hget("user:Lee", "nickname");
+        String foundXPos = jedis.hget("user:Lee","x_pos");
+        String foundYPos = jedis.hget("user:Lee", "y_pos");
+
+        // then
+        Assert.assertNull(foundXPos);
+        Assert.assertNull(foundYPos);
+        Assert.assertNull(foundNickname);
     }
 }
