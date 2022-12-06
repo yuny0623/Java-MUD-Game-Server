@@ -231,12 +231,10 @@ public final class RedisTemplate {
         if(monster == null) {
             return;
         }
-        int hpPotion = monster.getHpPotion();
-        int strPotion = monster.getStrPotion();
-        int userHpPotion = Integer.parseInt(jedis.hget(nickname, "hp_potion"));
-        int userStrPotion = Integer.parseInt(jedis.hget(nickname, "str_potion"));
-        jedis.hset(nickname ,"hp_potion", String.valueOf(hpPotion + userHpPotion));
-        jedis.hset(nickname ,"str_potion", String.valueOf(strPotion + userStrPotion));
+        int monsterHpPotion = monster.getHpPotion();
+        int monsterStrPotion = monster.getStrPotion();
+        jedis.hincrBy(nickname, "hp_potion", monsterHpPotion);
+        jedis.hincrBy(nickname, "str_potion", monsterStrPotion);
     }
 
     public static synchronized int getExtraStr(String nickname){
