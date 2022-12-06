@@ -50,6 +50,10 @@ public class ServerSocketThread extends Thread{
             // Redis에 User 저장
             RedisTemplate.createUser(nickname);
             server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
+            String myInfo = RedisTemplate.myInfo(nickname);
+            if(!(myInfo.isBlank() || myInfo.isEmpty())){
+                sendMessage(JsonUtil.generateJson(myInfo));
+            }
 
             // 게임 진행
             while(true){
