@@ -207,7 +207,20 @@ public final class RedisTemplate {
         return  Integer.parseInt(jedis.hget(nickname, "str_potion"));
     }
 
-    public static synchronized  void serverReset(){
+    public static synchronized void serverReset(){
         jedis.flushAll();
+    }
+
+    public static synchronized boolean isValidUser(String nickname){
+        if(jedis.sismember("nicknames", nickname)){
+            if(jedis.hget(nickname, "user_nickname") != null){
+                return true;
+            }else{
+                jedis.srem("nicknames", nickname);
+                return false;
+            }
+        }else {
+            return true;
+        }
     }
 }
