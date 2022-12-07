@@ -1,8 +1,10 @@
 package org.server.mainserver;
 
 import org.server.dto.CommandDto;
+import org.server.dto.ResultDto;
 import org.server.game.Game;
 import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JsonUtil;
 import org.server.utils.ServerConfig;
 
 import java.io.IOException;
@@ -69,14 +71,18 @@ public class MainServer extends Thread{
     public synchronized void sendMessage(String sender, String receiver, String message){
         ServerSocketThread thread = (ServerSocketThread) userMap.get(receiver);
         if(thread != null) {
-            thread.sendMessage("["+sender+" -> "+receiver+"] " + message);
+            String json = JsonUtil.generateJson("["+sender+" -> "+receiver+"] " + message);
+            thread.sendMessage(json);
         }else{
             System.out.println("[Chat] No User Exist.");
         }
     }
 
-    public synchronized String playGame(CommandDto commandDto){
-        return game.play(commandDto);
+    public synchronized ResultDto playGame(CommandDto commandDto){
+        String result = game.play(commandDto);
+        String command = commandDto.getCommand().split(" ")[0];
+        ResultDto resultDto = new ResultDto(command, result);
+        return resultDto;
     }
 
     public synchronized boolean login(String nickname, Thread thread){

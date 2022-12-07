@@ -1,6 +1,7 @@
 package org.server.mainserver;
 
 import org.server.dto.CommandDto;
+import org.server.dto.ResultDto;
 import org.server.redistemplate.RedisTemplate;
 import org.server.utils.JsonUtil;
 
@@ -25,9 +26,37 @@ public class ServerSocketThread extends Thread{
         System.out.println("Thread Name: " + threadName);
     }
 
-    public void
-    sendMessage(String str){
+    public void sendMessage(String str){
         out.println(str);
+    }
+
+    public void send(ResultDto resultDto){
+        String command = resultDto.getCommand();
+        String json = "";
+        switch(command){
+            case "move":
+                json = JsonUtil.generateJson(resultDto.getResult());
+                server.broadCasting(json);
+                break;
+            case "attack":
+                json = JsonUtil.generateJson(resultDto.getResult());
+                server.broadCasting(json);
+                break;
+            case "monsters":
+                json = JsonUtil.generateJson(resultDto.getResult());
+                sendMessage(json);
+                break;
+            case "users":
+                json = JsonUtil.generateJson(resultDto.getResult());
+                sendMessage(json);
+                break;
+            case "chat":
+                break;
+            case "potion":
+                json = JsonUtil.generateJson(resultDto.getResult());
+                sendMessage(json);
+                break;
+        }
     }
 
     @Override
@@ -87,11 +116,9 @@ public class ServerSocketThread extends Thread{
                 }
                 CommandDto commandDto = new CommandDto(command, nickname);
 
-                String result = server.playGame(commandDto);
-                String resultJson = JsonUtil.generateJson(result);
-
-                System.out.println(result);
-                server.broadCasting(resultJson);
+                ResultDto resultDto = server.playGame(commandDto);
+                System.out.println(resultDto.getResult());
+                send(resultDto);
             }
         }catch(IOException e){
             System.out.println(nickname + ": removed.");
