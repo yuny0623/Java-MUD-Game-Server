@@ -157,6 +157,7 @@ public final class RedisTemplate {
             jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println(nickname + " was killed by a monster!");
             jedis.setex("dead_user:"+nickname, 5 * 60, nickname);
+            MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
         }

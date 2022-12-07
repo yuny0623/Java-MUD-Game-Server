@@ -18,12 +18,14 @@ public class MainServer extends Thread{
     Game game;
     Map<String, Thread> userMap;
 
+    public static MainServer mainServer;
     public MainServer(){
         System.out.println("Start Main Server.\n");
         userMap = new HashMap<>();
         game = Game.getInstance();
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setMainServer(this);
+        mainServer = this;
     }
 
     @Override
