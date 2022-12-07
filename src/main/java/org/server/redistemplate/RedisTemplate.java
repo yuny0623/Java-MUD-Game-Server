@@ -159,10 +159,11 @@ public final class RedisTemplate {
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println(nickname + " was killed by a monster!");
-            jedis.setex("dead_user:"+nickname, 5 * 60, nickname);
+            jedis.setex("dead_user:"+nickname, 1 * 60, nickname);
             MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
+            MainServer.mainServer.sendMessage("Monster", nickname, "You attacking by Monster!");
         }
     }
 
@@ -330,7 +331,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean isValidUser(String nickname){
-        if(isContains("nicknames", nickname)){// 여기서 문제가 발생하네 죽고 난 뒤에 다시 명령어를 보내면 sadd 를 해줘서 set 에 넣어줘야함.
+        if(isContains("nicknames", nickname)){
             if(jedis.hget(nickname, "user_nickname") != null){
                 return true;
             }else{
