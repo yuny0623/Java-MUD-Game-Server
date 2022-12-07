@@ -145,7 +145,7 @@ public final class RedisTemplate {
                 + str + extraStr + " and kills "
                 + kills + " Monsters and gain "
                 + gainHpPotion +" hp potion, "
-                + gainStrPotion + "str potion.";
+                + gainStrPotion + " str potion.";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
@@ -229,7 +229,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             int[] pos = new int[2];
             pos[0] = 0;
-            pos[1] = 1;
+            pos[1] = 0;
             return pos;
         }
         int x = Integer.parseInt(jedis.hget(nickname, "x_pos"));
