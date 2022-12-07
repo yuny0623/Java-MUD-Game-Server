@@ -29,7 +29,6 @@ public final class Game{
         String nickname = commandDto.getNickname();
         String[] commands = commandDto.getCommand().split(" ");
         String result = null;
-
         switch (commands[0]){
             case "move":
                  int x = Integer.parseInt(commands[1]);

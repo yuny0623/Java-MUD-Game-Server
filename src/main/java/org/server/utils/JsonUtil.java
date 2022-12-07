@@ -16,6 +16,18 @@ public final class JsonUtil {
         return jsonObject.toJSONString();
     }
 
+    public static synchronized String generateJsonByCommand(String command, String str){
+        JSONObject jsonObject = new JSONObject();
+        if(command.equals("monsters")){
+            jsonObject.put("MonsterInfo", str);
+        }else if(command.equals("users")){
+            jsonObject.put("UserInfo", str);
+        }else{
+            jsonObject.put("Notice", str);
+        }
+        return jsonObject.toJSONString();
+    }
+
     public static synchronized String parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");

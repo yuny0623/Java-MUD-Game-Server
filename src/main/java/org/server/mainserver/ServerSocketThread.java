@@ -46,11 +46,11 @@ public class ServerSocketThread extends Thread{
                 server.broadCasting(json);
                 break;
             case "monsters":
-                json = JsonUtil.generateJson(result);
+                json = JsonUtil.generateJsonByCommand(command, result);
                 sendMessage(json);
                 break;
             case "users":
-                json = JsonUtil.generateJson(result);
+                json = JsonUtil.generateJsonByCommand(command, result);
                 sendMessage(json);
                 break;
             case "chat":
@@ -97,11 +97,6 @@ public class ServerSocketThread extends Thread{
             // 게임 진행
             while(true){
                 strIn = in.readLine();
-
-                // health check
-                if(strIn.equals("ping")){
-                    sendMessage("pong");
-                }
 
                 if(strIn == null){
                     continue;
