@@ -13,7 +13,7 @@ public final class Game{
     public MonsterManager monsterManager;
 
     private Game(){
-        System.out.println("Game Start.\n");
+        System.out.println("[Game] Game Start.\n");
         monsterManager = new MonsterManager();
         monsterManager.start();
     }

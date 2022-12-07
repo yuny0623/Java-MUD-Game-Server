@@ -20,7 +20,7 @@ public class MainServer extends Thread{
 
     public static MainServer mainServer;
     public MainServer(){
-        System.out.println("Start Main Server.\n");
+        System.out.println("[Server] Start Main Server.\n");
         userMap = new HashMap<>();
         game = Game.getInstance();
         RedisTemplate redisTemplate = new RedisTemplate();
@@ -39,7 +39,7 @@ public class MainServer extends Thread{
                 }else{
                     continue;
                 }
-                System.out.println("New Socket accepted.");
+                System.out.println("[Server] New Socket accepted.");
                 ServerSocketThread thread = new ServerSocketThread(this, socket);
                 addClient(thread);
                 thread.start();
@@ -51,7 +51,7 @@ public class MainServer extends Thread{
 
     public synchronized void addClient(ServerSocketThread thread){
         userMap.put(thread.getName(), thread);
-        System.out.printf("Client: 1 user added. Total: %d.\n" , userMap.size());
+        System.out.printf("[Server] Client: 1 user added. Total: %d.\n" , userMap.size());
     }
 
     public synchronized void removeClient(String nickname, Thread thread){
@@ -59,7 +59,7 @@ public class MainServer extends Thread{
         if(foundThread == null){
             userMap.remove(thread.getName());
         }
-        System.out.printf("Client: 1 user removed. Total: %d.\n", userMap.size());
+        System.out.printf("[Server] Client: 1 user removed. Total: %d.\n", userMap.size());
     }
 
     public synchronized void broadCasting(String str){
@@ -103,7 +103,7 @@ public class MainServer extends Thread{
         Set<String> keys = userMap.keySet();
         int i = 0;
         for(String key: keys){
-            System.out.printf("[%d-LoginUser] %s : %s.\n", i++, key, userMap.get(key));
+            System.out.printf("[Server] [%d-LoginUser] %s : %s.\n", i++, key, userMap.get(key));
         }
         return true;
     }

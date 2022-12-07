@@ -22,8 +22,8 @@ public class ServerSocketThread extends Thread{
         this.server = server ;
         this.socket = socket;
         threadName = super.getName();
-        System.out.printf("%s : entered.\n", socket.getInetAddress());
-        System.out.printf("Thread Name: %s\n", threadName);
+        System.out.printf("[Client] %s : entered.\n", socket.getInetAddress());
+        System.out.printf("[Client] Thread Name: %s\n", threadName);
     }
 
     public void sendMessage(String str){
@@ -32,28 +32,32 @@ public class ServerSocketThread extends Thread{
 
     public void send(ResultDto resultDto){
         String command = resultDto.getCommand();
+        String result = resultDto.getResult();
         String json = "";
         switch(command){
             case "move":
-                json = JsonUtil.generateJson(resultDto.getResult());
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
                 server.broadCasting(json);
                 break;
             case "attack":
-                json = JsonUtil.generateJson(resultDto.getResult());
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
                 server.broadCasting(json);
                 break;
             case "monsters":
-                json = JsonUtil.generateJson(resultDto.getResult());
+                json = JsonUtil.generateJson(result);
                 sendMessage(json);
                 break;
             case "users":
-                json = JsonUtil.generateJson(resultDto.getResult());
+                json = JsonUtil.generateJson(result);
                 sendMessage(json);
                 break;
             case "chat":
                 break;
             case "potion":
-                json = JsonUtil.generateJson(resultDto.getResult());
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
                 server.broadCasting(json);
                 break;
         }
@@ -71,7 +75,7 @@ public class ServerSocketThread extends Thread{
             nickname = command.split(" ")[1];
             boolean isLogin = server.login(nickname, this);
             if(isLogin){
-                System.out.printf("%s Login Success!\n", nickname);
+                System.out.printf("[Client] %s Login Success!\n", nickname);
             }else{
                 nickname = threadName;
             }
@@ -112,23 +116,22 @@ public class ServerSocketThread extends Thread{
                 command = JsonUtil.parseJson(strIn);
 
                 if(command.equals("bot")){
-                    System.out.printf("%s activate bot mode.\n", nickname);
+                    System.out.printf("[Client] %s activate bot mode.\n", nickname);
                     server.broadCasting(JsonUtil.generateJson(nickname + " activate bot mode."));
                     continue;
                 }
                 if(command.equals("exit bot")){
-                    System.out.printf("%s disabled bot mode.\n", nickname);
+                    System.out.printf("[Client] %s disabled bot mode.\n", nickname);
                     server.broadCasting(JsonUtil.generateJson(nickname + " disabled bot mode."));
                     continue;
                 }
                 CommandDto commandDto = new CommandDto(command, nickname);
 
                 ResultDto resultDto = server.playGame(commandDto);
-                System.out.println(resultDto.getResult());
                 send(resultDto);
             }
         }catch(IOException e){
-            System.out.printf("%s : removed.\n", nickname);
+            System.out.printf("[Client] %s : removed.\n", nickname);
             server.removeClient(nickname, this);
         }finally{
             try{
