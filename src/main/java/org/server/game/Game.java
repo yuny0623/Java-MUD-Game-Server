@@ -34,19 +34,6 @@ public final class Game{
             case "move":
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
-//                 int[] pos = RedisTemplate.getPosition(nickname);
-//                 int fixedX = x;
-//                 int fixedY = y;
-//                 if(x + pos[0] < 0){
-//                     fixedX = 0;
-//                 }else if(x + pos[0] > 29){
-//                     fixedX = 29;
-//                 }
-//                 if(y + pos[1] < 0){
-//                     fixedY = 0;
-//                 }else if(y + pos[1] > 29){
-//                     fixedY = 29;
-//                 }
                  result = RedisTemplate.move(nickname, x, y);
                  break;
             case "attack":
