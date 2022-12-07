@@ -158,7 +158,7 @@ public final class RedisTemplate {
         int hp = Integer.parseInt(jedis.hget(nickname ,"hp"));
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
-            System.out.println(nickname + " was killed by a monster!");
+            System.out.println("[Monster]" + nickname + " is killed by a monster!");
             jedis.setex("dead_user:"+nickname, 1 * 60, nickname);
             MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
         }else {
