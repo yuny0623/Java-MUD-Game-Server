@@ -113,7 +113,10 @@ public final class RedisTemplate {
         if(!checkMonsterExist()){
             return nickname + " attack miss. No Monster exist.";
         }
-        String monsters = RedisTemplate.showMonsters();
+        String monsters = RedisTemplate.showMonstersServer();
+        int kills = 0;
+        int gainHpPotion = 0;
+        int gainStrPotion = 0;
         for(int i = 0; i < 9; i++){
             int attackX = dx[i] + curr_x;
             int attackY = dy[i] + curr_y;
@@ -128,14 +131,21 @@ public final class RedisTemplate {
                         Monster monster = MonsterManager.monsterMap.get(monsterId);
                         boolean isDead = monster.attacked(str + extraStr);
                         if(isDead) {
-                            getReward(nickname, monsterId);
+                            int[] reward = getReward(nickname, monsterId);
                             monster.interrupt();
+                            kills ++;
+                            gainHpPotion += reward[0];
+                            gainStrPotion += reward[1];
                         }
                     }
                 }
             }
         }
-        return nickname + " attacked a Monster with power of " + str + extraStr +".";
+        return nickname + " attacked a Monster with power of "
+                + str + extraStr + " and kills "
+                + kills + " Monsters and gain "
+                + gainHpPotion +" hp potion, "
+                + gainStrPotion + "str potion.";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){
@@ -156,11 +166,20 @@ public final class RedisTemplate {
         return (jedis.get("dead_user:" + nickname) != null);
     }
 
-    public static synchronized String showMonsters(){
+    public static synchronized String showMonstersServer(){
         StringBuffer sb = new StringBuffer();
         for(String monsterId:  MonsterManager.monsterMap.keySet()){
             Monster monster = MonsterManager.monsterMap.get(monsterId);
             sb.append(monsterId + " " + monster.getX() + " " + monster.getY() + "\n");
+        }
+        return sb.toString();
+    }
+
+    public static synchronized String showMonsters(){
+        StringBuffer sb = new StringBuffer();
+        for(String monsterId:  MonsterManager.monsterMap.keySet()){
+            Monster monster = MonsterManager.monsterMap.get(monsterId);
+            sb.append("Monster " + monster.getX() + " " + monster.getY() + "\n");
         }
         return sb.toString();
     }
@@ -221,18 +240,20 @@ public final class RedisTemplate {
         return pos;
     }
 
-    public static synchronized void getReward(String monsterId, String nickname){
+    public static synchronized int[] getReward(String monsterId, String nickname){
         if(!isValidUser(nickname)){
-            return;
+            return new int[] {0, 0};
         }
         Monster monster = MonsterManager.monsterMap.get(monsterId);
         if(monster == null) {
-            return;
+            return new int[] {0, 0};
         }
         int monsterHpPotion = monster.getHpPotion();
         int monsterStrPotion = monster.getStrPotion();
         jedis.hincrBy(nickname, "hp_potion", monsterHpPotion);
         jedis.hincrBy(nickname, "str_potion", monsterStrPotion);
+        MonsterManager.monsterMap.remove(monsterId);
+        return new int[] {monsterHpPotion, monsterStrPotion};
     }
 
     public static synchronized int getExtraStr(String nickname){
@@ -300,7 +321,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean isValidUser(String nickname){
-        if(jedis.sismember("nicknames", nickname)){
+        if(isContains("nicknames", nickname)){
             if(jedis.hget(nickname, "user_nickname") != null){
                 return true;
             }else{

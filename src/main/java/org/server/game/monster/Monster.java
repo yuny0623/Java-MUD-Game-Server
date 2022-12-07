@@ -30,7 +30,6 @@ public class Monster extends Thread{
     public boolean attacked(int str){
         this.hp -= str;
         if(this.hp <= 0){
-            MonsterManager.monsterMap.remove(monsterName);
             return true;
         }
         return false;
