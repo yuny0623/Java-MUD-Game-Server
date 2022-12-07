@@ -93,9 +93,16 @@ public class ServerSocketThread extends Thread{
             // 게임 진행
             while(true){
                 strIn = in.readLine();
+
+                if(strIn.equals("ping")){
+                    // health check
+                    sendMessage("pong");
+                }
+
                 if(strIn == null){
                     continue;
                 }
+
                 // 사망했을 경우 게임 진행 불가
                 if(RedisTemplate.isDead(nickname)){
                     sendMessage(JsonUtil.generateJson("You are Dead."));
