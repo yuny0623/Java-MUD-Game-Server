@@ -163,7 +163,7 @@ public final class RedisTemplate {
             MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
-            MainServer.mainServer.sendMessage("Monster", nickname, "You attacking by Monster!");
+            MainServer.mainServer.sendMessage("Monster", nickname, "You are attacking by Monster!");
         }
     }
 
