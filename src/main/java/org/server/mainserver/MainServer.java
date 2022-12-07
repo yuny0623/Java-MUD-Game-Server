@@ -49,7 +49,7 @@ public class MainServer extends Thread{
 
     public synchronized void addClient(ServerSocketThread thread){
         userMap.put(thread.getName(), thread);
-        System.out.println("Client: 1 user added. Total: " + userMap.size());
+        System.out.printf("Client: 1 user added. Total: %d.\n" , userMap.size());
     }
 
     public synchronized void removeClient(String nickname, Thread thread){
@@ -57,7 +57,7 @@ public class MainServer extends Thread{
         if(foundThread == null){
             userMap.remove(thread.getName());
         }
-        System.out.println("Client: 1 user removed. Total: " + userMap.size());
+        System.out.printf("Client: 1 user removed. Total: %d.\n", userMap.size());
     }
 
     public synchronized void broadCasting(String str){
@@ -101,8 +101,7 @@ public class MainServer extends Thread{
         Set<String> keys = userMap.keySet();
         int i = 0;
         for(String key: keys){
-            System.out.println("[" + i +".LoginUser] " + key +" : " + userMap.get(key));
-            i++;
+            System.out.printf("[%d-LoginUser] %s : %s.\n", i++, key, userMap.get(key));
         }
         return true;
     }

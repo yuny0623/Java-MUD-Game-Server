@@ -22,8 +22,8 @@ public class ServerSocketThread extends Thread{
         this.server = server ;
         this.socket = socket;
         threadName = super.getName();
-        System.out.println(socket.getInetAddress() + ": entered.");
-        System.out.println("Thread Name: " + threadName);
+        System.out.printf("%s : entered.\n", socket.getInetAddress());
+        System.out.printf("Thread Name: %s\n", threadName);
     }
 
     public void sendMessage(String str){
@@ -71,7 +71,7 @@ public class ServerSocketThread extends Thread{
             nickname = command.split(" ")[1];
             boolean isLogin = server.login(nickname, this);
             if(isLogin){
-                System.out.println(nickname + " Login Success!");
+                System.out.printf("%s Login Success!\n", nickname);
             }else{
                 nickname = threadName;
             }
@@ -105,12 +105,12 @@ public class ServerSocketThread extends Thread{
                 command = JsonUtil.parseJson(strIn);
 
                 if(command.equals("bot")){
-                    System.out.println(nickname + " activate bot mode.");
+                    System.out.printf("%s activate bot mode.\n", nickname);
                     server.broadCasting(JsonUtil.generateJson(nickname + " activate bot mode."));
                     continue;
                 }
                 if(command.equals("exit bot")){
-                    System.out.println(nickname + " disabled bot mode.");
+                    System.out.printf("%s disabled bot mode.\n", nickname);
                     server.broadCasting(JsonUtil.generateJson(nickname + " disabled bot mode."));
                     continue;
                 }
@@ -121,7 +121,7 @@ public class ServerSocketThread extends Thread{
                 send(resultDto);
             }
         }catch(IOException e){
-            System.out.println(nickname + ": removed.");
+            System.out.printf("%s : removed.\n", nickname);
             server.removeClient(nickname, this);
         }finally{
             try{

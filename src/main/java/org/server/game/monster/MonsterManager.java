@@ -35,7 +35,7 @@ public class MonsterManager extends Thread{
                     monster.start();
                 }
             }
-            System.out.println("Add " + diff + " Monsters");
+            System.out.printf("Generate new %d Monsters.\n", diff);
         }
     }
 }
