@@ -78,7 +78,6 @@ public class Monster extends Thread{
                 System.out.println("[Monster] Monster killed so terminate this Monster Thread-" + this.getName());
             }
             if(!RedisTemplate.checkUserExist()){
-                System.out.println("[Monster] No Users Exist.");
                 continue;
             }
             String users = RedisTemplate.showUsers();
@@ -97,9 +96,8 @@ public class Monster extends Thread{
                         }
                         int userX = Integer.parseInt(vals[1]);
                         int userY = Integer.parseInt(vals[2]);
-                        System.out.println("[Monster:[" + this.getX() + "," + this.getY() + "]] attack around!");
                         if (userX == attackX && userY == attackY) {
-                            System.out.println("[" + nickname + "] " + "User Attacked by Monster.");
+                            System.out.println("[Monster] Monster attacks [" + nickname + "] in [" + this.getX() + "," + this.getY() + "]");
                             RedisTemplate.userAttacked(nickname, this.getStr());
                         }
                     }
