@@ -54,7 +54,7 @@ public class ServerSocketThread extends Thread{
                 break;
             case "potion":
                 json = JsonUtil.generateJson(resultDto.getResult());
-                sendMessage(json);
+                server.broadCasting(json);
                 break;
         }
     }
