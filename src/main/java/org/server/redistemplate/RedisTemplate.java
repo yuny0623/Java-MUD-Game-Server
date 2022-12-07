@@ -66,6 +66,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";
         }
+        renewalLogin(nickname);
 
         if(x < -3){
             x = -3;
@@ -106,6 +107,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";
         }
+        renewalLogin(nickname);
         int str = Integer.parseInt(jedis.hget(nickname, "str"));
         int extraStr = RedisTemplate.getExtraStr(nickname);
         int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
@@ -152,6 +154,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
            return;
         }
+        renewalLogin(nickname);
         int hp = Integer.parseInt(jedis.hget(nickname ,"hp"));
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
@@ -189,7 +192,7 @@ public final class RedisTemplate {
         Set<String> members = jedis.smembers("nicknames");
         StringBuffer sb = new StringBuffer();
         for(String memberNickname : members){
-            if (isDead(memberNickname)) {
+            if(isDead(memberNickname)) {
                 continue;
             }
             if(!isValidUser(memberNickname)){
@@ -218,6 +221,7 @@ public final class RedisTemplate {
         if(!isValidUser(to)){
             return to + " is Invalid User.";
         }
+        renewalLogin(from);
         mainServer.sendMessage(from, to, content);
         return from + " send message.";
     }
@@ -245,6 +249,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return new int[] {0, 0};
         }
+        renewalLogin(nickname);
         Monster monster = MonsterManager.monsterMap.get(monsterId);
         if(monster == null) {
             return new int[] {0, 0};
@@ -261,6 +266,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return 0;
         }
+        renewalLogin(nickname);
         String extraStr = jedis.get(nickname + ":extra_str");
         if(extraStr == null){
            return 0;
@@ -273,6 +279,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return false;
         }
+        renewalLogin(nickname);
         int hpPotion = Integer.parseInt(jedis.hget(nickname ,"hp_potion"));
         if(hpPotion > 0){
             jedis.hincrBy(nickname, "hp", 10);
@@ -287,6 +294,7 @@ public final class RedisTemplate {
         if(!isValidUser(nickname)){
             return false;
         }
+        renewalLogin(nickname);
         int strPotion = Integer.parseInt(jedis.hget(nickname ,"str_potion"));
         if(strPotion <= 0){
             return false;
@@ -322,7 +330,7 @@ public final class RedisTemplate {
     }
 
     public static synchronized boolean isValidUser(String nickname){
-        if(isContains("nicknames", nickname)){
+        if(isContains("nicknames", nickname)){// 여기서 문제가 발생하네 죽고 난 뒤에 다시 명령어를 보내면 sadd 를 해줘서 set 에 넣어줘야함.
             if(jedis.hget(nickname, "user_nickname") != null){
                 return true;
             }else{
