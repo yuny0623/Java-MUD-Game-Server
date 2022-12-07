@@ -75,7 +75,7 @@ public class Monster extends Thread{
             try {
                 Thread.sleep( 5 * 1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("[Monster] Monster killed so terminate this Monster Thread-" + this.getName());
             }
             if(!RedisTemplate.checkUserExist()){
                 System.out.println("[Monster] No Users Exist.");
