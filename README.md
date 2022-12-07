@@ -3,12 +3,12 @@
 ## 🍀 Project Intro
 ```
 🌊 프로젝트 소개
-MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다. 
+MUD: Multi User Dungeon은 초기 온라인 게임의 한 형태이다. 
 여러 사용자가 RPG 배경의 던전을 탐험한다는 이름에서 MUD라는 이름이 붙었다. 
 당시 GUI가 없었기 때문에 텍스트로 입력을 주고 텍스트 출력을 얻는 형태이다.
 해당 MUD 게임용 Server와 Client를 만들어보도록 한다. 
  
-🔎 기능 소개 
+🔎 서버 기능 소개 
    1️⃣ 사용자 로그인 처리 
    2️⃣ 사용자 데이터 저장 
    3️⃣ 몬스터 생성 
@@ -27,6 +27,17 @@ MUD: Multi User Dungeon 은 초기 온라인 게임의 한 형태이다.
    7️⃣ potion str 
    8️⃣ bot 
    9️⃣ exit bot 
+```
+
+## ❓ How to use 
+```
+💻 Windows 
+    1️⃣ gradlew build 
+    2️⃣ *.jar 파일 실행 
+   
+🍎 Linux/Mac
+    1️⃣ ./gradlew build 
+    2️⃣ *.jar 파일 실행 
 ```
 
 ## 📲 Tech

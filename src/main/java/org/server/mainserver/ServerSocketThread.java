@@ -94,8 +94,8 @@ public class ServerSocketThread extends Thread{
             while(true){
                 strIn = in.readLine();
 
+                // health check
                 if(strIn.equals("ping")){
-                    // health check
                     sendMessage("pong");
                 }
 
