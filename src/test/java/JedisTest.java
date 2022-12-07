@@ -4,14 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.w3c.dom.ls.LSException;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Protocol;
+import redis.clients.jedis.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class JedisTest {
     JedisPool pool;
@@ -126,6 +121,7 @@ public class JedisTest {
     }
 
     @Test
+    @DisplayName("Jedis에서 존재하지 않는 키로 탐색하기 테스트")
     public void get_non_exist_key_test(){
         // given
         jedis.set("test_key", "test_value");
@@ -158,7 +154,7 @@ public class JedisTest {
     }
 
     @Test
-    @DisplayName("hset expire 동작 테스트")
+    @DisplayName("Jedis의 hset expire 동작 테스트")
     public void hset_expire_test(){
         // given
         String nickname = "Lee";
@@ -184,7 +180,7 @@ public class JedisTest {
     }
 
     @Test
-    @DisplayName("hgetAll 테스트")
+    @DisplayName("Jedis의 hgetAll 테스트")
     public void hgetAll_test(){
         // given
         String nickname = "Lee";
@@ -204,7 +200,7 @@ public class JedisTest {
     }
     
     @Test
-    @DisplayName("hincrBy에 음수를 전달했을 경우 테스트")
+    @DisplayName("Jedis의 hincrBy에 음수를 전달했을 경우 테스트")
     public void give_negative_number_to_hincrBy_test(){
         // given
         String nickname = "tomson";
@@ -220,5 +216,42 @@ public class JedisTest {
         // then
         Assert.assertEquals(originHp + 10, increasedHp);
         Assert.assertEquals(increasedHp - 10, decreasedHp);
+    }
+
+    @Test
+    @DisplayName("Jedis sscan 기능 테스트")
+    public void sscan_test(){
+        // given
+        String setKey = "nicknames";
+        String target = UUID.randomUUID().toString();
+        for(int i = 0; i < 999; i++){
+            jedis.sadd(setKey, UUID.randomUUID().toString());
+        }
+        jedis.sadd(setKey, target);
+
+        // when
+        String key = "nicknames";
+        ScanParams scanParams = new ScanParams().count(100);
+        String cur = ScanParams.SCAN_POINTER_START;
+        boolean cycleIsFinished = false;
+        boolean isContains = false;
+        while(!cycleIsFinished){
+            ScanResult<String> scanResult = jedis.sscan(key, cur, scanParams);
+            List<String> resultList = scanResult.getResult();
+
+            for(int i = 0; i < resultList.size(); i++){
+                if(resultList.get(i).equals(target)){
+                    isContains = true;
+                    break;
+                }
+            }
+            cur = scanResult.getStringCursor();
+            if(cur.equals("0")){
+                cycleIsFinished = true;
+            }
+        }
+
+        // then
+        Assert.assertTrue(isContains);
     }
 }
