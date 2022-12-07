@@ -4,9 +4,7 @@ import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
 import org.server.mainserver.MainServer;
 import org.server.utils.ServerConfig;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Protocol;
+import redis.clients.jedis.*;
 
 import java.util.*;
 
@@ -312,5 +310,28 @@ public final class RedisTemplate {
         }else {
             return false;
         }
+    }
+
+    public static synchronized boolean isContains(String setKey, String target){
+        ScanParams scanParams = new ScanParams().count(100);
+        String cur = ScanParams.SCAN_POINTER_START;
+        boolean cycleIsFinished = false;
+        boolean isContains = false;
+        while(!cycleIsFinished){
+            ScanResult<String> scanResult = jedis.sscan(setKey, cur, scanParams);
+            List<String> resultList = scanResult.getResult();
+
+            for(int i = 0; i < resultList.size(); i++){
+                if(resultList.get(i).equals(target)){
+                    isContains = true;
+                    break;
+                }
+            }
+            cur = scanResult.getStringCursor();
+            if(cur.equals("0")){
+                cycleIsFinished = true;
+            }
+        }
+        return isContains;
     }
 }
