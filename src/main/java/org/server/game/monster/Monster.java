@@ -110,7 +110,7 @@ public class Monster extends Thread{
                 }
             }
         }catch(InterruptedException e){
-            System.out.println(e.getMessage());
+            System.out.println("[Monster] " + e.getMessage());
         }
     }
 }
