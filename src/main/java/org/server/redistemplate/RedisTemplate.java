@@ -138,16 +138,17 @@ public final class RedisTemplate {
                             kills ++;
                             gainHpPotion += reward[0];
                             gainStrPotion += reward[1];
+                            return nickname + " attack a Monster with power of "
+                                    + (str + extraStr) + " and kills "
+                                    + kills + " Monsters and gain "
+                                    + gainHpPotion +" hp potion, "
+                                    + gainStrPotion + " str potion.";
                         }
                     }
                 }
             }
         }
-        return nickname + " attacked a Monster with power of "
-                + (str + extraStr) + " and kills "
-                + kills + " Monsters and gain "
-                + gainHpPotion +" hp potion, "
-                + gainStrPotion + " str potion.";
+        return nickname + " attack a Monster with power of " + (str + extraStr) +".";
     }
 
     public static synchronized void userAttacked(String nickname, int monsterStr){

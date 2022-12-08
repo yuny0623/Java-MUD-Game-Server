@@ -47,10 +47,12 @@ public class ServerSocketThread extends Thread{
                 break;
             case "monsters":
                 json = JsonUtil.generateJsonByCommand(command, result);
+                System.out.println("[Client] " + result);
                 sendMessage(json);
                 break;
             case "users":
                 json = JsonUtil.generateJsonByCommand(command, result);
+                System.out.println("[Client] " + result);
                 sendMessage(json);
                 break;
             case "chat":
