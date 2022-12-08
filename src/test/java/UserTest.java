@@ -166,4 +166,18 @@ public class UserTest {
         Assert.assertNull(timedOut_hp_potion);
         Assert.assertNull(timedOut_str_potion);
     }
+
+    @Test
+    @DisplayName("isValidUser 메소드 테스트")
+    public void isValidUser_method_test(){
+        // given
+        String nickname = "gradle";
+        JedisUtil.createUser(nickname);
+
+        // when
+        boolean isValid = JedisUtil.isValidUser(nickname);
+
+        // then
+        Assert.assertTrue(isValid);
+    }
 }

@@ -115,6 +115,7 @@ public final class JedisUtil {
             return nickname + " attack miss. No Monster exist.";
         }
         String monsters = JedisUtil.showMonstersServer();
+        String[] monsterRow = monsters.split("\n");
         int kills = 0;
         int gainHpPotion = 0;
         int gainStrPotion = 0;
@@ -122,7 +123,6 @@ public final class JedisUtil {
             int attackX = dx[i] + curr_x;
             int attackY = dy[i] + curr_y;
             if(0 <= attackX && attackX < 30 && 0 <= attackY && attackY < 30){
-                String[] monsterRow = monsters.split("\n");
                 for(String row: monsterRow){
                     String[] val = row.split(" ");
                     String monsterId = val[0];
@@ -132,7 +132,7 @@ public final class JedisUtil {
                         Monster monster = MonsterManager.monsterMap.get(monsterId);
                         boolean isDead = monster.attacked(str + extraStr);
                         if(isDead) {
-                            int[] reward = getReward(nickname, monsterId);
+                            int[] reward = getReward(monsterId, nickname);
                             kills ++;
                             gainHpPotion += reward[0];
                             gainStrPotion += reward[1];
@@ -250,12 +250,10 @@ public final class JedisUtil {
     }
 
     public static synchronized int[] getReward(String monsterId, String nickname){
-        if(!isValidUser(nickname)){
-            return new int[] {0, 0};
-        }
         renewalLogin(nickname);
         Monster monster = MonsterManager.monsterMap.get(monsterId);
         if(monster == null) {
+            System.out.println("getReward - 2 monster is null");
             return new int[] {0, 0};
         }
         int monsterHpPotion = monster.getHpPotion();
