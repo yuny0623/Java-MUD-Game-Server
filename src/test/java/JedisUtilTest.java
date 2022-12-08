@@ -12,7 +12,7 @@ import redis.clients.jedis.Protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RedisTemplateTest {
+public class JedisUtilTest {
     Jedis jedis;
     JedisPool pool;
     @Before
@@ -28,7 +28,7 @@ public class RedisTemplateTest {
 
     @Test
     @DisplayName("jedis get 테스트")
-    public void redisTemplateGetTest(){
+    public void jedisUtilTest(){
         // given
         String nickname = "monad";
         jedis.sadd("nicknames",  nickname);
