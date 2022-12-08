@@ -109,4 +109,21 @@ public class MonsterTest {
         // then
         Assert.assertEquals(10, monsterMap.size());
     }
+
+    @Test
+    @DisplayName("몬스터 포션 생성 확인 테스트")
+    public void monster_potion_generate_test(){
+        // given
+        String nickname = "gradle";
+        Monster monster = new Monster(nickname);
+        monster.start();
+
+        // when
+        int hpPotion = monster.getHpPotion();
+        int strPotion = monster.getStrPotion();
+
+        // then
+        Assert.assertTrue(hpPotion > 0);
+        Assert.assertTrue(strPotion > 0);
+    }
 }
