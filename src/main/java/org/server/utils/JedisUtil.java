@@ -89,10 +89,10 @@ public final class JedisUtil {
         if(toX < 0){
             toX = 0;
         }else if(toX > 29){
-            toY = 29;
+            toX = 29;
         }
         if(toY < 0){
-            toX = 0;
+            toY = 0;
         }else if(toY > 29){
             toY = 29;
         }
