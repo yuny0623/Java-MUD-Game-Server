@@ -233,17 +233,11 @@ public final class RedisTemplate {
 
     public static synchronized int[] getPosition(String nickname){
         if(!isValidUser(nickname)){
-            int[] pos = new int[2];
-            pos[0] = 0;
-            pos[1] = 0;
-            return pos;
+            return new int[] {0, 0};
         }
         int x = Integer.parseInt(jedis.hget(nickname, "x_pos"));
         int y = Integer.parseInt(jedis.hget(nickname, "y_pos"));
-        int[] pos = new int[2];
-        pos[0] = x;
-        pos[1] = y;
-        return pos;
+        return new int[] {x, y};
     }
 
     public static synchronized int[] getReward(String monsterId, String nickname){
