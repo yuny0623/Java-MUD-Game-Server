@@ -144,7 +144,7 @@ public final class RedisTemplate {
             }
         }
         return nickname + " attacked a Monster with power of "
-                + str + extraStr + " and kills "
+                + (str + extraStr) + " and kills "
                 + kills + " Monsters and gain "
                 + gainHpPotion +" hp potion, "
                 + gainStrPotion + " str potion.";

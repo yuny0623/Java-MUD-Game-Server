@@ -17,14 +17,14 @@ public class Monster extends Thread{
     public Monster(String monsterName){
         this.monsterName = monsterName;
 
-        this.hp = (int) (Math.random() * (10 - 5 + 1) + 5);
-        this.str=  (int) (Math.random() * (5 - 3 + 1) + 3);
+        this.hp = (int) (Math.random() * (10 - 5 + 1)) + 5;
+        this.str=  (int) (Math.random() * (5 - 3 + 1)) + 3;
 
-        this.hpPotion = (int) (Math.random() * (10 - 5 + 1) + 5);
-        this.strPotion = (int) (Math.random() * (10 - 5 + 1) + 5);
+        this.hpPotion = (int) (Math.random() * (10 - 5 + 1)) + 5;
+        this.strPotion = (int) (Math.random() * (10 - 5 + 1)) + 5;
 
-        this.x = (int) (Math.random() * (29 - 0 + 1) + 0);
-        this.y = (int) (Math.random() * (29 - 0 + 1) + 0);
+        this.x = (int) (Math.random() * (29 - 0 + 1)) + 0;
+        this.y = (int) (Math.random() * (29 - 0 + 1)) + 0;
     }
 
     public boolean attacked(int str){

@@ -34,8 +34,8 @@ public class MonsterManager extends Thread{
                     this.monsterMap.put(monsterName, monster);
                     monster.start();
                 }
+                System.out.printf("[MonsterFactory] Generate new %d Monsters.\n", diff);
             }
-            System.out.printf("[MonsterFactory] Generate new %d Monsters.\n", diff);
         }
     }
 }
