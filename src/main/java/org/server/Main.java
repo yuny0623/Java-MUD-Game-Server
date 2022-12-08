@@ -1,7 +1,7 @@
 package org.server;
 
 import org.server.mainserver.MainServer;
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,6 +9,6 @@ public class Main {
         mainServer.start();
 
         // 종료 직전에 서버 리셋
-        RedisTemplate.serverReset();
+        JedisUtil.serverReset();
     }
 }

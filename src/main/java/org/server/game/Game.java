@@ -1,12 +1,8 @@
 package org.server.game;
 
 import org.server.dto.CommandDto;
-import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
-import org.server.redistemplate.RedisTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.server.utils.JedisUtil;
 
 public final class Game{
     private static Game instance;
@@ -33,26 +29,26 @@ public final class Game{
             case "move":
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
-                 result = RedisTemplate.move(nickname, x, y);
+                 result = JedisUtil.move(nickname, x, y);
                  break;
             case "attack":
-                result = RedisTemplate.userAttack(nickname);
+                result = JedisUtil.userAttack(nickname);
                 break;
             case "monsters":
-                result = RedisTemplate.showMonsters();
+                result = JedisUtil.showMonsters();
                 break;
             case "users":
-                result = RedisTemplate.showUsers();
+                result = JedisUtil.showUsers();
                 break;
             case "chat":
                 String to = commands[1];
                 String content = commands[2];
-                result = RedisTemplate.chat(nickname, to, content);
+                result = JedisUtil.chat(nickname, to, content);
                 break;
             case "potion":
                 String item = commands[1];
                 if(item.equals("hp")){
-                    boolean isUse = RedisTemplate.useHpPotion(nickname);
+                    boolean isUse = JedisUtil.useHpPotion(nickname);
                     if(isUse){
                         result = nickname + " recover 10 hp.";
                     }else{
@@ -60,7 +56,7 @@ public final class Game{
                     }
                     break;
                 }else if(item.equals("str")){
-                    boolean isUse = RedisTemplate.useStrPotion(nickname);
+                    boolean isUse = JedisUtil.useStrPotion(nickname);
                     if(isUse){
                         result = nickname + " increase 3 str.";
                     }else{

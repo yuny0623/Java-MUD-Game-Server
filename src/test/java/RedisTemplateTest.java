@@ -3,7 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -76,7 +76,7 @@ public class RedisTemplateTest {
     @DisplayName("showMonsters 메소드 테스트")
     public void showMonstersTest(){
         // given
-        String monsters = RedisTemplate.showMonsters();
+        String monsters = JedisUtil.showMonsters();
         String[] monsterRows = monsters.split("\n");
         String[] vals=  null;
         List<Integer> posList = new ArrayList<>();

@@ -1,14 +1,13 @@
-package org.server.redistemplate;
+package org.server.utils;
 
 import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
 import org.server.mainserver.MainServer;
-import org.server.utils.ServerConfig;
 import redis.clients.jedis.*;
 
 import java.util.*;
 
-public final class RedisTemplate {
+public final class JedisUtil {
     private static final JedisPool pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
     private static final Jedis jedis = pool.getResource();
     private static MainServer mainServer;
@@ -16,7 +15,7 @@ public final class RedisTemplate {
     private static final int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
     private static final int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
-    public RedisTemplate(){
+    public JedisUtil(){
 
     }
 
@@ -109,13 +108,13 @@ public final class RedisTemplate {
         }
         renewalLogin(nickname);
         int str = Integer.parseInt(jedis.hget(nickname, "str"));
-        int extraStr = RedisTemplate.getExtraStr(nickname);
+        int extraStr = JedisUtil.getExtraStr(nickname);
         int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
         int curr_y = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
         if(!checkMonsterExist()){
             return nickname + " attack miss. No Monster exist.";
         }
-        String monsters = RedisTemplate.showMonstersServer();
+        String monsters = JedisUtil.showMonstersServer();
         int kills = 0;
         int gainHpPotion = 0;
         int gainStrPotion = 0;

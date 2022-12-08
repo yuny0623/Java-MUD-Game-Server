@@ -3,7 +3,7 @@ package org.server.mainserver;
 import org.server.dto.CommandDto;
 import org.server.dto.ResultDto;
 import org.server.game.Game;
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 import org.server.utils.JsonUtil;
 import org.server.utils.ServerConfig;
 
@@ -23,7 +23,7 @@ public class MainServer extends Thread{
         System.out.println("[Server] Start Main Server.\n");
         userMap = new HashMap<>();
         game = Game.getInstance();
-        RedisTemplate redisTemplate = new RedisTemplate();
+        JedisUtil redisTemplate = new JedisUtil();
         redisTemplate.setMainServer(this);
         mainServer = this;
     }

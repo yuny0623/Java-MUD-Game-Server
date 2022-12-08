@@ -2,7 +2,7 @@ package org.server.mainserver;
 
 import org.server.dto.CommandDto;
 import org.server.dto.ResultDto;
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 import org.server.utils.JsonUtil;
 
 import java.io.*;
@@ -83,15 +83,15 @@ public class ServerSocketThread extends Thread{
             }
 
             // Redis 에 User 저장
-            if(RedisTemplate.isValidUser(nickname)){ // 이미 접속 기록이 존재하는 유저인 경우
-                RedisTemplate.renewalLogin(nickname); // 접속 유효시간 갱신
+            if(JedisUtil.isValidUser(nickname)){ // 이미 접속 기록이 존재하는 유저인 경우
+                JedisUtil.renewalLogin(nickname); // 접속 유효시간 갱신
             }else { // 처음 접속하는 유저이거나 접속 정보가 만료된 유저인 경우
-                RedisTemplate.createUser(nickname);
+                JedisUtil.createUser(nickname);
             }
             server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
 
             // 해당 유저에게 생성된 캐릭터 정보 전달
-            String myInfo = RedisTemplate.myInfo(nickname);
+            String myInfo = JedisUtil.myInfo(nickname);
             if(!(myInfo.isBlank() || myInfo.isEmpty())){
                 sendMessage(JsonUtil.generateJson(myInfo));
             }
@@ -105,7 +105,7 @@ public class ServerSocketThread extends Thread{
                 }
 
                 // 사망했을 경우 게임 진행 불가
-                if(RedisTemplate.isDead(nickname)){
+                if(JedisUtil.isDead(nickname)){
                     sendMessage(JsonUtil.generateJson("You are Dead."));
                     continue;
                 }

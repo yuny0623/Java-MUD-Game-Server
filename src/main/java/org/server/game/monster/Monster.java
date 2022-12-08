@@ -1,6 +1,6 @@
 package org.server.game.monster;
 
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 
 public class Monster extends Thread{
     private int hp;
@@ -79,10 +79,10 @@ public class Monster extends Thread{
                     System.out.printf("[Monster] Monster killed so terminate [%s].\n", this.getName());
                     throw e;
                 }
-                if (!RedisTemplate.checkUserExist()) {
+                if (!JedisUtil.checkUserExist()) {
                     continue;
                 }
-                String users = RedisTemplate.showUsers();
+                String users = JedisUtil.showUsers();
                 if (users.isEmpty() || users.isBlank()) {
                     continue;
                 }
@@ -96,14 +96,14 @@ public class Monster extends Thread{
                         for (String row : userRow) {
                             String[] vals = row.split(" ");
                             String nickname = vals[0];
-                            if (RedisTemplate.isDead(nickname)) {
+                            if (JedisUtil.isDead(nickname)) {
                                 continue;
                             }
                             int userX = Integer.parseInt(vals[1]);
                             int userY = Integer.parseInt(vals[2]);
                             if (userX == attackX && userY == attackY) {
                                 System.out.printf("[Monster] Monster attacks [%s] in [%d,%d].\n", nickname, userX, userY);
-                                RedisTemplate.userAttacked(nickname, this.getStr());
+                                JedisUtil.userAttacked(nickname, this.getStr());
                             }
                         }
                     }

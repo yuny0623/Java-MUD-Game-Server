@@ -3,7 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.server.redistemplate.RedisTemplate;
+import org.server.utils.JedisUtil;
 import org.server.utils.ServerConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -30,12 +30,12 @@ public class UserTest {
     public void user_hp_potion_test(){
         // given
         String nickname = "bruce";
-        RedisTemplate.createUser(nickname);
+        JedisUtil.createUser(nickname);
         int originUserHp = Integer.parseInt(jedis.get(nickname+":hp"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
-        boolean isUse = RedisTemplate.useHpPotion(nickname);
+        boolean isUse = JedisUtil.useHpPotion(nickname);
         int userHp = Integer.parseInt(jedis.get(nickname+":hp"));
 
         // then
@@ -49,12 +49,12 @@ public class UserTest {
     public void user_str_potion_test(){
         // given
         String nickname = "maven";
-        RedisTemplate.createUser(nickname);
+        JedisUtil.createUser(nickname);
         int originStr = Integer.parseInt(jedis.get(nickname+":str"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
-        boolean isUse = RedisTemplate.useStrPotion(nickname);
+        boolean isUse = JedisUtil.useStrPotion(nickname);
         int userStr = Integer.parseInt(jedis.get(nickname+":str"));
         int userExtraStr = Integer.parseInt(jedis.get(nickname+":extra_str"));
 
@@ -69,12 +69,12 @@ public class UserTest {
     public void user_str_potion_decrease_in_specific_time_test(){
         // given
         String nickname = "eugine";
-        RedisTemplate.createUser(nickname);
+        JedisUtil.createUser(nickname);
         int originStr = Integer.parseInt(jedis.get(nickname + ":str"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
-        boolean isUse = RedisTemplate.useStrPotion(nickname);
+        boolean isUse = JedisUtil.useStrPotion(nickname);
         int userStr = Integer.parseInt(jedis.get(nickname + ":str"));
         int userExtraStr = Integer.parseInt(jedis.get(nickname + ":extra_str"));
         try {
@@ -82,7 +82,7 @@ public class UserTest {
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-        int timedOutUserExtraStr = RedisTemplate.getExtraStr(nickname);
+        int timedOutUserExtraStr = JedisUtil.getExtraStr(nickname);
 
         // then
         Assert.assertTrue(isMember);
@@ -97,18 +97,18 @@ public class UserTest {
     public void extraStr_expire_time_test(){
         // given
         String nickname = "gradle";
-        RedisTemplate.createUser(nickname);
+        JedisUtil.createUser(nickname);
         int originStr = Integer.parseInt(jedis.get(nickname+":str"));
 
         // when
         jedis.setex(nickname+":extra_str", 1, "3");
-        int increasedExtraStr = RedisTemplate.getExtraStr(nickname);
+        int increasedExtraStr = JedisUtil.getExtraStr(nickname);
         try {
             Thread.sleep(2 * 1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        int timedOutExtraStr = RedisTemplate.getExtraStr(nickname);
+        int timedOutExtraStr = JedisUtil.getExtraStr(nickname);
 
         // then
         Assert.assertEquals(originStr + 3, originStr + increasedExtraStr);
