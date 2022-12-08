@@ -134,10 +134,10 @@ public final class RedisTemplate {
                         boolean isDead = monster.attacked(str + extraStr);
                         if(isDead) {
                             int[] reward = getReward(nickname, monsterId);
-                            monster.interrupt();
                             kills ++;
                             gainHpPotion += reward[0];
                             gainStrPotion += reward[1];
+                            monster.interrupt();
                             return nickname + " attack a Monster with power of "
                                     + (str + extraStr) + " and kills "
                                     + kills + " Monsters and gain "
@@ -183,8 +183,17 @@ public final class RedisTemplate {
 
     public static synchronized String showMonsters(){
         StringBuffer sb = new StringBuffer();
-        for(String monsterId:  MonsterManager.monsterMap.keySet()){
-            Monster monster = MonsterManager.monsterMap.get(monsterId);
+        Set<String> monsterIdSet = MonsterManager.monsterMap.keySet();
+        List<String> monsterIdList = monsterIdSet.stream().toList();
+        for(int i = monsterIdList.size() - 1; i >= 0; i --){
+            Monster monster = MonsterManager.monsterMap.get(monsterIdList.get(i));
+            if(monster.getHp() <= 0){
+                if(monster.isAlive()){
+                    monster.interrupt();
+                }
+                MonsterManager.monsterMap.remove(monsterIdList.get(i));
+                continue;
+            }
             sb.append("Monster " + monster.getX() + " " + monster.getY() + "\n");
         }
         return sb.toString();

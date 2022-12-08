@@ -71,42 +71,46 @@ public class Monster extends Thread{
 
     @Override
     public void run(){
-        while(!this.interrupted()){
-            try {
-                Thread.sleep( 5 * 1000);
-            } catch (InterruptedException e) {
-                System.out.printf("[Monster] Monster killed so terminate [%s].\n", this.getName());
-                break;
-            }
-            if(!RedisTemplate.checkUserExist()){
-                continue;
-            }
-            String users = RedisTemplate.showUsers();
-            if(users.isEmpty() || users.isBlank()){
-                continue;
-            }
-            for(int i = 0; i < 9; i++) {
-                int x = dx[i];
-                int y = dy[i];
-                int attackX = this.getX() + x;
-                int attackY = this.getY() + y;
-                if ((0 <= attackX) && (attackX < 30) && (0 <= attackY) && (attackY < 30)) {
-                    String[] userRow = users.split("\n");
-                    for (String row : userRow) {
-                        String[] vals = row.split(" ");
-                        String nickname = vals[0];
-                        if(RedisTemplate.isDead(nickname)){
-                            continue;
-                        }
-                        int userX = Integer.parseInt(vals[1]);
-                        int userY = Integer.parseInt(vals[2]);
-                        if (userX == attackX && userY == attackY) {
-                            System.out.printf("[Monster] Monster attacks [%s] in [%d,%d].\n", nickname, userX, userY);
-                            RedisTemplate.userAttacked(nickname, this.getStr());
+        try {
+            while (!this.interrupted()) {
+                try {
+                    Thread.sleep(5 * 1000);
+                } catch (InterruptedException e) {
+                    System.out.printf("[Monster] Monster killed so terminate [%s].\n", this.getName());
+                    throw e;
+                }
+                if (!RedisTemplate.checkUserExist()) {
+                    continue;
+                }
+                String users = RedisTemplate.showUsers();
+                if (users.isEmpty() || users.isBlank()) {
+                    continue;
+                }
+                for (int i = 0; i < 9; i++) {
+                    int x = dx[i];
+                    int y = dy[i];
+                    int attackX = this.getX() + x;
+                    int attackY = this.getY() + y;
+                    if ((0 <= attackX) && (attackX < 30) && (0 <= attackY) && (attackY < 30)) {
+                        String[] userRow = users.split("\n");
+                        for (String row : userRow) {
+                            String[] vals = row.split(" ");
+                            String nickname = vals[0];
+                            if (RedisTemplate.isDead(nickname)) {
+                                continue;
+                            }
+                            int userX = Integer.parseInt(vals[1]);
+                            int userY = Integer.parseInt(vals[2]);
+                            if (userX == attackX && userY == attackY) {
+                                System.out.printf("[Monster] Monster attacks [%s] in [%d,%d].\n", nickname, userX, userY);
+                                RedisTemplate.userAttacked(nickname, this.getStr());
+                            }
                         }
                     }
                 }
             }
+        }catch(InterruptedException e){
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -81,14 +81,14 @@ public class MonsterTest {
     public void new_monster_create_test_when_monster_die(){
         // given
         Map<String, Monster> monsterMap = new HashMap<>();
-
-        // when
         for(int i = 0; i< 10; i++){
             String monsterName = String.valueOf(i);
             Monster monster = new Monster(monsterName);
             monsterMap.put(monsterName, monster);
             monster.start();
         }
+
+        // when
         Monster monster = monsterMap.get("3");
         while(true){
             boolean isDead = monster.attacked(3);
@@ -97,6 +97,7 @@ public class MonsterTest {
                 break;
             }
         }
+        System.out.println(monsterMap.size());
         int diff = 10 - monsterMap.size();
         for(int i = 0; i <diff; i++){
             String monsterName = UUID.randomUUID().toString();
