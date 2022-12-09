@@ -13,9 +13,6 @@ public final class JedisUtil {
     private static final Jedis jedis = pool.getResource();
     private static MainServer mainServer;
 
-    private static final int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
-    private static final int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
-
     public JedisUtil(){
 
     }
@@ -121,8 +118,8 @@ public final class JedisUtil {
         int gainHpPotion = 0;
         int gainStrPotion = 0;
         for(int i = 0; i < 9; i++){
-            int attackX = dx[i] + userX;
-            int attackY = dy[i] + userY;
+            int attackX = ServerConfig.DX[i] + userX;
+            int attackY = ServerConfig.DY[i] + userY;
             if(0 <= attackX && attackX < 30 && 0 <= attackY && attackY < 30){
                 for(String row: monsterRow){
                     String[] val = row.split(" ");

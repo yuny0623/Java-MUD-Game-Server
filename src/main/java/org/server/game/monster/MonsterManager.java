@@ -10,11 +10,11 @@ public class MonsterManager extends Thread{
 
     public MonsterManager(){
         System.out.println("[MonsterFactory] Start MonsterManager.\n");
-        initMonsters();
+        generateMonsters();
         System.out.println("[MonsterFactory] Create 10 Monsters.");
     }
 
-    public void initMonsters(){
+    public void generateMonsters(){
         for(int i = 0; i < 10; i++){
             String monsterName = GameUtil.generateRandomString();
             Monster monster = new Monster(monsterName);

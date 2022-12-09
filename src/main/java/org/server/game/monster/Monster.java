@@ -1,5 +1,6 @@
 package org.server.game.monster;
 
+import org.server.config.ServerConfig;
 import org.server.utils.GameUtil;
 import org.server.utils.JedisUtil;
 
@@ -11,9 +12,6 @@ public class Monster extends Thread{
     private int x;
     private int y;
     private String monsterName;
-
-    private int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
-    private int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
 
     public Monster(String monsterName){
         this.monsterName = monsterName;
@@ -88,8 +86,8 @@ public class Monster extends Thread{
                     continue;
                 }
                 for (int i = 0; i < 9; i++) {
-                    int x = dx[i];
-                    int y = dy[i];
+                    int x = ServerConfig.DX[i];
+                    int y = ServerConfig.DY[i];
                     int attackX = this.getX() + x;
                     int attackY = this.getY() + y;
                     if ((0 <= attackX) && (attackX < 30) && (0 <= attackY) && (attackY < 30)) {
