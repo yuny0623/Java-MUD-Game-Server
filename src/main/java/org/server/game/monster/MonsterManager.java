@@ -23,6 +23,20 @@ public class MonsterManager extends Thread{
         }
     }
 
+    public void generateNewMonsters(){
+        int diff = 0;
+        if(this.monsterMap.size() < 10){
+            diff = 10 - this.monsterMap.size();
+            for(int i = 0; i < diff; i++){
+                String monsterName = GameUtil.generateRandomString();
+                Monster monster = new Monster(monsterName);
+                this.monsterMap.put(monsterName, monster);
+                monster.start();
+            }
+            System.out.printf("[MonsterFactory] Generate new %d Monsters.\n", diff);
+        }
+    }
+
     @Override
     public void run(){
         while(true){
@@ -31,17 +45,7 @@ public class MonsterManager extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            int diff = 0;
-            if(this.monsterMap.size() < 10){
-                diff = 10 - this.monsterMap.size();
-                for(int i = 0; i < diff; i++){
-                    String monsterName = GameUtil.generateRandomString();
-                    Monster monster = new Monster(monsterName);
-                    this.monsterMap.put(monsterName, monster);
-                    monster.start();
-                }
-                System.out.printf("[MonsterFactory] Generate new %d Monsters.\n", diff);
-            }
+            generateNewMonsters();
         }
     }
 }
