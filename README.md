@@ -102,7 +102,7 @@
 ## 📲 Tech
 ```
 💾 Java 17
-📷 Gradle 
+📷 gradle 
 📹 TCP/IP Socket Programming
 💻 Jedis
 📺 json-simple
