@@ -12,14 +12,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
-public class MainServer extends Thread{
+public class Server extends Thread{
     ServerSocket serverSocket;
     Socket socket;
     Game game;
     Map<String, Thread> userMap;
 
-    public static MainServer mainServer;
-    public MainServer(){
+    public static Server server;
+    public Server(){
         System.out.println("[Server] Start Main Server.\n");
         initServer();
     }
@@ -29,7 +29,7 @@ public class MainServer extends Thread{
         game = Game.getInstance();
         JedisUtil jedisUtil = new JedisUtil();
         jedisUtil.setMainServer(this);
-        mainServer = this;
+        server = this;
     }
 
     @Override

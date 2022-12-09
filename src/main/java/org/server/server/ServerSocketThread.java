@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class ServerSocketThread extends Thread{
     Socket socket;
-    MainServer server;
+    Server server;
     BufferedReader in;
     PrintWriter out;
     String strIn;
@@ -18,7 +18,7 @@ public class ServerSocketThread extends Thread{
     String nickname;
     String command;
 
-    public ServerSocketThread(MainServer server, Socket socket){
+    public ServerSocketThread(Server server, Socket socket){
         this.server = server ;
         this.socket = socket;
         threadName = super.getName();

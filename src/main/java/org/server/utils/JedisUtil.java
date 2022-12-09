@@ -3,7 +3,7 @@ package org.server.utils;
 import org.server.config.ServerConfig;
 import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
-import org.server.server.MainServer;
+import org.server.server.Server;
 import redis.clients.jedis.*;
 
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.*;
 public final class JedisUtil {
     private static final JedisPool pool = new JedisPool(ServerConfig.JEDIS_DEFAULT_IP, Protocol.DEFAULT_PORT);
     private static final Jedis jedis = pool.getResource();
-    private static MainServer mainServer;
+    private static Server server;
 
     public JedisUtil(){
 
@@ -158,10 +158,10 @@ public final class JedisUtil {
             jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println("[Monster]" + nickname + " is killed by a monster!");
             jedis.setex("dead_user:" + nickname, 1 * 60, nickname);
-            MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
+            Server.server.sendMessage("Monster", nickname, "You die!");
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
-            MainServer.mainServer.sendMessage("Monster", nickname, "You are attacking by Monster!");
+            Server.server.sendMessage("Monster", nickname, "You are attacking by Monster!");
         }
     }
 
@@ -230,12 +230,12 @@ public final class JedisUtil {
             return to + " is Invalid User.";
         }
         renewalLogin(from);
-        mainServer.sendMessage(from, to, content);
+        server.sendMessage(from, to, content);
         return from + " send message.";
     }
 
-    public synchronized void setMainServer(MainServer mainServer) {
-        this.mainServer = mainServer;
+    public synchronized void setMainServer(Server server) {
+        this.server = server;
     }
 
     public static synchronized int[] getUserXYPosition(String nickname){
