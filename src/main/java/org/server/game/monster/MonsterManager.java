@@ -24,7 +24,7 @@ public class MonsterManager extends Thread{
     }
 
     public void generateNewMonsters(){
-        int diff = 0;
+        int diff;
         if(this.monsterMap.size() < 10){
             diff = 10 - this.monsterMap.size();
             for(int i = 0; i < diff; i++){

@@ -124,7 +124,7 @@ public class ServerSocketThread extends Thread{
                     continue;
                 }
                 CommandDto commandDto = new CommandDto(command, nickname);
-                ResultDto resultDto = server.playGame(commandDto);
+                ResultDto resultDto = server.play(commandDto);
                 send(resultDto);
             }
         }catch(IOException e){

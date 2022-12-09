@@ -84,8 +84,8 @@ public class MainServer extends Thread{
         }
     }
 
-    public synchronized ResultDto playGame(CommandDto commandDto){
-        String result = game.play(commandDto);
+    public synchronized ResultDto play(CommandDto commandDto){
+        String result = game.executeCommand(commandDto);
         String command = commandDto.getCommand().split(" ")[0];
         ResultDto resultDto = new ResultDto(command, result);
         return resultDto;

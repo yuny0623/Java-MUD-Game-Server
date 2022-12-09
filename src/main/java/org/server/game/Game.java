@@ -25,7 +25,7 @@ public final class Game{
         return instance;
     }
 
-    public synchronized String play(CommandDto commandDto){
+    public synchronized String executeCommand(CommandDto commandDto){
         String nickname = commandDto.getNickname();
         String[] commands = commandDto.getCommand().split(" ");
         String result = null;
