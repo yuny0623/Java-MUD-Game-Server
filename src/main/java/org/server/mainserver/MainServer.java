@@ -21,10 +21,14 @@ public class MainServer extends Thread{
     public static MainServer mainServer;
     public MainServer(){
         System.out.println("[Server] Start Main Server.\n");
+        initServer();
+    }
+
+    public void initServer(){
         userMap = new HashMap<>();
         game = Game.getInstance();
-        JedisUtil redisTemplate = new JedisUtil();
-        redisTemplate.setMainServer(this);
+        JedisUtil jedisUtil = new JedisUtil();
+        jedisUtil.setMainServer(this);
         mainServer = this;
     }
 
