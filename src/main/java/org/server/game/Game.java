@@ -1,38 +1,21 @@
 package org.server.game;
 
 import org.server.dto.CommandDto;
-import org.server.game.monster.Monster;
-import org.server.game.monster.MonsterAttacker;
-import org.server.game.monster.MonsterGenerator;
 import org.server.game.monster.MonsterManager;
-import org.server.redistemplate.RedisTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.server.utils.JedisUtil;
 
 public final class Game{
     private static Game instance;
-    public List<Monster> monsterList;
-    public MonsterGenerator monsterGenerator;
     public MonsterManager monsterManager;
-    public MonsterAttacker monsterAttacker;
 
     private Game(){
-        monsterList = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            System.out.println("New Monsters Created.");
-            monsterList.add(new Monster());
-        }
+        System.out.println("[Game] Game Start.\n");
+        startMonsterManager();
+     }
 
-        // 아래 부분에서 monsterGenertor 빼고 전부 없애주자. monster 하나로 통일합시다.
-        monsterGenerator = new MonsterGenerator(this);
-//        monsterManager = new MonsterManager(this);
-//        monsterAttacker = new MonsterAttacker(this);
-        monsterGenerator.start();
-//        monsterManager.start();
-//        monsterAttacker.start();
-
-        System.out.println("Game created.");
+    public void startMonsterManager(){
+        monsterManager = new MonsterManager();
+        monsterManager.start();
     }
 
     public static Game getInstance(){
@@ -42,32 +25,51 @@ public final class Game{
         return instance;
     }
 
-    public synchronized String play(CommandDto commandDto){
+    public synchronized String executeCommand(CommandDto commandDto){
         String nickname = commandDto.getNickname();
         String[] commands = commandDto.getCommand().split(" ");
         String result = null;
-
         switch (commands[0]){
             case "move":
                  int x = Integer.parseInt(commands[1]);
                  int y = Integer.parseInt(commands[2]);
-                 result = RedisTemplate.move(nickname, x, y);
+                 result = JedisUtil.move(nickname, x, y);
                  break;
             case "attack":
-                result = RedisTemplate.userAttack(nickname);
+                result = JedisUtil.attackMonster(nickname);
                 break;
             case "monsters":
-                result = RedisTemplate.showMonsters();
+                result = JedisUtil.showMonsters();
                 break;
             case "users":
-                result = RedisTemplate.showUsers();
+                result = JedisUtil.showUsers();
                 break;
             case "chat":
                 String to = commands[1];
                 String content = commands[2];
-                result = RedisTemplate.chat(nickname, to, content);
+                result = JedisUtil.chat(nickname, to, content);
                 break;
-        }
+            case "potion":
+                String item = commands[1];
+                if(item.equals("hp")){
+                    boolean isUse = JedisUtil.useHpPotion(nickname);
+                    if(isUse){
+                        result = nickname + " recover 10 hp.";
+                    }else{
+                        result = nickname + " No hp potion left.";
+                    }
+                    break;
+                }else if(item.equals("str")){
+                    boolean isUse = JedisUtil.useStrPotion(nickname);
+                    if(isUse){
+                        result = nickname + " increase 3 str.";
+                    }else{
+                        result = nickname + " No Str potion left";
+                    }
+                    break;
+                }
+                break;
+            }
         return result;
     }
 }

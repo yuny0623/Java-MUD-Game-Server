@@ -4,27 +4,31 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class JsonUtil {
-    private static JsonUtil instance;
+public final class JsonUtil {
 
-    private JsonUtil(){
+    public JsonUtil(){
 
     }
 
-    public static JsonUtil getInstance(){
-        if(instance == null){
-            instance = new JsonUtil();
-        }
-        return instance;
-    }
-
-    public synchronized String generateJson(String str){
+    public static synchronized String generateJson(String str){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Notice", str);
         return jsonObject.toJSONString();
     }
 
-    public synchronized String parseJson(String json){
+    public static synchronized String generateJsonByCommand(String command, String str){
+        JSONObject jsonObject = new JSONObject();
+        if(command.equals("monsters")){
+            jsonObject.put("MonsterInfo", str);
+        }else if(command.equals("users")){
+            jsonObject.put("UserInfo", str);
+        }else{
+            jsonObject.put("Notice", str);
+        }
+        return jsonObject.toJSONString();
+    }
+
+    public static synchronized String parseJson(String json){
         if(json.isEmpty() || json.isBlank()){
             System.out.println("Invalid json input!");
         }
@@ -59,12 +63,19 @@ public class JsonUtil {
                 String content = (String) obj.get("content");
                 result = "chat " + opponent + " " + content;
                 break;
-            case "bot":
-                result = "bot";
-                break;
             case "nickname":
                 String nickname = (String) obj.get("nickname");
                 result = "nickname " + nickname;
+                break;
+            case "bot":
+                result = "bot";
+                break;
+            case "exit bot":
+                result = "exit bot";
+                break;
+            case "potion":
+                String item = (String) obj.get("item");
+                result = "potion " + item;
                 break;
             default:
                 return "";
