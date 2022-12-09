@@ -21,8 +21,8 @@ public final class JedisUtil {
     }
 
     public static synchronized String createUser(String nickname){
-        int x = (int) (Math.random() * (29 - 0) + 0) + 0;
-        int y = (int) (Math.random() * (29 - 0) + 0) + 0;
+        int x = GameUtil.generateRandomNumber(0, 29);
+        int y = GameUtil.generateRandomNumber(0, 29);
         jedis.sadd("nicknames", nickname);
         jedis.hset(nickname, "user_nickname", nickname);
         jedis.hset(nickname, "hp", "30");
