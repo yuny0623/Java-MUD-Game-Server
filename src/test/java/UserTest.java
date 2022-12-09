@@ -26,6 +26,32 @@ public class UserTest {
     }
 
     @Test
+    @DisplayName("유저 생성 테스트")
+    public void user_creation_test(){
+        // given
+        String nickname = "tony";
+        JedisUtil.createUser(nickname);
+
+        // when
+        String foundNickname = jedis.hget(nickname, "user_nickname");
+        String hp = jedis.hget(nickname, "hp");
+        String str = jedis.hget(nickname, "str");
+        String xPos = jedis.hget(nickname, "x_pos");
+        String yPos = jedis.hget(nickname, "y_pos");
+        String hpPotion = jedis.hget(nickname, "hp_potion");
+        String strPotion = jedis.hget(nickname, "str_potion");
+
+        // then
+        Assert.assertEquals(nickname, foundNickname);
+        Assert.assertNotNull(hp);
+        Assert.assertNotNull(str);
+        Assert.assertNotNull(xPos);
+        Assert.assertNotNull(yPos);
+        Assert.assertNotNull(hpPotion);
+        Assert.assertNotNull(strPotion);
+    }
+
+    @Test
     @DisplayName("유저 hp 포션 사용 시 체력 회복 테스트")
     public void user_hp_potion_test(){
         // given

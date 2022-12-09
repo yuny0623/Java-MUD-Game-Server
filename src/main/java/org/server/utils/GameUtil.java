@@ -1,7 +1,5 @@
 package org.server.utils;
 
-import org.server.game.Game;
-
 import java.util.UUID;
 
 public final class GameUtil {
