@@ -79,7 +79,7 @@ public final class JedisUtil {
             y = 3;
         }
 
-        int[] pos = getUserPosition(nickname);
+        int[] pos = getUserXYPosition(nickname);
 
         int toX = 0;
         int toY = 0;
@@ -110,8 +110,8 @@ public final class JedisUtil {
         renewalLogin(nickname);
         int str = Integer.parseInt(jedis.hget(nickname, "str"));
         int extraStr = JedisUtil.getExtraStr(nickname);
-        int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
-        int curr_y = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
+        int userX = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
+        int userY = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
         if(!isMonsterExist()){
             return nickname + " attack miss. No Monster exist.";
         }
@@ -121,8 +121,8 @@ public final class JedisUtil {
         int gainHpPotion = 0;
         int gainStrPotion = 0;
         for(int i = 0; i < 9; i++){
-            int attackX = dx[i] + curr_x;
-            int attackY = dy[i] + curr_y;
+            int attackX = dx[i] + userX;
+            int attackY = dy[i] + userY;
             if(0 <= attackX && attackX < 30 && 0 <= attackY && attackY < 30){
                 for(String row: monsterRow){
                     String[] val = row.split(" ");
@@ -241,13 +241,21 @@ public final class JedisUtil {
         this.mainServer = mainServer;
     }
 
-    public static synchronized int[] getUserPosition(String nickname){
+    public static synchronized int[] getUserXYPosition(String nickname){
         if(!isValidUser(nickname)){
             return new int[] {0, 0};
         }
-        int x = Integer.parseInt(jedis.hget(nickname, "x_pos"));
-        int y = Integer.parseInt(jedis.hget(nickname, "y_pos"));
+        int x = getUserXPosition(nickname);
+        int y = getUserYPosition(nickname);
         return new int[] {x, y};
+    }
+
+    public static synchronized int getUserXPosition(String nickname){
+        return Integer.parseInt(jedis.hget(nickname, "x_pos"));
+    }
+
+    public static synchronized int getUserYPosition(String nickname){
+        return Integer.parseInt(jedis.hget(nickname, "y_pos"));
     }
 
     public static synchronized int[] getReward(String monsterId, String nickname){
