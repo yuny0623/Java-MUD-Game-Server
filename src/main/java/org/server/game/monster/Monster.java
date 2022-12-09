@@ -80,7 +80,7 @@ public class Monster extends Thread{
                     System.out.printf("[Monster] Monster killed so terminate [%s].\n", this.getName());
                     throw e;
                 }
-                if (!JedisUtil.checkUserExist()) {
+                if (!JedisUtil.isUserExist()) {
                     continue;
                 }
                 String users = JedisUtil.showUsers();
@@ -104,7 +104,7 @@ public class Monster extends Thread{
                             int userY = Integer.parseInt(vals[2]);
                             if (userX == attackX && userY == attackY) {
                                 System.out.printf("[Monster] Monster attacks [%s] in [%d,%d].\n", nickname, userX, userY);
-                                JedisUtil.userAttacked(nickname, this.getStr());
+                                JedisUtil.attackUser(nickname, this.getStr());
                             }
                         }
                     }

@@ -92,7 +92,7 @@ public class ServerSocketThread extends Thread{
             server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
 
             // 해당 유저에게 생성된 캐릭터 정보 전달
-            String myInfo = JedisUtil.myInfo(nickname);
+            String myInfo = JedisUtil.getMyInfo(nickname);
             if(!(myInfo.isBlank() || myInfo.isEmpty())){
                 sendMessage(JsonUtil.generateJson(myInfo));
             }

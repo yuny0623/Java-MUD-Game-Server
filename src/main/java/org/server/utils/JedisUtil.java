@@ -35,7 +35,7 @@ public final class JedisUtil {
         return "[Create User] " + "[nickname: " + nickname + ", hp:30, str:3, x_pos: " + x + ", y_pos: " + y + "]";
     }
 
-    public static synchronized String myInfo(String nickname){
+    public static synchronized String getMyInfo(String nickname){
         String result = "";
         if(!isValidUser(nickname)){
             return result;
@@ -79,7 +79,7 @@ public final class JedisUtil {
             y = 3;
         }
 
-        int[] pos = getPosition(nickname);
+        int[] pos = getUserPosition(nickname);
 
         int toX = 0;
         int toY = 0;
@@ -103,7 +103,7 @@ public final class JedisUtil {
         return nickname + " move to " + "[" + toX + ", " + toY + "]";
     }
 
-    public static synchronized String userAttack(String nickname){
+    public static synchronized String attackMonster(String nickname){
         if(!isValidUser(nickname)){
             return nickname + " is Invalid User.";
         }
@@ -112,7 +112,7 @@ public final class JedisUtil {
         int extraStr = JedisUtil.getExtraStr(nickname);
         int curr_x = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
         int curr_y = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
-        if(!checkMonsterExist()){
+        if(!isMonsterExist()){
             return nickname + " attack miss. No Monster exist.";
         }
         String monsters = JedisUtil.showMonstersServer();
@@ -151,7 +151,7 @@ public final class JedisUtil {
         return nickname + " attack a Monster with power of " + (str + extraStr) +".";
     }
 
-    public static synchronized void userAttacked(String nickname, int monsterStr){
+    public static synchronized void attackUser(String nickname, int monsterStr){
         if(!isValidUser(nickname)){
            return;
         }
@@ -216,12 +216,12 @@ public final class JedisUtil {
         return sb.toString();
     }
 
-    public static synchronized boolean checkUserExist(){
+    public static synchronized boolean isUserExist(){
         Set<String> members = jedis.smembers("nicknames");
         return members.size() != 0;
     }
 
-    public static synchronized boolean checkMonsterExist(){
+    public static synchronized boolean isMonsterExist(){
         return MonsterManager.monsterMap.size() != 0;
     }
 
@@ -241,7 +241,7 @@ public final class JedisUtil {
         this.mainServer = mainServer;
     }
 
-    public static synchronized int[] getPosition(String nickname){
+    public static synchronized int[] getUserPosition(String nickname){
         if(!isValidUser(nickname)){
             return new int[] {0, 0};
         }
@@ -328,7 +328,7 @@ public final class JedisUtil {
         return  Integer.parseInt(jedis.hget(nickname, "str_potion"));
     }
 
-    public static synchronized void serverReset(){
+    public static synchronized void clearRedis(){
         jedis.flushAll();
     }
 

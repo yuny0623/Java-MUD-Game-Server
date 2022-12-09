@@ -9,6 +9,6 @@ public class Main {
         mainServer.start();
 
         // 종료 직전에 서버 리셋
-        JedisUtil.serverReset();
+        JedisUtil.clearRedis();
     }
 }

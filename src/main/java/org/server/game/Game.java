@@ -32,7 +32,7 @@ public final class Game{
                  result = JedisUtil.move(nickname, x, y);
                  break;
             case "attack":
-                result = JedisUtil.userAttack(nickname);
+                result = JedisUtil.attackMonster(nickname);
                 break;
             case "monsters":
                 result = JedisUtil.showMonsters();
