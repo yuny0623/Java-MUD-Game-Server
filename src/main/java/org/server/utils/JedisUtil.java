@@ -105,10 +105,10 @@ public final class JedisUtil {
             return nickname + " is Invalid User.";
         }
         renewalLogin(nickname);
-        int str = Integer.parseInt(jedis.hget(nickname, "str"));
+        int str = getUserStr(nickname);
         int extraStr = JedisUtil.getExtraStr(nickname);
-        int userX = Integer.parseInt(jedis.hget(nickname ,"x_pos"));
-        int userY = Integer.parseInt(jedis.hget(nickname ,"y_pos"));
+        int userX = getUserXPosition(nickname);
+        int userY = getUserYPosition(nickname);
         if(!isMonsterExist()){
             return nickname + " attack miss. No Monster exist.";
         }
@@ -253,6 +253,10 @@ public final class JedisUtil {
 
     public static synchronized int getUserYPosition(String nickname){
         return Integer.parseInt(jedis.hget(nickname, "y_pos"));
+    }
+
+    public static synchronized int getUserStr(String nickname){
+        return Integer.parseInt(jedis.hget(nickname, "str"));
     }
 
     public static synchronized int[] getReward(String monsterId, String nickname){
