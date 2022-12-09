@@ -119,9 +119,7 @@ public class ServerSocketThread extends Thread{
                     continue;
                 }
 
-                System.out.println("Debug1: " + strIn);
                 command = JsonUtil.parseJson(strIn);
-                System.out.println("Debug2: " + command);
 
                 if(command.equals("bot")){
                     System.out.printf("[Client] %s activate bot mode.\n", nickname);
