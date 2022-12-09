@@ -157,7 +157,7 @@ public final class JedisUtil {
         if(hp - monsterStr <= 0){
             jedis.hset(nickname, "hp", String.valueOf(0));
             System.out.println("[Monster]" + nickname + " is killed by a monster!");
-            jedis.setex("dead_user:"+nickname, 1 * 60, nickname);
+            jedis.setex("dead_user:" + nickname, 1 * 60, nickname);
             MainServer.mainServer.sendMessage("Monster", nickname, "You die!");
         }else {
             jedis.hset(nickname ,"hp", String.valueOf(hp - monsterStr));
@@ -224,7 +224,7 @@ public final class JedisUtil {
 
     public static synchronized String chat(String from, String to, String content){
         if(!isValidUser(from)){
-            return to + " is Invalid User.";
+            return from + " is Invalid User.";
         }
         if(!isValidUser(to)){
             return to + " is Invalid User.";
@@ -242,9 +242,7 @@ public final class JedisUtil {
         if(!isValidUser(nickname)){
             return new int[] {0, 0};
         }
-        int x = getUserXPosition(nickname);
-        int y = getUserYPosition(nickname);
-        return new int[] {x, y};
+        return new int[] {getUserXPosition(nickname), getUserYPosition(nickname)};
     }
 
     public static synchronized int getUserXPosition(String nickname){
@@ -263,7 +261,6 @@ public final class JedisUtil {
         renewalLogin(nickname);
         Monster monster = MonsterManager.monsterMap.get(monsterId);
         if(monster == null) {
-            System.out.println("getReward - 2 monster is null");
             return new int[] {0, 0};
         }
         int monsterHpPotion = monster.getHpPotion();
@@ -321,20 +318,6 @@ public final class JedisUtil {
         }
         jedis.hincrBy(nickname, "str_potion", -1);
         return true;
-    }
-
-    public static synchronized int getUserHpPotion(String nickname){
-        if(!isValidUser(nickname)){
-            return 0;
-        }
-        return Integer.parseInt(jedis.hget(nickname, "hp_potion"));
-    }
-
-    public static synchronized int getUserStrPotion(String nickname){
-        if(!isValidUser(nickname)){
-            return 0;
-        }
-        return  Integer.parseInt(jedis.hget(nickname, "str_potion"));
     }
 
     public static synchronized void clearRedis(){
