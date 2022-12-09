@@ -22,7 +22,7 @@
    2️⃣ attack
    3️⃣ monsters
    4️⃣ users
-   5️⃣ chat <유저이름> <대화내용>
+   5️⃣ chat <username> <message>
    6️⃣ potion hp
    7️⃣ potion str 
    8️⃣ bot 
