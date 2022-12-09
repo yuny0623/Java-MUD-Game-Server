@@ -84,7 +84,6 @@ public class ServerSocketThread extends Thread{
 
             // 최초 input: nickname을 받음
             strIn = in.readLine();
-
             // 로그인 진행
             processLogin(strIn);
 
@@ -110,6 +109,9 @@ public class ServerSocketThread extends Thread{
                 if(strIn == null){
                     continue;
                 }
+                if(strIn.isBlank() || strIn.isEmpty()){
+                    continue;
+                }
 
                 // 사망했을 경우 게임 진행 불가
                 if(JedisUtil.isDead(nickname)){
@@ -117,7 +119,9 @@ public class ServerSocketThread extends Thread{
                     continue;
                 }
 
+                System.out.println("Debug1: " + strIn);
                 command = JsonUtil.parseJson(strIn);
+                System.out.println("Debug2: " + command);
 
                 if(command.equals("bot")){
                     System.out.printf("[Client] %s activate bot mode.\n", nickname);
