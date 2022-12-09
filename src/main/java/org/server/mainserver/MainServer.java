@@ -5,7 +5,7 @@ import org.server.dto.ResultDto;
 import org.server.game.Game;
 import org.server.utils.JedisUtil;
 import org.server.utils.JsonUtil;
-import org.server.utils.ServerConfig;
+import org.server.config.ServerConfig;
 
 import java.io.IOException;
 import java.net.ServerSocket;

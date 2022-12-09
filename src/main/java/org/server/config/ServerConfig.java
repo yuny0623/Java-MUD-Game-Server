@@ -1,4 +1,4 @@
-package org.server.utils;
+package org.server.config;
 
 public final class ServerConfig {
 
