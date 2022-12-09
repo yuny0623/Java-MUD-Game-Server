@@ -10,6 +10,10 @@ public final class Game{
 
     private Game(){
         System.out.println("[Game] Game Start.\n");
+        startMonsterManager();
+     }
+
+    public void startMonsterManager(){
         monsterManager = new MonsterManager();
         monsterManager.start();
     }
