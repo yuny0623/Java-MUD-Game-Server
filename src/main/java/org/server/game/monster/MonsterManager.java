@@ -7,15 +7,20 @@ import java.util.*;
 
 public class MonsterManager extends Thread{
     public static Map<String, Monster> monsterMap = new HashMap<>();
+
     public MonsterManager(){
         System.out.println("[MonsterFactory] Start MonsterManager.\n");
+        generateMonsters();
+        System.out.println("[MonsterFactory] Create 10 Monsters.");
+    }
+
+    public void generateMonsters(){
         for(int i = 0; i < 10; i++){
             String monsterName = GameUtil.generateRandomString();
             Monster monster = new Monster(monsterName);
             this.monsterMap.put(monsterName, monster);
             monster.start();
         }
-        System.out.println("[MonsterFactory] Create 10 Monsters.");
     }
 
     @Override
