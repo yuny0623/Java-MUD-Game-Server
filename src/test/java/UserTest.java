@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.server.utils.GameUtil;
 import org.server.utils.JedisUtil;
 import org.server.config.ServerConfig;
 import redis.clients.jedis.Jedis;
@@ -57,12 +58,12 @@ public class UserTest {
         // given
         String nickname = "bruce";
         JedisUtil.createUser(nickname);
-        int originUserHp = Integer.parseInt(jedis.get(nickname+":hp"));
+        int originUserHp = Integer.parseInt(jedis.hget(nickname, "hp"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
         boolean isUse = JedisUtil.useHpPotion(nickname);
-        int userHp = Integer.parseInt(jedis.get(nickname+":hp"));
+        int userHp = Integer.parseInt(jedis.hget(nickname, "hp"));
 
         // then
         Assert.assertTrue(isMember);
@@ -76,12 +77,12 @@ public class UserTest {
         // given
         String nickname = "maven";
         JedisUtil.createUser(nickname);
-        int originStr = Integer.parseInt(jedis.get(nickname+":str"));
+        int originStr = Integer.parseInt(jedis.hget(nickname, "str"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
         boolean isUse = JedisUtil.useStrPotion(nickname);
-        int userStr = Integer.parseInt(jedis.get(nickname+":str"));
+        int userStr = Integer.parseInt(jedis.hget(nickname, "str"));
         int userExtraStr = Integer.parseInt(jedis.get(nickname+":extra_str"));
 
         // then
@@ -96,12 +97,12 @@ public class UserTest {
         // given
         String nickname = "eugine";
         JedisUtil.createUser(nickname);
-        int originStr = Integer.parseInt(jedis.get(nickname + ":str"));
+        int originStr = Integer.parseInt(jedis.hget(nickname,  "str"));
 
         // when
         boolean isMember = jedis.sismember("nicknames", nickname);
         boolean isUse = JedisUtil.useStrPotion(nickname);
-        int userStr = Integer.parseInt(jedis.get(nickname + ":str"));
+        int userStr = Integer.parseInt(jedis.hget(nickname, "str"));
         int userExtraStr = Integer.parseInt(jedis.get(nickname + ":extra_str"));
         try {
             Thread.sleep(61 * 1000);
@@ -124,7 +125,7 @@ public class UserTest {
         // given
         String nickname = "gradle";
         JedisUtil.createUser(nickname);
-        int originStr = Integer.parseInt(jedis.get(nickname+":str"));
+        int originStr = Integer.parseInt(jedis.hget(nickname, "str"));
 
         // when
         jedis.setex(nickname+":extra_str", 1, "3");
@@ -146,23 +147,25 @@ public class UserTest {
     public void check_if_user_info_is_stored_within_five_minutes(){
         // given
         String nickname = "hibernate";
-        String x = String.valueOf((int) (Math.random() * (29 - 0) + 0) + 0);
-        String y = String.valueOf((int) (Math.random() * (29 - 0) + 0) + 0);
-        jedis.sadd("nicknames", nickname);                                   // user nickname
-        jedis.setex(nickname + ":hp",1, "30");              // user hp
-        jedis.setex(nickname + ":str",1, "3");
-        jedis.setex(nickname + ":x_pos",1, x);                      // first position
-        jedis.setex(nickname + ":y_pos",1, y);                      // first position
-        jedis.setex(nickname + ":hp_potion",1, "1");
-        jedis.setex(nickname + ":str_potion",1, "1");
+        int x = GameUtil.generateRandomNumber(0, 29);
+        int y = GameUtil.generateRandomNumber(0, 29);
+        jedis.sadd("nicknames", nickname);
+        jedis.hset(nickname, "user_nickname", nickname);
+        jedis.hset(nickname, "hp", "30");
+        jedis.hset(nickname, "str", "3");
+        jedis.hset(nickname, "x_pos", String.valueOf(x));
+        jedis.hset(nickname, "y_pos", String.valueOf(y));
+        jedis.hset(nickname, "hp_potion", "1");
+        jedis.hset(nickname, "str_potion", "1");
+        jedis.expire(nickname, 1);
 
         // when
-        String hp = jedis.get(nickname+":hp");
-        String str = jedis.get(nickname+":str");
-        String x_pos = jedis.get(nickname+":x_pos");
-        String y_pos = jedis.get(nickname+":y_pos");
-        String hp_potion = jedis.get(nickname+":hp_potion");
-        String str_potion = jedis.get(nickname+":str_potion");
+        String hp = jedis.hget(nickname, "hp");
+        String str = jedis.hget(nickname, "str");
+        String x_pos = jedis.hget(nickname, "x_pos");
+        String y_pos = jedis.hget(nickname, "y_pos");
+        String hp_potion = jedis.hget(nickname, "hp_potion");
+        String str_potion = jedis.hget(nickname, "str_potion");
 
         try {
             Thread.sleep(2 * 1000);
@@ -170,18 +173,18 @@ public class UserTest {
             e.printStackTrace();
         }
 
-        String timedOut_hp = jedis.get(nickname+":hp");
-        String timedOut_str = jedis.get(nickname+":str");
-        String timedOut_x_pos = jedis.get(nickname+":x_pos");
-        String timedOut_y_pos = jedis.get(nickname+":y_pos");
-        String timedOut_hp_potion = jedis.get(nickname+":hp_potion");
-        String timedOut_str_potion = jedis.get(nickname+":str_potion");
+        String timedOut_hp = jedis.hget(nickname, "hp");
+        String timedOut_str = jedis.hget(nickname, "str");
+        String timedOut_x_pos = jedis.hget(nickname, "x_pos");
+        String timedOut_y_pos = jedis.hget(nickname, "y_pos");
+        String timedOut_hp_potion = jedis.hget(nickname, "hp_potion");
+        String timedOut_str_potion = jedis.hget(nickname, "str_potion");
 
         // then
         Assert.assertEquals(hp, "30");
         Assert.assertEquals(str, "3");
-        Assert.assertEquals(x_pos, x);
-        Assert.assertEquals(y_pos, y);
+        Assert.assertEquals(x_pos, String.valueOf(x));
+        Assert.assertEquals(y_pos, String.valueOf(y));
         Assert.assertEquals(hp_potion, "1");
         Assert.assertEquals(str_potion, "1");
 
