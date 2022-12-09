@@ -1,6 +1,6 @@
 package org.server;
 
-import org.server.mainserver.MainServer;
+import org.server.server.MainServer;
 import org.server.utils.JedisUtil;
 
 public class Main {

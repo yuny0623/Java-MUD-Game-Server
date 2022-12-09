@@ -1,4 +1,4 @@
-package org.server.mainserver;
+package org.server.server;
 
 import org.server.dto.CommandDto;
 import org.server.dto.ResultDto;
@@ -92,8 +92,6 @@ public class ServerSocketThread extends Thread{
         }
         server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
     }
-
-
 
     @Override
     public void run(){

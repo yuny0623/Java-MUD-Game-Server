@@ -1,4 +1,4 @@
-package org.server.mainserver;
+package org.server.server;
 
 import org.server.dto.CommandDto;
 import org.server.dto.ResultDto;

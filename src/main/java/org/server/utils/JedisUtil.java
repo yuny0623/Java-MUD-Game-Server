@@ -3,7 +3,7 @@ package org.server.utils;
 import org.server.config.ServerConfig;
 import org.server.game.monster.Monster;
 import org.server.game.monster.MonsterManager;
-import org.server.mainserver.MainServer;
+import org.server.server.MainServer;
 import redis.clients.jedis.*;
 
 import java.util.*;
