@@ -1,4 +1,4 @@
-# ⭐️Java MUD Game project - Server
+# ⭐️Java MUD Game Project - Server
 
 ## 🍀 Project Intro
 ```
