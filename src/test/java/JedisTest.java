@@ -50,20 +50,20 @@ public class JedisTest {
         String task = jedis.rpop("queue#tasks");
 
         // then
-        Assert.assertEquals(task, "secondTask");
+        Assert.assertEquals(task, "firstTask");
     }
 
     @Test
     @DisplayName("jedis set 테스트")
     public void jedis_sets_test(){
         // given
-        jedis.sadd("nicknames", "nickname#1");
-        jedis.sadd("nicknames", "nickname#2");
-        jedis.sadd("nicknames", "nickname#3");
+        jedis.sadd("nicknames", "tony");
+        jedis.sadd("nicknames", "gradle");
+        jedis.sadd("nicknames", "maven");
 
         // when
         Set<String> nicknames = jedis.smembers("nicknames");
-        boolean exists = jedis.sismember("nicknames", "nickname#1");
+        boolean exists = jedis.sismember("nicknames", "gradle");
 
         // then
         Assert.assertTrue(exists);
@@ -90,6 +90,7 @@ public class JedisTest {
     @DisplayName("jedis 모든 키 확인 테스트")
     public void jedis_all_keys_test(){
         // given
+        jedis.set("name", "tony");
         Set<String> keys = jedis.keys("*");
         List<String> keyList = new ArrayList<>();
 
@@ -106,11 +107,12 @@ public class JedisTest {
     @DisplayName("jedis 모든 키 지우기 테스트")
     public void jedis_flush_keys_test(){
         // given
-        String result = jedis.flushAll();
-        Set<String> keys = jedis.keys("*");
+        jedis.set("name", "tony");
         List<String> keyList = new ArrayList<>();
 
         // when
+        String result = jedis.flushAll();
+        Set<String> keys = jedis.keys("*");
         for(String key: keys){
             keyList.add(key);
         }
