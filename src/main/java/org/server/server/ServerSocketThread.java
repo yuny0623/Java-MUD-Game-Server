@@ -93,6 +93,13 @@ public class ServerSocketThread extends Thread{
         server.broadCasting(JsonUtil.generateJson(nickname + " has entered."));
     }
 
+    public boolean isValidInput(String input){
+        if(input == null || input.isEmpty() || input.isBlank()){
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void run(){
         try{
@@ -114,10 +121,8 @@ public class ServerSocketThread extends Thread{
             while(true){
                 strIn = in.readLine();
 
-                if(strIn == null){
-                    continue;
-                }
-                if(strIn.isBlank() || strIn.isEmpty()){
+                // 입력 유효성 검사
+                if(!isValidInput(strIn)){
                     continue;
                 }
 
