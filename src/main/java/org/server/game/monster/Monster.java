@@ -1,5 +1,6 @@
 package org.server.game.monster;
 
+import org.server.utils.GameUtil;
 import org.server.utils.JedisUtil;
 
 public class Monster extends Thread{
@@ -17,14 +18,14 @@ public class Monster extends Thread{
     public Monster(String monsterName){
         this.monsterName = monsterName;
 
-        this.hp = (int) (Math.random() * (10 - 5 + 1)) + 5;
-        this.str=  (int) (Math.random() * (5 - 3 + 1)) + 3;
+        this.hp = GameUtil.generateRandomNumber(5, 10);
+        this.str=  GameUtil.generateRandomNumber(3, 5);
 
-        this.hpPotion = (int) (Math.random() * (10 - 5 + 1)) + 5;
-        this.strPotion = (int) (Math.random() * (10 - 5 + 1)) + 5;
+        this.hpPotion = GameUtil.generateRandomNumber(5, 10);
+        this.strPotion = GameUtil.generateRandomNumber(5, 10);
 
-        this.x = (int) (Math.random() * (29 - 0 + 1)) + 0;
-        this.y = (int) (Math.random() * (29 - 0 + 1)) + 0;
+        this.x = GameUtil.generateRandomNumber(0, 29);
+        this.y = GameUtil.generateRandomNumber(0, 29);
     }
 
     public boolean attacked(int str){
