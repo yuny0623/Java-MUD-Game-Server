@@ -28,7 +28,7 @@ public class Monster extends Thread{
         this.y = GameUtil.generateRandomNumber(0, 29);
     }
 
-    public boolean attacked(int str){
+    public boolean receiveDamage(int str){
         this.hp -= str;
         if(this.hp <= 0){
             return true;
@@ -37,12 +37,12 @@ public class Monster extends Thread{
     }
 
     public void move(){
-        int xx = GameUtil.generateRandomNumber(-1, 1);
-        int yy = GameUtil.generateRandomNumber(-1, 1);
+        int randomX = GameUtil.generateRandomNumber(-1, 1);
+        int randomY = GameUtil.generateRandomNumber(-1, 1);
 
-        if((0 <= this.x + xx) && (this.x + xx < 30) && (0 <= this.y + yy) && (this.y + yy < 30)){
-            this.x += xx;
-            this.y += yy;
+        if((0 <= this.x + randomX) && (this.x + randomX < 30) && (0 <= this.y + randomY) && (this.y + randomY < 30)){
+            this.x += randomX;
+            this.y += randomY;
         }
     }
 

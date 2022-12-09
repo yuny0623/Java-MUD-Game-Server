@@ -131,7 +131,7 @@ public final class JedisUtil {
                     int monsterY = Integer.parseInt(val[2]);
                     if(monsterX == attackX && monsterY == attackY){
                         Monster monster = MonsterManager.monsterMap.get(monsterId);
-                        boolean isDead = monster.attacked(str + extraStr);
+                        boolean isDead = monster.receiveDamage(str + extraStr);
                         if(isDead) {
                             int[] reward = getReward(monsterId, nickname);
                             kills ++;

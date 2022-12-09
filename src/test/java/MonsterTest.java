@@ -59,7 +59,7 @@ public class MonsterTest {
 
         // when
         while(true) {
-            boolean isDead = monster.attacked(3);
+            boolean isDead = monster.receiveDamage(3);
             if(isDead){
                 monster.interrupt();
                 break;
@@ -91,7 +91,7 @@ public class MonsterTest {
         // when
         Monster monster = monsterMap.get("3");
         while(true){
-            boolean isDead = monster.attacked(3);
+            boolean isDead = monster.receiveDamage(3);
             if(isDead){
                 monsterMap.remove("3");
                 break;
