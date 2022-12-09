@@ -65,22 +65,28 @@ public class ServerSocketThread extends Thread{
         }
     }
 
+    public void processLogin(String strIn){
+        command = JsonUtil.parseJson(strIn);
+        nickname = command.split(" ")[1];
+        boolean isLogin = server.login(nickname, this);
+        if(isLogin){
+            System.out.printf("[Client] %s Login Success!\n", nickname);
+        }else{
+            nickname = threadName;
+        }
+    }
+
     @Override
     public void run(){
         try{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-            // 로그인 진행
+            // 최초 input: nickname을 받음
             strIn = in.readLine();
-            command = JsonUtil.parseJson(strIn);
-            nickname = command.split(" ")[1];
-            boolean isLogin = server.login(nickname, this);
-            if(isLogin){
-                System.out.printf("[Client] %s Login Success!\n", nickname);
-            }else{
-                nickname = threadName;
-            }
+
+            // 로그인 진행
+            processLogin(strIn);
 
             // Redis 에 User 저장
             if(JedisUtil.isValidUser(nickname)){ // 이미 접속 기록이 존재하는 유저인 경우
