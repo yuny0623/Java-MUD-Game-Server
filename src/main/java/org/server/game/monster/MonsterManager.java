@@ -1,6 +1,7 @@
 package org.server.game.monster;
 
 import org.server.game.Game;
+import org.server.utils.GameUtil;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ public class MonsterManager extends Thread{
     public MonsterManager(){
         System.out.println("[MonsterFactory] Start MonsterManager.\n");
         for(int i = 0; i < 10; i++){
-            String monsterName = UUID.randomUUID().toString();
+            String monsterName = GameUtil.generateRandomString();
             Monster monster = new Monster(monsterName);
             this.monsterMap.put(monsterName, monster);
             monster.start();
@@ -29,7 +30,7 @@ public class MonsterManager extends Thread{
             if(this.monsterMap.size() < 10){
                 diff = 10 - this.monsterMap.size();
                 for(int i = 0; i < diff; i++){
-                    String monsterName = UUID.randomUUID().toString();
+                    String monsterName = GameUtil.generateRandomString();
                     Monster monster = new Monster(monsterName);
                     this.monsterMap.put(monsterName, monster);
                     monster.start();
