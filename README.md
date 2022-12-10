@@ -1,4 +1,4 @@
-# ⭐️Java MUD Game Project - Server
+# 🎮 Java MUD Game Project - Server
 
 ## 🍀 Project Intro
 ```
@@ -7,6 +7,7 @@
    2️⃣ 여러 사용자가 RPG 배경의 던전을 탐험한다는 이름에서 MUD라는 이름이 붙었다. 
    3️⃣ 당시 GUI가 없었기 때문에 텍스트로 입력을 주고 텍스트 출력을 얻는 형태이다.
    4️⃣ 해당 MUD 게임용 Server와 Client를 만들어보도록 한다. 
+   5️⃣ 추가 TCP 소켓을 사용하여 HTTP프로토콜을 통한 REST API를 제공한다. 
  
 🔎 서버 기능 소개 
    1️⃣ 사용자 로그인 처리 
@@ -15,7 +16,8 @@
    4️⃣ 아이템 제공 
    5️⃣ 공격에 따른 데미지 계산 
    6️⃣ 유저 접속 종료 및 로그아웃 처리 
-   7️⃣ 다중 접속 처리 
+   7️⃣ 유저 다중 접속 처리 
+   8️⃣ HTTP 접속을 위한 REST API 제공 
    
 🔎 플레이 방법 
    1️⃣ move x y
@@ -55,6 +57,9 @@
 🍹 Item 
    1️⃣ 체력 회복 포션: 체력(hp)을 10 회복시킨다. 
    2️⃣ 공격력 강화 포션: 1분 동안 공격력(str)을 +3 증가시킨다. 
+   
+📡 Extra 
+   1️⃣ HTTP 접속을 위한 REST API를 제공하고 동일한 명령어로 플레이할 수 있다. 
 ```
 
 ## 📓 Command Intro
@@ -87,8 +92,122 @@
     Bot 모드를 종료한다. 
 ```
 
+## 📡 HTTP Command Intro 
+### 🎫 login
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "login"
+    }
+    
+📩 Response
+    {
+        "Notice":"[Create User] [nickname: tony, hp:30, str:3, x_pos: 21, y_pos: 9]"
+    }   
+```
 
-## ❓ How to use 
+### 💥 attack 
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "attack"
+    }
+    
+📩 Response
+    {
+        "Notice":"tony attack a Monster with power of 3."
+    }    
+```
+### 🏃 move x y 
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "move 1 2"
+    }
+    
+📩 Response
+    {
+        "Notice":"tony move to [22, 11]"
+    }
+```
+### 👪 users
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "users"
+    }
+    
+📩 Response
+    {
+        "UserInfo":"razlo 29 24\ntony 22 11\n"
+    }
+```
+### 🐺 monsters
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "monsters"
+    }
+    
+📩 Response
+    {
+        "MonsterInfo":"Monster 14 22\nMonster 17 13\nMonster 20 7\nMonster 9 15\nMonster 26 0\nMonster 4 18\nMonster 5 26\nMonster 26 22\nMonster 19 18\nMonster 16 15\n"
+    }
+```
+### 🍖 potion hp
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "potion hp"
+    }
+    
+📩 Response
+    {
+        "Notice":"tony recover 10 hp."
+    }
+    
+```
+### 🍸 potion str 
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "potion str"
+    }
+    
+📩 Response
+    {
+        "Notice":"tony increase 3 str."
+    }
+```
+
+### 📢 chat \<username\> \<message\>
+```
+📨 Request
+    POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "chat razlo hi"
+    }
+    
+📩 No Response     
+```
+
+
+## ❓ How to execute
 ```
 💻 Windows 
     1️⃣ gradlew build 

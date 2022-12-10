@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class ServerSocketThread extends Thread{
     Socket socket;
-    MainServer server;
+    Server server;
     BufferedReader in;
     PrintWriter out;
     String strIn;
@@ -18,7 +18,7 @@ public class ServerSocketThread extends Thread{
     String nickname;
     String command;
 
-    public ServerSocketThread(MainServer server, Socket socket){
+    public ServerSocketThread(Server server, Socket socket){
         this.server = server ;
         this.socket = socket;
         threadName = super.getName();
@@ -35,32 +35,17 @@ public class ServerSocketThread extends Thread{
         String result = resultDto.getResult();
         String json = "";
         switch(command){
-            case "move":
+            case "move": case "attack": case "potion":
                 json = JsonUtil.generateJson(result);
                 System.out.println("[Client] " + result);
                 server.broadCasting(json);
                 break;
-            case "attack":
-                json = JsonUtil.generateJson(result);
-                System.out.println("[Client] " + result);
-                server.broadCasting(json);
-                break;
-            case "monsters":
-                json = JsonUtil.generateJsonByCommand(command, result);
-                System.out.println("[Client] " + result);
-                sendMessage(json);
-                break;
-            case "users":
+            case "monsters": case "users":
                 json = JsonUtil.generateJsonByCommand(command, result);
                 System.out.println("[Client] " + result);
                 sendMessage(json);
                 break;
             case "chat":
-                break;
-            case "potion":
-                json = JsonUtil.generateJson(result);
-                System.out.println("[Client] " + result);
-                server.broadCasting(json);
                 break;
         }
     }
