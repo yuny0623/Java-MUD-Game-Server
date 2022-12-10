@@ -16,6 +16,7 @@ public final class ServerConfig {
 
     public static final int TCP_CONNECTION_DEFAULT_PORT = 8080;
     public static final int HTTP_CONNECTION_DEFAULT_PORT = 8081;
+    public static final String HTTP_VERSION = "HTTP/1.1"; 
     public static final String JEDIS_DEFAULT_IP = "127.0.0.1";
     public static final int[] DX = {-1, 0, 1, 1, 1, 0, -1, -1, 0};
     public static final int[] DY = {-1, -1, -1, 0, 1, 1, 1, 0, 0};
