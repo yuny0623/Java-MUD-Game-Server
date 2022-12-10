@@ -4,6 +4,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class JsonUtil {
 
     public JsonUtil(){
@@ -81,5 +84,26 @@ public final class JsonUtil {
                 return "";
         }
         return result;
+    }
+
+
+    public Map<String, String> parseHttpJson(String json){
+        String result = "";
+        String nickname = null;
+        String command = null;
+        Map<String, String> jsonMap = new HashMap<>();
+        JSONObject obj = null;
+        JSONParser parser;
+        try {
+            parser = new JSONParser();
+            obj = (JSONObject) parser.parse(json);
+            command = (String) obj.get("command");
+            nickname = (String) obj.get("nickname");
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        jsonMap.put("nickname", nickname);
+        jsonMap.put("command", command);
+        return jsonMap;
     }
 }

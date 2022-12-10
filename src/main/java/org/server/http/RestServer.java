@@ -97,4 +97,43 @@ public class RestServer extends Thread{
         String httpResponse = "HTTP/1.1 200 OK\r\n\r\n" + data;
         return httpResponse;
     }
+
+    public void sendMessage(String str){
+        out.println(str);
+    }
+
+    public void send(ResultDto resultDto){
+        String command = resultDto.getCommand();
+        String result = resultDto.getResult();
+        String json = "";
+        switch(command){
+            case "move":
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
+                server.broadCasting(json);
+                break;
+            case "attack":
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
+                server.broadCasting(json);
+                break;
+            case "monsters":
+                json = JsonUtil.generateJsonByCommand(command, result);
+                System.out.println("[Client] " + result);
+                sendMessage(json);
+                break;
+            case "users":
+                json = JsonUtil.generateJsonByCommand(command, result);
+                System.out.println("[Client] " + result);
+                sendMessage(json);
+                break;
+            case "chat":
+                break;
+            case "potion":
+                json = JsonUtil.generateJson(result);
+                System.out.println("[Client] " + result);
+                server.broadCasting(json);
+                break;
+        }
+    }
 }
