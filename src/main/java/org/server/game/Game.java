@@ -69,6 +69,9 @@ public final class Game{
                     break;
                 }
                 break;
+            case "login":
+                result = JedisUtil.createUser(nickname);
+                break;
             }
         return result;
     }

@@ -130,6 +130,11 @@ public class RESTServer extends Thread{
                 System.out.println("[REST Client] " + result);
                 sendHttpResponse(json);
                 break;
+            case "login":
+                json = JsonUtil.generateJson(result);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
+                break;
         }
     }
 }
