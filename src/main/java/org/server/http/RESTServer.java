@@ -55,9 +55,7 @@ public class RESTServer extends Thread{
                     System.out.println("[REST Server] [Error] Cannot parse HTTP request.");
                     continue;
                 }
-
                 contentBuffer = new char[contentLength];
-
                 // read HTTP body
                 in.read(contentBuffer);
                 System.out.printf("HTTP body:\n%s\n", String.valueOf(contentBuffer));
@@ -112,13 +110,13 @@ public class RESTServer extends Thread{
         send(resultDto);
     }
 
-    public String buildHttpResponse(String data){
-        String httpResponse = ServerConfig.HTTP_VERSION + " " + ServerConfig.HTTP_200_OK + ServerConfig.HTTP_NEW_LINE + data;
+    public String buildHttpResponse(String data, String httpStatusCode){
+        String httpResponse = ServerConfig.HTTP_VERSION + " " + httpStatusCode + ServerConfig.HTTP_NEW_LINE + data;
         return httpResponse;
     }
 
-    public void sendHttpResponse(String str){
-        out.println(buildHttpResponse(str));
+    public void sendHttpResponse(String str, String httpStatusCode){
+        out.println(buildHttpResponse(str, httpStatusCode));
     }
 
     public void send(ResultDto resultDto){
@@ -126,37 +124,17 @@ public class RESTServer extends Thread{
         String result = resultDto.getResult();
         String json = "";
         switch(command){
-            case "move":
+            case "move": case "attack": case "potion":  case "login":
                 json = JsonUtil.generateJson(result);
                 System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
+                sendHttpResponse(json, ServerConfig.HTTP_200_OK);
                 break;
-            case "attack":
-                json = JsonUtil.generateJson(result);
-                System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
-                break;
-            case "monsters":
+            case "monsters": case "users":
                 json = JsonUtil.generateJsonByCommand(command, result);
                 System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
-                break;
-            case "users":
-                json = JsonUtil.generateJsonByCommand(command, result);
-                System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
+                sendHttpResponse(json, ServerConfig.HTTP_200_OK);
                 break;
             case "chat":
-                break;
-            case "potion":
-                json = JsonUtil.generateJson(result);
-                System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
-                break;
-            case "login":
-                json = JsonUtil.generateJson(result);
-                System.out.println("[REST Client] " + result);
-                sendHttpResponse(json);
                 break;
         }
     }

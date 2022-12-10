@@ -1,4 +1,4 @@
-# ⭐️Java MUD Game Project - Server
+# 🎮 Java MUD Game Project - Server
 
 ## 🍀 Project Intro
 ```
@@ -16,7 +16,7 @@
    4️⃣ 아이템 제공 
    5️⃣ 공격에 따른 데미지 계산 
    6️⃣ 유저 접속 종료 및 로그아웃 처리 
-   7️⃣ 다중 접속 처리 
+   7️⃣ 유저 다중 접속 처리 
    8️⃣ HTTP 접속을 위한 REST API 제공 
    
 🔎 플레이 방법 
@@ -197,7 +197,7 @@
 ### 📢 chat \<username\> \<message\>
 ```
 📨 Request
-POST/127.0.0.1:8081
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "chat razlo hi"
