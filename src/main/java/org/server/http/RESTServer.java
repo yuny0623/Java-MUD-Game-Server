@@ -20,10 +20,12 @@ public class RESTServer extends Thread{
     PrintWriter out;
     String strIn;
     Server server;
+    StringBuffer sb;
+    char[] contentBuffer;
 
     public RESTServer(Server server){
         this.server = server;
-        System.out.println("[REST Server] Start Rest Server.\n");
+        System.out.println("[REST Server] Start REST Server.\n");
     }
 
     @Override
@@ -31,39 +33,58 @@ public class RESTServer extends Thread{
         try{
             serverSocket = new ServerSocket(ServerConfig.HTTP_CONNECTION_DEFAULT_PORT);
             serverSocket.setReuseAddress(true);
+
             while(true){
                 socket = serverSocket.accept();
-                System.out.println("[REST Server] Start Socket.");
+                System.out.println("[REST Server] Receive HTTP Request.");
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                StringBuffer sb = new StringBuffer();
+                sb = new StringBuffer();
+
+                // read http header
                 while(true){
                     strIn = in.readLine();
-                    if(strIn == null || strIn.isBlank() || strIn.isEmpty()){
+                    if(!isValidInput(strIn)){
                         break;
                     }
-                    sb.append(strIn+"\n");
+                    sb.append(strIn + "\n");
                 }
-
+                System.out.printf("HTTP header:\n%s\n", sb.toString());
                 int contentLength = httpRequestParser(sb.toString());
                 if(contentLength == -1){
                     System.out.println("[REST Server] [Error] Cannot parse HTTP request.");
                     continue;
                 }
 
-                char[] contentBuffer = new char[contentLength];
+                contentBuffer = new char[contentLength];
+
+                // read HTTP body
                 in.read(contentBuffer);
-                System.out.println(contentBuffer);
+                System.out.printf("HTTP body:\n%s\n", contentBuffer);
 
                 // play game
                 play(String.valueOf(contentBuffer));
 
-                System.out.println("[REST Server] Close start.");
+                System.out.println("[REST Server] Return HTTP Response.");
                 socket.close();
             }
         }catch(IOException e)   {
+            try {
+                socket.close();
+                in.close();
+                out.close();
+            }catch (IOException err){
+                err.printStackTrace();
+            }
             e.printStackTrace();
         }
+    }
+
+    public boolean isValidInput(String strIn){
+        if(strIn == null || strIn.isBlank() || strIn.isEmpty()){
+            return false;
+        }
+        return true;
     }
 
     public int httpRequestParser(String data){
