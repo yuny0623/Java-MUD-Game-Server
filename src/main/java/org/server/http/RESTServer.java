@@ -60,7 +60,7 @@ public class RESTServer extends Thread{
 
                 // read HTTP body
                 in.read(contentBuffer);
-                System.out.printf("HTTP body:\n%s\n", contentBuffer);
+                System.out.printf("HTTP body:\n%s\n", String.valueOf(contentBuffer));
 
                 // play game
                 play(String.valueOf(contentBuffer));
@@ -87,18 +87,20 @@ public class RESTServer extends Thread{
         return true;
     }
 
-    public int httpRequestParser(String data){
+    public int httpRequestParser(String header){
         Map<String, String> httpRequestMap = new HashMap<>();
-        String[] dataRow = data.split("\n");
-        String requestType = dataRow[0].split(" ")[0];
+        String[] rows = header.split("\n");
+
+        String requestType = rows[0].split(" ")[0];
         if(!(requestType.equals("POST") || requestType.equals("GET"))){
             return -1;
         }
-        for(int i = 1; i < dataRow.length; i++){
-            String[] row = dataRow[i].split(" ");
-            httpRequestMap.put(row[0], row[1]);
+        httpRequestMap.put("Request-Method", requestType);
+        for(int i = 1; i < rows.length; i++){
+            String[] val = rows[i].split(" ");
+            httpRequestMap.put(val[0].substring(0, val[0].length() - 1), val[1]);
         }
-        return Integer.parseInt(httpRequestMap.get("Content-Length:"));
+        return Integer.parseInt(httpRequestMap.get("Content-Length"));
     }
 
     public void play(String json){
