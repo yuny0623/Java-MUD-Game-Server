@@ -4,7 +4,6 @@ import org.server.config.ServerConfig;
 import org.server.dto.CommandDto;
 import org.server.dto.ResultDto;
 import org.server.server.Server;
-import org.server.utils.JedisUtil;
 import org.server.utils.JsonUtil;
 
 import java.io.*;
@@ -13,7 +12,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestServer extends Thread{
+public class RESTServer extends Thread{
 
     ServerSocket serverSocket;
     Socket socket;
@@ -22,9 +21,9 @@ public class RestServer extends Thread{
     String strIn;
     Server server;
 
-    public RestServer(Server server){
+    public RESTServer(Server server){
         this.server = server;
-        System.out.println("[Rest Server] Start Rest Server.\n");
+        System.out.println("[REST Server] Start Rest Server.\n");
     }
 
     @Override
@@ -34,7 +33,7 @@ public class RestServer extends Thread{
             serverSocket.setReuseAddress(true);
             while(true){
                 socket = serverSocket.accept();
-                System.out.println("[Rest Server] Start Socket.");
+                System.out.println("[REST Server] Start Socket.");
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                 StringBuffer sb = new StringBuffer();
@@ -48,7 +47,7 @@ public class RestServer extends Thread{
 
                 int contentLength = httpRequestParser(sb.toString());
                 if(contentLength == -1){
-                    System.out.println("[Rest Server] [Error] Cannot parse HTTP request.");
+                    System.out.println("[REST Server] [Error] Cannot parse HTTP request.");
                     continue;
                 }
 
@@ -59,7 +58,7 @@ public class RestServer extends Thread{
                 // play game
                 play(String.valueOf(contentBuffer));
 
-                System.out.println("[Rest Server] Close start.");
+                System.out.println("[REST Server] Close start.");
                 socket.close();
             }
         }catch(IOException e)   {

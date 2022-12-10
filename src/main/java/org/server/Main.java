@@ -1,6 +1,6 @@
 package org.server;
 
-import org.server.http.RestServer;
+import org.server.http.RESTServer;
 import org.server.server.Server;
 import org.server.utils.JedisUtil;
 
@@ -9,7 +9,7 @@ public class Main {
         Server server = new Server();
         server.start();
 
-        RestServer restServer = new RestServer(server);
+        RESTServer restServer = new RESTServer(server);
         restServer.start();
 
         // 종료 직전에 서버 리셋
