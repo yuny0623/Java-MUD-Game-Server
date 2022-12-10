@@ -43,7 +43,7 @@
    5️⃣ 사용자의 기본 공격력은 3이다.
    6️⃣ 사용자의 기본 체력 회복 포션은 1개이다. 
    7️⃣ 사용자의 기본 공격력 강화 포션은 1개이다. 
-   ㄴ
+   
 🐞 Monster 
    1️⃣ 1분에 한번씩 몬스터가 10마리가 되도록 생성된다. 
    2️⃣ 몬스터의 생성 위치는 랜덤이다. 
@@ -91,8 +91,91 @@
     Bot 모드를 종료한다. 
 ```
 
+## HTTP Command Intro 
+### login
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "login"
+    }
+    
+response:
+{"Notice":"[Create User] [nickname: tony, hp:30, str:3, x_pos: 21, y_pos: 9]"}   
+```
+### attack 
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "attack"
+    }
+response:
+{"Notice":"tony attack a Monster with power of 3."}    
+```
+### move x y 
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "move 1 2"
+    }
+response: 
+{"Notice":"tony move to [22, 11]"}
+```
+### users
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "users"
+    }
+response:
+{"UserInfo":"razlo 29 24\ntony 22 11\n"}
+```
+### monsters
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "monsters"
+    }
+response: 
+{"MonsterInfo":"Monster 14 22\nMonster 17 13\nMonster 20 7\nMonster 9 15\nMonster 26 0\nMonster 4 18\nMonster 5 26\nMonster 26 22\nMonster 19 18\nMonster 16 15\n"}
+```
+### potion hp
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "potion hp"
+    }
+response:
+{"Notice":"tony recover 10 hp."}
+    
+```
+### potion str 
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "potion str"
+    }
+response:
+{"Notice":"tony increase 3 str."}
+```
 
-## ❓ How to use 
+### chat <username> <message>
+```
+POST/127.0.0.1:8081
+    {
+        "nickname": "tony",
+        "command": "chat razlo hi"
+    }
+```
+
+
+## ❓ How to execute
 ```
 💻 Windows 
     1️⃣ gradlew build 
