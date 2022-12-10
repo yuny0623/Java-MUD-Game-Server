@@ -7,6 +7,7 @@
    2️⃣ 여러 사용자가 RPG 배경의 던전을 탐험한다는 이름에서 MUD라는 이름이 붙었다. 
    3️⃣ 당시 GUI가 없었기 때문에 텍스트로 입력을 주고 텍스트 출력을 얻는 형태이다.
    4️⃣ 해당 MUD 게임용 Server와 Client를 만들어보도록 한다. 
+   5️⃣ 추가 TCP 소켓을 사용하여 HTTP프로토콜을 통한 REST API를 제공한다. 
  
 🔎 서버 기능 소개 
    1️⃣ 사용자 로그인 처리 
@@ -91,87 +92,118 @@
     Bot 모드를 종료한다. 
 ```
 
-## HTTP Command Intro 
-### login
+## 📡 HTTP Command Intro 
+### 🎫 login
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "login"
     }
     
-response:
-{"Notice":"[Create User] [nickname: tony, hp:30, str:3, x_pos: 21, y_pos: 9]"}   
+📩 Response
+    {
+        "Notice":"[Create User] [nickname: tony, hp:30, str:3, x_pos: 21, y_pos: 9]"
+    }   
 ```
-### attack 
+
+### 💥 attack 
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "attack"
     }
-response:
-{"Notice":"tony attack a Monster with power of 3."}    
+    
+📩 Response
+    {
+        "Notice":"tony attack a Monster with power of 3."
+    }    
 ```
-### move x y 
+### 🏃 move x y 
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "move 1 2"
     }
-response: 
-{"Notice":"tony move to [22, 11]"}
+    
+📩 Response
+    {
+        "Notice":"tony move to [22, 11]"
+    }
 ```
-### users
+### 👪 users
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "users"
     }
-response:
-{"UserInfo":"razlo 29 24\ntony 22 11\n"}
+    
+📩 Response
+    {
+        "UserInfo":"razlo 29 24\ntony 22 11\n"
+    }
 ```
-### monsters
+### 🐺 monsters
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "monsters"
     }
-response: 
-{"MonsterInfo":"Monster 14 22\nMonster 17 13\nMonster 20 7\nMonster 9 15\nMonster 26 0\nMonster 4 18\nMonster 5 26\nMonster 26 22\nMonster 19 18\nMonster 16 15\n"}
+    
+📩 Response
+    {
+        "MonsterInfo":"Monster 14 22\nMonster 17 13\nMonster 20 7\nMonster 9 15\nMonster 26 0\nMonster 4 18\nMonster 5 26\nMonster 26 22\nMonster 19 18\nMonster 16 15\n"
+    }
 ```
-### potion hp
+### 🍖 potion hp
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "potion hp"
     }
-response:
-{"Notice":"tony recover 10 hp."}
+    
+📩 Response
+    {
+        "Notice":"tony recover 10 hp."
+    }
     
 ```
-### potion str 
+### 🍸 potion str 
 ```
-POST/127.0.0.1:8081
+📨 Request
+    POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "potion str"
     }
-response:
-{"Notice":"tony increase 3 str."}
+    
+📩 Response
+    {
+        "Notice":"tony increase 3 str."
+    }
 ```
 
-### chat <username> <message>
+### 📢 chat \<username\> \<message\>
 ```
+📨 Request
 POST/127.0.0.1:8081
     {
         "nickname": "tony",
         "command": "chat razlo hi"
     }
+    
+📩 No Response     
 ```
 
 
