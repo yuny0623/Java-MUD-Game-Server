@@ -9,7 +9,7 @@ public class Main {
         Server server = new Server();
         server.start();
 
-        RestServer restServer = new RestServer();
+        RestServer restServer = new RestServer(server);
         restServer.start();
 
         // 종료 직전에 서버 리셋

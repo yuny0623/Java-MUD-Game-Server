@@ -1,20 +1,17 @@
 package org.server.http;
 
 import org.server.config.ServerConfig;
+import org.server.dto.CommandDto;
+import org.server.dto.ResultDto;
+import org.server.server.Server;
+import org.server.utils.JedisUtil;
+import org.server.utils.JsonUtil;
 
-import javax.net.ssl.SSLSession;
-import java.awt.font.OpenType;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class RestServer extends Thread{
 
@@ -23,8 +20,10 @@ public class RestServer extends Thread{
     BufferedReader in;
     PrintWriter out;
     String strIn;
+    Server server;
 
-    public RestServer(){
+    public RestServer(Server server){
+        this.server = server;
         System.out.println("[Rest Server] Start Rest Server.\n");
     }
 
@@ -46,21 +45,23 @@ public class RestServer extends Thread{
                     }
                     sb.append(strIn+"\n");
                 }
-                /*
-                    소켓 처리
-                 */
+
                 int contentLength = httpRequestParser(sb.toString());
                 if(contentLength == -1){
                     System.out.println("[Rest Server] [Error] Cannot parse HTTP request.");
                     continue;
                 }
+
                 char[] contentBuffer = new char[contentLength];
                 in.read(contentBuffer);
                 System.out.println(contentBuffer);
+
                 /*
-                    logic 수행.
+                    game play 쪽으로 던져주기
                  */
-                out.println(buildHttpResponse(String.valueOf(contentBuffer)));
+
+                String httpResponse = buildHttpResponse(String.valueOf(contentBuffer));
+                out.println(httpResponse);
                 System.out.println("[Rest Server] Close start.");
                 socket.close();
             }
@@ -81,7 +82,19 @@ public class RestServer extends Thread{
             httpRequestMap.put(row[0], row[1]);
         }
         return Integer.parseInt(httpRequestMap.get("Content-Length:"));
+    }
 
+    public String play(String json){
+        String str = JsonUtil.parseJson(json);
+        String command = null;
+        String nickname = null;
+        CommandDto commandDto = new CommandDto(command, nickname);
+        ResultDto resultDto = server.play(commandDto);
+        return "";
+    }
+
+    public boolean isExistUser(String nickname){
+        return JedisUtil.isValidUser(nickname);
     }
 
     public String buildHttpResponse(String data){
