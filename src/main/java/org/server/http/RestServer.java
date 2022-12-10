@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestServer extends Thread{
 
@@ -27,15 +29,42 @@ public class RestServer extends Thread{
             while(true){
                 socket = serverSocket.accept();
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                strIn = in.readLine();
-                System.out.println(strIn);
+                StringBuffer sb = new StringBuffer();
+                while(true){
+                    strIn = in.readLine();
+                    if(strIn == null || strIn.isBlank() || strIn.isEmpty()){
+                        break;
+                    }
+                    sb.append(strIn+"\n");
+                }
                 /*
                     소켓 처리
                  */
+                int contentLength = httpRequestParser(sb.toString());
+                if(contentLength == -1){
+                    System.out.println("[Rest Server] [Error] Cannot parse HTTP request.");
+                    continue;
+                }
+                char[] contentBuffer = new char[contentLength];
+                in.read(contentBuffer);
+                System.out.println(contentBuffer);
             }
         }catch(IOException e)   {
             e.printStackTrace();
         }
     }
 
+    public int httpRequestParser(String data){
+        Map<String, String> httpRequestMap = new HashMap<>();
+        String[] dataRow = data.split("\n");
+        String requestType = dataRow[0].split(" ")[0];
+        if(!(requestType.equals("POST") || requestType.equals("GET"))){
+            return -1;
+        }
+        for(int i = 1; i < dataRow.length; i++){
+            String[] row = dataRow[i].split(" ");
+            httpRequestMap.put(row[0], row[1]);
+        }
+        return Integer.parseInt(httpRequestMap.get("Content-Length:"));
+    }
 }
