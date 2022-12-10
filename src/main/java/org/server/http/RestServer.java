@@ -93,10 +93,6 @@ public class RestServer extends Thread{
         return "";
     }
 
-    public boolean isExistUser(String nickname){
-        return JedisUtil.isValidUser(nickname);
-    }
-
     public String buildHttpResponse(String data){
         String httpResponse = "HTTP/1.1 200 OK\r\n\r\n" + data;
         return httpResponse;
