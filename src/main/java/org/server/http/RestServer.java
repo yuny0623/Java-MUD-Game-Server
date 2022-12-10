@@ -2,19 +2,26 @@ package org.server.http;
 
 import org.server.config.ServerConfig;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.net.ssl.SSLSession;
+import java.awt.font.OpenType;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class RestServer extends Thread{
 
     ServerSocket serverSocket;
     Socket socket;
     BufferedReader in;
+    PrintWriter out;
     String strIn;
 
     public RestServer(){
@@ -28,7 +35,9 @@ public class RestServer extends Thread{
             serverSocket.setReuseAddress(true);
             while(true){
                 socket = serverSocket.accept();
+                System.out.println("[Rest Server] Start Socket.");
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                 StringBuffer sb = new StringBuffer();
                 while(true){
                     strIn = in.readLine();
@@ -48,6 +57,12 @@ public class RestServer extends Thread{
                 char[] contentBuffer = new char[contentLength];
                 in.read(contentBuffer);
                 System.out.println(contentBuffer);
+                /*
+                    logic 수행.
+                 */
+                out.println(buildHttpResponse(String.valueOf(contentBuffer)));
+                System.out.println("[Rest Server] Close start.");
+                socket.close();
             }
         }catch(IOException e)   {
             e.printStackTrace();
@@ -66,5 +81,11 @@ public class RestServer extends Thread{
             httpRequestMap.put(row[0], row[1]);
         }
         return Integer.parseInt(httpRequestMap.get("Content-Length:"));
+
+    }
+
+    public String buildHttpResponse(String data){
+        String httpResponse = "HTTP/1.1 200 OK\r\n\r\n" + data;
+        return httpResponse;
     }
 }
