@@ -56,12 +56,9 @@ public class RestServer extends Thread{
                 in.read(contentBuffer);
                 System.out.println(contentBuffer);
 
-                /*
-                    game play 쪽으로 던져주기
-                 */
+                // play game
+                play(String.valueOf(contentBuffer));
 
-                String httpResponse = buildHttpResponse(String.valueOf(contentBuffer));
-                out.println(httpResponse);
                 System.out.println("[Rest Server] Close start.");
                 socket.close();
             }
@@ -84,13 +81,13 @@ public class RestServer extends Thread{
         return Integer.parseInt(httpRequestMap.get("Content-Length:"));
     }
 
-    public String play(String json){
-        String str = JsonUtil.parseJson(json);
-        String command = null;
-        String nickname = null;
+    public void play(String json){
+        Map<String, String> jsonMap = JsonUtil.parseHttpJson(json);
+        String command = jsonMap.get("command");
+        String nickname = jsonMap.get("nickname");
         CommandDto commandDto = new CommandDto(command, nickname);
         ResultDto resultDto = server.play(commandDto);
-        return "";
+        send(resultDto);
     }
 
     public String buildHttpResponse(String data){
@@ -98,8 +95,8 @@ public class RestServer extends Thread{
         return httpResponse;
     }
 
-    public void sendMessage(String str){
-        out.println(str);
+    public void sendHttpResponse(String str){
+        out.println(buildHttpResponse(str));
     }
 
     public void send(ResultDto resultDto){
@@ -109,30 +106,30 @@ public class RestServer extends Thread{
         switch(command){
             case "move":
                 json = JsonUtil.generateJson(result);
-                System.out.println("[Client] " + result);
-                server.broadCasting(json);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
                 break;
             case "attack":
                 json = JsonUtil.generateJson(result);
-                System.out.println("[Client] " + result);
-                server.broadCasting(json);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
                 break;
             case "monsters":
                 json = JsonUtil.generateJsonByCommand(command, result);
-                System.out.println("[Client] " + result);
-                sendMessage(json);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
                 break;
             case "users":
                 json = JsonUtil.generateJsonByCommand(command, result);
-                System.out.println("[Client] " + result);
-                sendMessage(json);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
                 break;
             case "chat":
                 break;
             case "potion":
                 json = JsonUtil.generateJson(result);
-                System.out.println("[Client] " + result);
-                server.broadCasting(json);
+                System.out.println("[REST Client] " + result);
+                sendHttpResponse(json);
                 break;
         }
     }

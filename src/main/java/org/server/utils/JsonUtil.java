@@ -87,7 +87,7 @@ public final class JsonUtil {
     }
 
 
-    public Map<String, String> parseHttpJson(String json){
+    public static synchronized Map<String, String> parseHttpJson(String json){
         String result = "";
         String nickname = null;
         String command = null;
