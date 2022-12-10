@@ -91,7 +91,7 @@ public class RestServer extends Thread{
     }
 
     public String buildHttpResponse(String data){
-        String httpResponse = ServerConfig.HTTP_VERSION + " 200 OK\r\n\r\n" + data;
+        String httpResponse = ServerConfig.HTTP_VERSION + " " + ServerConfig.HTTP_200_OK + ServerConfig.HTTP_NEW_LINE + data;
         return httpResponse;
     }
 
