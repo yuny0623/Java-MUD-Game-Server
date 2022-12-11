@@ -27,7 +27,6 @@ jar {
                 'Main-Class': 'org.server.Main'
         )
     }
-    enabled=false
 }
 
 

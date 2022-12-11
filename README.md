@@ -218,6 +218,10 @@
     2️⃣ *.jar 파일 실행 
 ```
 
+## 🔗 Game Server Download
+> [Game Server Download](https://drive.google.com/file/d/15AO6JmIPGinchSFgUaUHsIzBJmONOHop/view?usp=share_link)
+
+
 ## 📲 Tech
 ```
 💾 Java 17
