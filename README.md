@@ -219,6 +219,11 @@
 ```
 
 ## 🔗 Game Server Download
+```
+🚦 Notice 
+    1️⃣ Java 17 권장
+    2️⃣ java -jar game-server.jar 
+```
 > [Game Server Download](https://drive.google.com/file/d/15AO6JmIPGinchSFgUaUHsIzBJmONOHop/view?usp=share_link)
 
 
