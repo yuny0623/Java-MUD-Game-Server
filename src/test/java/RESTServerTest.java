@@ -18,6 +18,8 @@ public class RESTServerTest {
                 "\r\n" +
                 "this is test";
 
+
+
         // then
         Assert.assertEquals(example, httpResponse);
     }

@@ -181,7 +181,7 @@ public final class JedisUtil {
     public static synchronized String showMonsters(){
         StringBuffer sb = new StringBuffer();
         Set<String> monsterIdSet = MonsterManager.monsterMap.keySet();
-        List<String> monsterIdList = monsterIdSet.stream().toList();
+        List<String> monsterIdList = new ArrayList<>(monsterIdSet);
         for(int i = monsterIdList.size() - 1; i >= 0; i --){
             Monster monster = MonsterManager.monsterMap.get(monsterIdList.get(i));
             if(monster.getHp() <= 0){

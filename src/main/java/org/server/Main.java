@@ -12,7 +12,7 @@ public class Main {
         RESTServer restServer = new RESTServer(server);
         restServer.start();
 
-        // 종료 직전에 서버 리셋
+        // server reset when server down
         JedisUtil.clearRedis();
     }
 }
